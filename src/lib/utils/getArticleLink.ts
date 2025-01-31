@@ -7,8 +7,8 @@ export default (article: Article) => {
 	const companyAlias = article.hubs.find((e) => e.type === 'corporative')?.alias
 
 	if (isCorporative) {
-		return '/companies/' + companyAlias + '/blog/' + id
+		return '/companies/' + companyAlias + '/articles/' + id
 	}
 
-	return isCorporative ? '/companies/' + companyAlias + '/blog/' + id : '/articles/' + id
+	return '/articles/' + id
 }
