@@ -3,6 +3,7 @@
 	import * as Pagination from '$lib/components/ui/pagination'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PageProps } from './$types'
+	import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte'
 
 	const { data }: PageProps = $props()
 </script>
@@ -13,35 +14,37 @@
 			<LoaderCircle class="animate-spin" />
 		</div>
 	{:then articles}
-		{#each articles.publicationIds as id}
-			<ArticleItem article={articles.publicationRefs[id]} />
-		{/each}
-		<Pagination.Root class="p-2" count={articles.pagesCount} page={data.articleParams.page}>
-			{#snippet children({ pages, currentPage })}
-				<Pagination.Content class="w-full justify-between">
-					<Pagination.Item>
-						<Pagination.PrevButton />
-					</Pagination.Item>
-					<div class="flex flex-row items-center gap-1">
-						{#each pages as page (page.key)}
-							{#if page.type === 'ellipsis'}
-								<Pagination.Item>
-									<Pagination.Ellipsis />
-								</Pagination.Item>
-							{:else}
-								<Pagination.Item>
-									<Pagination.Link {page} isActive={currentPage === page.value}>
-										{page.value}
-									</Pagination.Link>
-								</Pagination.Item>
-							{/if}
-						{/each}
-					</div>
-					<Pagination.Item>
-						<Pagination.NextButton />
-					</Pagination.Item>
-				</Pagination.Content>
-			{/snippet}
-		</Pagination.Root>
+		<ScrollArea>
+			{#each articles.publicationIds as id}
+				<ArticleItem article={articles.publicationRefs[id]} />
+			{/each}
+			<Pagination.Root class="p-2" count={articles.pagesCount} page={data.articleParams.page}>
+				{#snippet children({ pages, currentPage })}
+					<Pagination.Content class="w-full justify-between">
+						<Pagination.Item>
+							<Pagination.PrevButton />
+						</Pagination.Item>
+						<div class="flex flex-row items-center gap-1">
+							{#each pages as page (page.key)}
+								{#if page.type === 'ellipsis'}
+									<Pagination.Item>
+										<Pagination.Ellipsis />
+									</Pagination.Item>
+								{:else}
+									<Pagination.Item>
+										<Pagination.Link {page} isActive={currentPage === page.value}>
+											{page.value}
+										</Pagination.Link>
+									</Pagination.Item>
+								{/if}
+							{/each}
+						</div>
+						<Pagination.Item>
+							<Pagination.NextButton />
+						</Pagination.Item>
+					</Pagination.Content>
+				{/snippet}
+			</Pagination.Root>
+		</ScrollArea>
 	{/await}
 </div>
