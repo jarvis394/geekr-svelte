@@ -5,6 +5,7 @@
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
 
 	import '../styles/app.css'
+	import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte'
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)
@@ -30,6 +31,6 @@
 	let { children } = $props()
 </script>
 
-<main class="ring-border mx-auto flex h-full w-full max-w-xl flex-col gap-2 ring">
+<main class="ring-border mx-auto flex min-h-full w-full max-w-xl flex-col gap-2 ring">
 	{@render children()}
 </main>
