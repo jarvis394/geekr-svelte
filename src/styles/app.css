@@ -75,3 +75,5 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@custom-variant is-touch (@media (hover: none));

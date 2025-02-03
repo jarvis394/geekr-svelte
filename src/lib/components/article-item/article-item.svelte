@@ -6,9 +6,10 @@
 	import dayjs from 'dayjs'
 	import * as Avatar from '$lib/components/ui/avatar'
 	import { Button } from '../ui/button'
+	import type { HTMLAttributes } from 'svelte/elements'
 
-	type ArticleItemProps = { article: Article }
-	const { article }: ArticleItemProps = $props()
+	type ArticleItemProps = { article: Article } & HTMLAttributes<HTMLAnchorElement>
+	const { article, ...other }: ArticleItemProps = $props()
 
 	const titlePlaintext = $derived(parsePreviewTextHtml(article.titleHtml))
 	const parsedPreviewText = $derived(parsePreviewTextHtml(article.leadData.textHtml))
@@ -23,14 +24,20 @@
 	const authorNameFallback = $derived(article.author?.fullname?.slice(0, 2)?.toUpperCase())
 </script>
 
-<a href={articleLink} class="animate-in fade-in border-border flex flex-col border-b-[1px]">
+<a
+	{...other}
+	href={articleLink}
+	class="animate-in fade-in border-border flex flex-col border-b-[1px]"
+>
 	<div class="relative">
 		{#if article.leadImage || article.leadData.imageUrl}
-			<img
-				class="h-auto w-full"
-				src={article.leadImage || article.leadData.imageUrl}
-				alt={titlePlaintext}
-			/>
+			<div class="flex h-auto max-h-[212px] w-full flex-col overflow-hidden">
+				<img
+					class="h-auto w-full object-cover"
+					src={article.leadImage || article.leadData.imageUrl}
+					alt={titlePlaintext}
+				/>
+			</div>
 		{/if}
 
 		<div class="flex flex-col gap-1.5 p-3 pb-2">
