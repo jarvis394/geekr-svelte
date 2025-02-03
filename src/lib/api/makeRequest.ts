@@ -1,8 +1,4 @@
 import { API_URL } from '$lib/config/constants'
-import axios, { type AxiosRequestConfig } from 'axios'
-
-const CancelToken = axios.CancelToken
-const source = CancelToken.source()
 
 interface MakeRequestProps {
 	/** API response language */
@@ -14,11 +10,14 @@ interface MakeRequestProps {
 	/** Query parameters */
 	params?: Record<string, string>
 
-	/** Axios request options */
-	requestOptions?: AxiosRequestConfig
+	/** Fetch request options */
+	requestOptions?: RequestInit
 
 	/** API version */
 	version?: 1 | 2
+
+	/** Fetch function */
+	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
 }
 
 export default async <T = never>({
@@ -26,23 +25,18 @@ export default async <T = never>({
 	path,
 	params,
 	requestOptions,
-	version = 2
+	version = 2,
+	fetch: propsFetch
 }: MakeRequestProps): Promise<T> => {
-	const tokenRequestParams = new URLSearchParams(params)
-	tokenRequestParams.append('fl', language)
-	tokenRequestParams.append('hl', language)
+	const searchParams = new URLSearchParams(params)
+	searchParams.append('fl', language)
+	searchParams.append('hl', language)
 
-	return (
-		await axios({
-			method: requestOptions?.method || 'get',
-			url: API_URL + `v${version}/` + path,
-			params: {
-				fl: language,
-				hl: language,
-				...params
-			},
-			cancelToken: source.token,
-			...requestOptions
-		})
-	).data as T
+	const fetchFunction = propsFetch || fetch
+	const req = await fetchFunction(API_URL + `v${version}/` + path + '?' + searchParams.toString(), {
+		method: requestOptions?.method || 'get',
+		...requestOptions
+	})
+
+	return (await req.json()) as T
 }

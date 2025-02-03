@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types'
 import * as api from '$lib/api'
 import { parseArticlesParams, makeArticlesPageUrlFromParams } from '$lib/utils/articles'
 
-export const load: PageServerLoad = ({ params, url }) => {
+export const load: PageServerLoad = ({ params, url, fetch }) => {
 	const articlesParamsResult = parseArticlesParams(params.params.split('/'))
 	const urlFromParams =
 		articlesParamsResult.data &&
@@ -21,7 +21,8 @@ export const load: PageServerLoad = ({ params, url }) => {
 	const articles = api.articles.get({
 		mode: mode === 'new' ? rating : period,
 		page,
-		complexity
+		complexity,
+		fetch
 	})
 
 	return {

@@ -31,6 +31,7 @@ interface GetArticlesProps {
 	hubAlias?: string
 	flow?: FlowAlias
 	perPage?: number
+	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
 }
 
 export default async ({
@@ -52,5 +53,6 @@ export default async ({
 			flow: flow === 'all' ? '' : flow,
 			perPage: perPage.toString(),
 			...(complexity && complexity !== 'all' && { complexity })
-		}
+		},
+		fetch
 	})
