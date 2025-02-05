@@ -8,7 +8,6 @@
 	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement>
 
 	const { class: containerClasses, ...other }: ArticlesSwitcherProps = $props()
-	let open = $state(false)
 </script>
 
 <div

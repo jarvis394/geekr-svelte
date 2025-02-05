@@ -3,7 +3,6 @@
 	import { Pagination } from '$lib/components/pagination'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PageProps } from './$types'
-	import Logo from '$lib/components/logo/logo.svelte'
 	import { goto } from '$app/navigation'
 	import { makeArticlesPageUrlFromParams } from '$lib/utils/articles'
 	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher.svelte'

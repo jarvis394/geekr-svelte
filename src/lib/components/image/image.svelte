@@ -2,7 +2,6 @@
 	import { cn } from '$lib/utils.js'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { HTMLImgAttributes, HTMLAttributes } from 'svelte/elements'
-	import { fade } from 'svelte/transition'
 
 	export type ImageProps = {
 		src: string
