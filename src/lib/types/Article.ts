@@ -61,8 +61,8 @@ export interface Article {
 	}
 	polls: never[]
 	postLabels: ArticleLabel[]
-	postType: 'article' | 'news' | 'post'
-	publicationType: 'article' | 'news' | 'post'
+	postType: 'article' | 'news' | 'post' | 'voice'
+	publicationType: 'article' | 'news' | 'post' | 'voice'
 	readingTime: number
 	statistics: {
 		commentsCount: number

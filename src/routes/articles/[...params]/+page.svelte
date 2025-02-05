@@ -6,6 +6,8 @@
 	import Logo from '$lib/components/logo/logo.svelte'
 	import { goto } from '$app/navigation'
 	import { makeArticlesPageUrlFromParams } from '$lib/utils/articles'
+	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher.svelte'
+	import { AppBar } from '$lib/components/appbar'
 
 	const { data }: PageProps = $props()
 
@@ -14,20 +16,14 @@
 	}
 </script>
 
-<div class="flex h-full w-full flex-col gap-0">
-	<div class="flex flex-row items-center px-4 py-2">
-		<Logo class="h-[26px]" />
-		<div class="grow justify-items-end">
-			<img
-				class="border-foreground/4 h-8 w-8 rounded-md border"
-				src="https://github.com/jarvis394.png"
-				alt="Avatar"
-			/>
-		</div>
-	</div>
+<div class="flex w-full flex-col gap-0">
+	<AppBar />
+	<ArticlesSwitcher />
 	{#await data.articles}
-		<div class="flex h-full w-full items-center justify-center">
-			<LoaderCircle class="animate-spin" />
+		<div class="h-[10000px] w-full">
+			<div class="flex w-full items-center justify-center py-16">
+				<LoaderCircle class="animate-spin" />
+			</div>
 		</div>
 	{:then articles}
 		{#each articles.publicationIds as id}

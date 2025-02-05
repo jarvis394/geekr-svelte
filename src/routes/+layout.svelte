@@ -5,7 +5,7 @@
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
 
 	import '../styles/app.css'
-	import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte'
+	import '../styles/fonts.css'
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)

@@ -2,6 +2,10 @@
 
 @config '../../tailwind.config.ts';
 
+@theme {
+	--breakpoint-xs: 30rem;
+}
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -71,9 +75,77 @@
 	* {
 		@apply border-border;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	.font-heading {
+		font-family: 'Google Sans';
+	}
+
+	.ring-default {
+		transition: box-shadow 150ms ease;
+
+		@apply ring-offset-background;
+		@apply focus-visible:ring-ring;
+		@apply focus-visible:ring-2;
+		@apply focus-visible:ring-offset-2;
+		@apply focus-visible:outline-none;
+	}
+
+	.no-drag {
+		-webkit-user-drag: none;
+		-khtml-user-drag: none;
+		-moz-user-drag: none;
+		-o-user-drag: none;
+	}
+
+	.button {
+		font-family: 'Google Sans';
+
+		@apply active:not-is-touch:scale-[0.98];
+		@apply inline-flex;
+		@apply items-center;
+		@apply justify-center;
+		@apply cursor-pointer;
+		@apply gap-2;
+		@apply rounded-md;
+		@apply text-sm;
+		@apply font-medium;
+		@apply whitespace-nowrap;
+		@apply no-underline;
+		@apply transition-all;
+		@apply ring-offset-background;
+		@apply focus-visible:ring-ring;
+		@apply focus-visible:ring-2;
+		@apply focus-visible:ring-offset-2;
+		@apply focus-visible:outline-none;
+		@apply disabled:pointer-events-none;
+		@apply disabled:opacity-50;
+		@apply [&_svg]:pointer-events-none;
+		@apply [&_svg]:size-4;
+		@apply [&_svg]:shrink-0;
+	}
+
+	.button-default {
+		@apply bg-primary text-primary-foreground not-is-touch:hover:bg-primary/90;
+		@apply is-touch:active:bg-primary/90 is-touch:active:duration-0;
+	}
+
+	.button-secondary {
+		@apply bg-secondary text-secondary-foreground not-is-touch:hover:bg-secondary/80;
+		@apply is-touch:active:bg-secondary/80 is-touch:active:duration-0;
+	}
+
+	.button-ghost {
+		@apply not-is-touch:hover:bg-accent not-is-touch:hover:text-accent-foreground;
+		@apply is-touch:active:bg-accent is-touch:active:duration-0;
+	}
+
+	.tap-highlight {
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.24);
+	}
 }
 
-@custom-variant is-touch (@media (hover: none));
+@custom-variant is-touch (@media (pointer: coarse));
