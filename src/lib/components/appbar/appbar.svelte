@@ -19,7 +19,7 @@
 	<a href="/" class="ring-default tap-hightlight flex h-[32px] items-center rounded-sm">
 		<Logo class="h-[26px]" />
 	</a>
-	<div class="grow justify-items-end">
+	<div class="flex grow justify-end">
 		<Avatar.Root class="border-foreground/4 h-8 w-8 rounded-md border">
 			<Avatar.Image hash={'jarvis394'} alt="User avatar" />
 		</Avatar.Root>
