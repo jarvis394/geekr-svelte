@@ -9,6 +9,9 @@
 	import Image from '../image/image.svelte'
 	import MessageSquare from 'lucide-svelte/icons/message-square'
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
+	import { Badge } from '../ui/badge'
+	import type { BadgeColor } from '../ui/badge/badge.svelte'
+	import PostLabel from '../post-label/post-label.svelte'
 
 	const MAX_PREVIEW_TEXT_LENGTH = 600
 	const { article, ...other }: ArticleItemProps = $props()
@@ -30,24 +33,51 @@
 		])
 	)
 	const leadImage = $derived(article.leadImage || article.leadData.imageUrl)
+	const formattedScore = $derived.by(() => {
+		const score = article.statistics.score
+		return score > 0 ? '+' + score : score.toString()
+	})
+	const scoreBadgeColor = $derived.by<BadgeColor>(() => {
+		const score = article.statistics.score
+		if (score > 0) return 'valid'
+		else if (score < 0) return 'destructive'
+		else return 'white'
+	})
 </script>
 
-<div {...other} class="animate-in fade-in border-border flex flex-col border-b-[1px]">
-	<a href={articleLink} title={titlePlaintext} class="ring-default tap-highlight relative">
-		{#if leadImage}
+<div {...other} class="animate-in fade-in border-border relative flex flex-col border-b-[1px]">
+	<div
+		data-float={!!leadImage}
+		class="z-10 flex flex-wrap gap-2 p-2 pb-0 data-[float='false']:p-3 data-[float='false']:pb-0 data-[float='true']:absolute"
+	>
+		<Badge color={scoreBadgeColor} class="font-semibold">
+			{formattedScore}
+		</Badge>
+		{#each article.postLabels as label}
+			<PostLabel data={label} />
+		{/each}
+	</div>
+	{#if leadImage}
+		<a
+			href={articleLink}
+			title={titlePlaintext}
+			class="ArticleItemImage ring-default tap-highlight relative flex"
+		>
 			<Image
 				containerProps={{
-					class: 'max-h-[212px] [&_img]:max-w-auto rounded-none object-cover'
+					class:
+						'data-[loaded="false"]:min-h-[212px] max-h-[212px] w-full [&_img]:w-full rounded-none object-cover'
 				}}
 				src={leadImage}
 				alt={titlePlaintext}
 			/>
-		{/if}
-	</a>
+		</a>
+	{/if}
 	<div class="flex flex-col">
 		<a
 			href={articleLink}
 			title={titlePlaintext}
+			class:pt-2={!leadImage}
 			class="ring-default tap-highlight flex flex-col gap-1 p-3 pb-0"
 		>
 			<div class="font-heading text-hint flex flex-row gap-1.5 text-[13px]/[17px] font-medium">
@@ -86,3 +116,14 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.ArticleItemImage::after {
+		content: '';
+		position: absolute;
+		width: 100%;
+		top: 0;
+		height: 48px;
+		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.16), transparent);
+	}
+</style>

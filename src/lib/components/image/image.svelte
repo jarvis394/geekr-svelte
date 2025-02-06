@@ -37,6 +37,7 @@
 		'prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full flex-col items-center justify-center overflow-hidden rounded-md align-middle',
 		containerClasses
 	)}
+	data-loaded={loaded}
 >
 	{#if shouldShowPlaceholder}
 		{#if placeholderSrc}
@@ -65,6 +66,7 @@
 		{src}
 		{alt}
 		onload={handleLoad}
+		data-loaded={loaded}
 		class={cn('fade-in animate-in no-drag z-0', imageClasses)}
 		class:absolute={placeholderSrc && shouldShowPlaceholder}
 		loading="lazy"

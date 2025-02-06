@@ -42,6 +42,7 @@ export interface HubArticleLabels {
 	alias: string
 	id: string
 	type: string
+	titleHtml: string
 }
 
 export interface HubAuthor {

@@ -17,7 +17,7 @@
 	)}
 >
 	<a href="/" class="ring-default tap-hightlight flex h-[32px] items-center rounded-sm">
-		<Logo class="h-[26px]" />
+		<Logo withTitle class="h-[26px]" />
 	</a>
 	<div class="flex grow justify-end">
 		<Avatar.Root class="border-foreground/4 h-8 w-8 rounded-md border">

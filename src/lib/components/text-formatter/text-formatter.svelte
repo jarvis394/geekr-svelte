@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { type Element, Html, isTag, type ProcessNode, type Text } from 'html-svelte-parser'
 	import { Image } from '../image'
+	import { Link } from '../link'
 
 	type TextFormatterProps = { html: string }
 	const { html }: TextFormatterProps = $props()
@@ -8,9 +9,11 @@
 	const processNode = (node: Element | Text) => {
 		if (!isTag(node)) return
 
-		if (node.attribs.xmlns === 'http://www.w3.org/1999/xhtml') {
-			node.attribs.class = 'TextFormatter'
-			return
+		if (node.name === 'a') {
+			return {
+				component: Link,
+				props: node.attribs
+			}
 		}
 
 		if (node.name === 'img') {
@@ -32,4 +35,6 @@
 	}
 </script>
 
-<Html {html} processNode={processNode as ProcessNode} />
+<div class="TextFormatter article">
+	<Html {html} processNode={processNode as ProcessNode} />
+</div>

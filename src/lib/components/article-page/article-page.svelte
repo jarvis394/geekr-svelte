@@ -15,9 +15,7 @@
 		</Button>
 		<Button href={location.pathname + '/comments'} size="sm">Comments</Button>
 	</div>
-	<div
-		class="prose prose-zinc dark:prose-invert prose-pre:border-[1px] animate-in fade-in break-words"
-	>
+	<div class="article">
 		<h1>{@html article.titleHtml}</h1>
 		<TextFormatter html={article.textHtml} />
 	</div>

@@ -19,8 +19,8 @@
 	<AppBar />
 	<ArticlesSwitcher />
 	{#await data.articles}
-		<div class="h-[10000px] w-full">
-			<div class="flex w-full items-center justify-center py-16">
+		<div class="relative h-[10000px] w-full">
+			<div class="sticky top-12 flex w-full items-center justify-center py-16">
 				<LoaderCircle class="animate-spin" />
 			</div>
 		</div>
