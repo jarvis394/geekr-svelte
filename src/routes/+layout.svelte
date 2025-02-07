@@ -35,6 +35,6 @@
 	let { children } = $props()
 </script>
 
-<main class="ring-border mx-auto flex min-h-full w-full max-w-xl flex-col gap-2 ring">
+<main class="ring-border mx-auto flex min-h-full w-full max-w-xl flex-col ring">
 	{@render children()}
 </main>

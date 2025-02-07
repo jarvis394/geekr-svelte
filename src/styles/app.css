@@ -37,6 +37,7 @@
 		--sidebar-accent-foreground: 240 5.9% 10%;
 		--sidebar-border: 220 13% 91%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
+		--formula-filter: none;
 	}
 
 	.dark {
@@ -68,6 +69,7 @@
 		--sidebar-accent-foreground: 240 4.8% 95.9%;
 		--sidebar-border: 240 3.7% 15.9%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
+		--formula-filter: invert(1);
 	}
 }
 
@@ -144,11 +146,83 @@
 	}
 
 	.article {
-		@apply prose prose-zinc dark:prose-invert prose-pre:border-[1px] animate-in fade-in break-words;
+		& img {
+			@apply h-auto max-w-full rounded-sm align-middle;
+		}
+
+		& div.table,
+		& div.scrollable-table {
+			@apply my-4 overflow-auto break-normal;
+		}
+
+		& table {
+			@apply w-full border-collapse;
+		}
+
+		& table td,
+		& table th {
+			@apply border-hint min-w-[100px] border px-3 pt-1.5 pb-2 align-top;
+		}
+
+		& h1,
+		& h2 {
+			@apply text-xl font-medium;
+		}
+
+		& h3 {
+			@apply text-lg font-medium;
+		}
+
+		& h4,
+		& h5,
+		& h6 {
+			@apply text-base font-medium;
+		}
+
+		& figure {
+			@apply m-0 mt-8 text-center;
+		}
+
+		& figure.bordered {
+			@apply border-hint border;
+		}
+
+		& figure.float {
+			@apply float-left mr-8 max-w-[50%];
+		}
+
+		& figure figcaption {
+			@apply text-muted-foreground mt-2 text-center text-sm;
+		}
+
+		& .Image:has(img.formula) {
+			filter: var(--formula-filter);
+			@apply my-8 w-full;
+		}
+
+		& .Image:has(img.formula.inline) {
+			vertical-align: -0.719ex;
+			@apply mx-1 my-0 inline-flex w-fit;
+		}
+
+		& iframe {
+			@apply w-full border-none;
+		}
+
+		@apply animate-in fade-in break-words;
+		@apply prose prose-zinc dark:prose-invert prose-pre:border-1;
 	}
 
 	.tap-highlight {
-		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.24);
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+	}
+
+	.link {
+		@apply decoration-accent-foreground/24 decoration-2 underline-offset-2 hover:decoration-transparent hover:underline-offset-3 active:decoration-transparent active:underline-offset-3;
+		@apply text-accent-foreground relative rounded-xs box-decoration-clone ring-2 ring-transparent transition-all active:transition-none;
+		@apply not-is-touch:hover:bg-accent-foreground/16 not-is-touch:hover:ring-4 not-is-touch:hover:ring-accent-foreground/16;
+		@apply not-is-touch:active:bg-accent-foreground/24 not-is-touch:active:ring-4 not-is-touch:active:ring-accent-foreground/24;
+		@apply is-touch:active:bg-accent-foreground/16 is-touch:active:ring-4 is-touch:active:ring-accent-foreground/16;
 	}
 }
 

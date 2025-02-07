@@ -12,7 +12,7 @@
 		if (node.name === 'a') {
 			return {
 				component: Link,
-				props: node.attribs
+				props: { ...node.attribs, target: '_blank' }
 			}
 		}
 
@@ -20,11 +20,11 @@
 			const src = node.attribs['data-src']
 			const placeholderSrc = node.attribs.src
 			const hasPlaceholder = !!placeholderSrc && placeholderSrc !== src
+
 			return {
 				component: Image,
 				props: {
-					width: node.attribs.width,
-					height: node.attribs.height,
+					...node.attribs,
 					src: src || placeholderSrc,
 					placeholderSrc: hasPlaceholder ? placeholderSrc : undefined
 				}

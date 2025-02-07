@@ -9,9 +9,7 @@
 	import Image from '../image/image.svelte'
 	import MessageSquare from 'lucide-svelte/icons/message-square'
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
-	import { Badge } from '../ui/badge'
-	import type { BadgeColor } from '../ui/badge/badge.svelte'
-	import PostLabel from '../post-label/post-label.svelte'
+	import ArticleLabels from '../article-labels/article-labels.svelte'
 
 	const MAX_PREVIEW_TEXT_LENGTH = 600
 	const { article, ...other }: ArticleItemProps = $props()
@@ -33,30 +31,14 @@
 		])
 	)
 	const leadImage = $derived(article.leadImage || article.leadData.imageUrl)
-	const formattedScore = $derived.by(() => {
-		const score = article.statistics.score
-		return score > 0 ? '+' + score : score.toString()
-	})
-	const scoreBadgeColor = $derived.by<BadgeColor>(() => {
-		const score = article.statistics.score
-		if (score > 0) return 'valid'
-		else if (score < 0) return 'destructive'
-		else return 'white'
-	})
 </script>
 
 <div {...other} class="animate-in fade-in border-border relative flex flex-col border-b-[1px]">
-	<div
+	<ArticleLabels
+		{article}
 		data-float={!!leadImage}
-		class="z-10 flex flex-wrap gap-2 p-2 pb-0 data-[float='false']:p-3 data-[float='false']:pb-0 data-[float='true']:absolute"
-	>
-		<Badge color={scoreBadgeColor} class="font-semibold">
-			{formattedScore}
-		</Badge>
-		{#each article.postLabels as label}
-			<PostLabel data={label} />
-		{/each}
-	</div>
+		class="z-10 p-2 pb-0 data-[float='false']:p-3 data-[float='false']:pb-0 data-[float='true']:absolute"
+	/>
 	{#if leadImage}
 		<a
 			href={articleLink}

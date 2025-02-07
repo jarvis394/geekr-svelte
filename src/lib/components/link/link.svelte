@@ -7,6 +7,6 @@
 	const { class: containerClasses, children, ...other }: LinkProps = $props()
 </script>
 
-<a {...other} class={cn('text-primary', containerClasses)}>
+<a {...other} class={cn('link', containerClasses)}>
 	{@render children?.()}
 </a>

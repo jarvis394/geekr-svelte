@@ -11,6 +11,11 @@
 			},
 			color: {
 				white: 'bg-primary text-primary-foreground',
+				lightgray: 'text-primary-foreground/85 bg-[#E9E9E9]',
+				sky: 'bg-sky-700 text-sky-50',
+				zinc: 'bg-zinc-800 text-zinc-50',
+				indigo: 'bg-indigo-500 text-indigo-50',
+				orange: 'bg-orange-500 text-orange-50',
 				destructive: 'bg-destructive text-destructive-foreground',
 				valid: 'text-background/80 bg-[#64EA58]',
 				purple: 'text-background/80 bg-[#64EA58]'

@@ -3,6 +3,7 @@
 	import { Button } from '$lib/components/ui/button'
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left'
 	import TextFormatter from '../text-formatter/text-formatter.svelte'
+	import { ArticleLabels } from '../article-labels'
 
 	type ArticlePageProps = { article: Article }
 	const { article }: ArticlePageProps = $props()
@@ -15,8 +16,11 @@
 		</Button>
 		<Button href={location.pathname + '/comments'} size="sm">Comments</Button>
 	</div>
-	<div class="article">
-		<h1>{@html article.titleHtml}</h1>
+	<div class="flex flex-col">
+		<div class="flex flex-col gap-3">
+			<h1 class="font-heading text-2xl font-bold">{@html article.titleHtml}</h1>
+			<ArticleLabels {article} />
+		</div>
 		<TextFormatter html={article.textHtml} />
 	</div>
 </div>

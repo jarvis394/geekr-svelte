@@ -6,7 +6,7 @@
 	const { data }: PageProps = $props()
 </script>
 
-<div class="flex h-full w-full flex-col gap-4">
+<div class="flex h-full w-full flex-col">
 	{#await data.article}
 		<div class="flex h-full w-full items-center justify-center">
 			<LoaderCircle class="animate-spin" />

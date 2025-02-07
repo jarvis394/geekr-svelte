@@ -1,10 +1,6 @@
 {
-	"tailwindCSS.experimental.classRegex": [
-		[
-			"ctl\\(`([^`]*)",
-		]
-	],
+	"tailwindCSS.experimental.classRegex": [["ctl\\(`([^`]*)"]],
 	"files.associations": {
-		"*.css": "tailwindcss",
+		"*.css": "tailwindcss"
 	}
 }

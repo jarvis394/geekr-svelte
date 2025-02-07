@@ -34,7 +34,7 @@
 <div
 	{...otherContainerProps}
 	class={cn(
-		'prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full flex-col items-center justify-center overflow-hidden rounded-md align-middle',
+		'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full flex-col items-center justify-center overflow-hidden rounded-md align-middle',
 		containerClasses
 	)}
 	data-loaded={loaded}
