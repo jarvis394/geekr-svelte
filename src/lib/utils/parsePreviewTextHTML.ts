@@ -9,6 +9,7 @@ const parsePreviewTextHtml = (html: string) => {
 		.replaceAll('&lt;', '<')
 		.replaceAll(onlyClosingTagsRegexp, ' ')
 		.replaceAll(onlyTagsRegexp, '')
+		.trim()
 
 	return res
 }
