@@ -103,8 +103,8 @@ class Transitions {
     if (config.direction == 'leaving') {
       // this.animatePage(config.target.leave, 'old', true)
       // this.animatePage(config.source.enter, 'new')
-      this.animatePage({ name: 'slide-out-to-left', leaving: true }, 'old', true)
-      this.animatePage({ name: 'slide-in-from-left', leaving: true }, 'new')
+      this.animatePage({ name: 'slide-out-to-left', leaving: true }, 'old')
+      this.animatePage({ name: 'slide-in-from-left', leaving: true }, 'new', true)
     }
   }
 
