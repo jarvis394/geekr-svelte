@@ -4,10 +4,51 @@
 	import Settings from 'lucide-svelte/icons/settings'
 	import * as Drawer from '$lib/components/ui/drawer'
 	import { cn } from '$lib/utils'
+	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
+	import { goto } from '$app/navigation'
 
-	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement>
+	type ModeItem = Partial<GetArticlesParamsData & { label: string }>
+	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement> & {
+		articleParams: GetArticlesParamsData
+	}
 
-	const { class: containerClasses, ...other }: ArticlesSwitcherProps = $props()
+	const { class: containerClasses, articleParams, ...other }: ArticlesSwitcherProps = $props()
+	const modes: ModeItem[] = [
+		{
+			label: 'Топ дня',
+			mode: 'top',
+			period: 'daily'
+		},
+		{
+			label: 'Топ недели',
+			mode: 'top',
+			period: 'weekly'
+		},
+		{
+			label: 'Новые',
+			mode: 'new'
+		}
+	]
+
+	const isSelected = (mode: ModeItem) => {
+		for (const key in mode) {
+			const typedKey = key as keyof ModeItem
+			if (typedKey === 'label') continue
+
+			const value = mode[typedKey]
+			const propsValue = articleParams[typedKey]
+
+			if (value !== propsValue) {
+				return false
+			}
+		}
+		return true
+	}
+
+	const handleClick = (mode: ModeItem) => {
+		if (isSelected(mode)) return
+		goto('/articles' + makeArticlesPageUrlFromParams(mode))
+	}
 </script>
 
 <Drawer.Root>
@@ -15,9 +56,13 @@
 		{...other}
 		class={cn('flex flex-row items-center gap-1 overflow-x-auto p-2 pt-1', containerClasses)}
 	>
-		<Button variant="default" class="rounded-xl text-base font-medium">Топ дня</Button>
-		<Button variant="secondary" class="rounded-xl text-base font-medium">Топ недели</Button>
-		<Button variant="secondary" class="rounded-xl text-base font-medium">Новые</Button>
+		{#each modes as mode}
+			<Button
+				variant={isSelected(mode) ? 'default' : 'secondary'}
+				onclick={handleClick.bind(null, mode)}
+				class="rounded-xl text-base font-medium">{mode.label}</Button
+			>
+		{/each}
 		<Drawer.Trigger
 			class={buttonVariants({
 				variant: 'secondary',

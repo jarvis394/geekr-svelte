@@ -17,7 +17,7 @@
 
 <div class="flex w-full flex-col gap-0">
 	<AppBar />
-	<ArticlesSwitcher />
+	<ArticlesSwitcher articleParams={data.articleParams} />
 	{#await data.articles}
 		<div class="relative h-[10000px] w-full">
 			<div class="sticky top-12 flex w-full items-center justify-center py-16">

@@ -213,8 +213,12 @@
 		@apply prose prose-zinc dark:prose-invert prose-pre:border-1;
 	}
 
-	.tap-highlight {
+	.dark .tap-highlight {
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+	}
+
+	.tap-highlight {
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.07);
 	}
 
 	.link {
@@ -223,6 +227,14 @@
 		@apply not-is-touch:hover:bg-accent-foreground/16 not-is-touch:hover:ring-4 not-is-touch:hover:ring-accent-foreground/16;
 		@apply not-is-touch:active:bg-accent-foreground/24 not-is-touch:active:ring-4 not-is-touch:active:ring-accent-foreground/24;
 		@apply is-touch:active:bg-accent-foreground/16 is-touch:active:ring-4 is-touch:active:ring-accent-foreground/16;
+	}
+
+	/* Disable the default view transition animation. */
+	:root::view-transition-new(root) {
+		animation: none;
+	}
+	:root::view-transition-old(root) {
+		animation: none;
 	}
 }
 

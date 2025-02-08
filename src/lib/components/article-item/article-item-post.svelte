@@ -10,6 +10,7 @@
 	import MessageSquare from 'lucide-svelte/icons/message-square'
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
 	import ArticleLabels from '../article-labels/article-labels.svelte'
+	import { cn } from '$lib/utils'
 
 	const MAX_PREVIEW_TEXT_LENGTH = 600
 	const { article, ...other }: ArticleItemProps = $props()
@@ -43,12 +44,11 @@
 		<a
 			href={articleLink}
 			title={titlePlaintext}
-			class="ArticleItemImage ring-default tap-highlight relative flex"
+			class="ArticleItem__image ring-default tap-highlight relative flex"
 		>
 			<Image
 				containerProps={{
-					class:
-						'data-[loaded="false"]:min-h-[212px] max-h-[212px] w-full [&_img]:w-full rounded-none object-cover'
+					class: 'h-[212px] w-full [&_img]:w-full rounded-none object-cover'
 				}}
 				src={leadImage}
 				alt={titlePlaintext}
@@ -65,7 +65,9 @@
 			<div class="font-heading text-hint flex flex-row gap-1.5 text-[13px]/[17px] font-medium">
 				{timestampText}<span>•</span>{viewsText}
 			</div>
-			<h2 class="font-heading text-primary text-xl font-bold">{titlePlaintext}</h2>
+			<h2 class="font-heading text-primary text-xl font-bold">
+				{titlePlaintext}
+			</h2>
 			<p class="text-muted-foreground line-clamp-7 text-[15px]/5">{parsedPreviewText}</p>
 		</a>
 		<div class="flex items-center justify-between p-1.5 pt-1.5 pb-2">
@@ -100,7 +102,7 @@
 </div>
 
 <style>
-	.ArticleItemImage::after {
+	.ArticleItem__image::after {
 		content: '';
 		position: absolute;
 		width: 100%;

@@ -3,6 +3,8 @@
 	import calendarPlugin from 'dayjs/plugin/calendar'
 	import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
+	import transitions from '$lib/transitions'
+
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
 
@@ -31,6 +33,8 @@
 	})
 
 	dayjs.locale('ru')
+
+	transitions.onNavigateViewTransition()
 
 	let { children } = $props()
 </script>

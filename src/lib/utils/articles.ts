@@ -82,21 +82,23 @@ export const parseArticlesParams = (params: string[]): GetArticlesParamsResult =
 	return { success: true, data }
 }
 
-export const makeArticlesPageUrlFromParams = (articlesParams: GetArticlesParamsData): string => {
+export const makeArticlesPageUrlFromParams = (
+	articlesParams: Partial<GetArticlesParamsData>
+): string => {
 	const urlParts: string[] = []
 
 	if (articlesParams.mode === 'top') {
 		urlParts.push('top')
 		urlParts.push(articlesParams.period || 'daily')
-	} else if (articlesParams.rating !== 'all') {
+	} else if (articlesParams.rating !== 'all' && articlesParams.rating) {
 		urlParts.push(articlesParams.rating)
 	}
 
-	if (articlesParams.complexity !== 'all') {
+	if (articlesParams.complexity !== 'all' && articlesParams.complexity) {
 		urlParts.push(articlesParams.complexity)
 	}
 
-	if (articlesParams.page > 1) {
+	if (articlesParams.page !== undefined && articlesParams.page > 1) {
 		urlParts.push('p/' + articlesParams.page)
 	}
 
