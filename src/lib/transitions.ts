@@ -1,7 +1,7 @@
 import { onNavigate } from '$app/navigation'
 import type { OnNavigate } from '@sveltejs/kit'
 
-const SLIDE_OFFSET = 24
+const SLIDE_OFFSET = 32
 
 class Transitions {
   pageConfig = [
@@ -97,8 +97,8 @@ class Transitions {
     if (config.direction == 'entering') {
       // this.animatePage(config.source.leave, 'old')
       // this.animatePage(config.target.enter, 'new', true)
-      this.animatePage({ name: 'slide-out-to-right' }, 'old')
-      this.animatePage({ name: 'slide-in-from-right' }, 'new', true)
+      this.animatePage({ name: 'slide-out-to-right' }, 'old', true)
+      this.animatePage({ name: 'slide-in-from-right' }, 'new')
     }
     if (config.direction == 'leaving') {
       // this.animatePage(config.target.leave, 'old', true)
@@ -151,6 +151,9 @@ class Transitions {
       keyframes[0].zIndex = '1000'
       keyframes[1].zIndex = '1000'
     }
+
+    keyframes[0].background = 'transparent'
+    keyframes[1].background = 'transparent'
 
     document.documentElement.animate(keyframes, options)
   }
