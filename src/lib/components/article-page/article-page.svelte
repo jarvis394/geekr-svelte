@@ -13,7 +13,7 @@
 	const timestampText = $derived(dayjs(article.timePublished).calendar().toLowerCase())
 </script>
 
-<div {...other} class={cn('flex flex-col gap-4 p-4', containerClasses)}>
+<div {...other} class={cn('animate-in fade-in flex flex-col gap-4 p-4', containerClasses)}>
 	<div class="flex flex-col">
 		<div class="flex flex-col gap-3">
 			<div class="flex flex-row gap-2">

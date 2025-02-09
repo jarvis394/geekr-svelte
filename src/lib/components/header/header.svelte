@@ -40,7 +40,7 @@
 	>
 		<ArrowLeft />
 	</Button>
-	<p class="mr-4 w-full overflow-hidden text-nowrap text-ellipsis">{@render children?.()}</p>
+	<p class="animate-in fade-in mr-4 w-full overflow-hidden text-nowrap text-ellipsis">{@render children?.()}</p>
 </header>
 
 <style>

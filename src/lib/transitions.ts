@@ -108,8 +108,6 @@ class Transitions {
 		const options: KeyframeAnimationOptions = {
 			easing: 'cubic-bezier(0.2, 0, 0, 1)',
 			duration: 300,
-			fill: 'none',
-			composite: 'replace',
 			pseudoElement: `::view-transition-${el}(root)`
 		}
 

@@ -210,8 +210,7 @@
 			@apply w-full border-none;
 		}
 
-		@apply animate-in fade-in break-words;
-		@apply prose prose-zinc dark:prose-invert prose-pre:border-1;
+		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 break-words;
 	}
 
 	.dark .tap-highlight {
@@ -240,22 +239,28 @@
 
 	body::after,
 	body::before {
-		border-right: 1px solid hsl(var(--border) / 1);
 		content: '';
-		z-index: 100000;
-		transform: translateX(-50%);
+		z-index: 10;
 		top: 0;
 		height: 100%;
 		position: fixed;
 		pointer-events: none;
+		width: 100%;
+		background: #09090b;
 	}
 
 	body::before {
 		left: calc(50% - var(--container-xl) / 2);
+		transform: translateX(-100%);
+		border-right: 1px solid hsl(var(--border) / 1);
+		view-transition-name: border-left;
 	}
 
 	body::after {
-		right: calc(50% - var(--container-xl) / 2 - 1px);
+		right: calc(50% - var(--container-xl) / 2);
+		transform: translateX(100%);
+		border-left: 1px solid hsl(var(--border) / 1);
+		view-transition-name: border-right;
 	}
 }
 
