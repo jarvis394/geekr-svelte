@@ -2,7 +2,9 @@
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn } from '$lib/utils'
 
-	export type LinkProps = HTMLAttributes<HTMLAnchorElement>
+	export type LinkProps = HTMLAttributes<HTMLAnchorElement> & {
+		href?: string
+	}
 
 	const { class: containerClasses, children, ...other }: LinkProps = $props()
 </script>

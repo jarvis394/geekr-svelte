@@ -10,6 +10,7 @@
 
 	import '../styles/app.css'
 	import '../styles/fonts.css'
+	import { scrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)
@@ -36,31 +37,11 @@
 
 	transitions.onNavigateViewTransition()
 
+	scrollTrigger()
+
 	let { children } = $props()
 </script>
 
 <main class="w-ful main relative mx-auto flex min-h-full w-full max-w-xl flex-col">
 	{@render children()}
 </main>
-
-<style>
-	.main::after,
-	.main::before {
-		border-right: 1px solid hsl(var(--border) / 1);
-		content: '';
-		z-index: 100000;
-		transform: translateX(-50%);
-		top: 0;
-		height: 100%;
-		position: fixed;
-		pointer-events: none;
-	}
-
-	.main::before {
-		left: calc(50% - var(--container-xl) / 2);
-	}
-
-	.main::after {
-		right: calc(50% - var(--container-xl) / 2 - 1px);
-	}
-</style>

@@ -4,12 +4,12 @@
 	import Logo from '../logo/logo.svelte'
 	import * as Avatar from '$lib/components/ui/avatar'
 
-	export type AppBarProps = HTMLAttributes<HTMLDivElement>
+	export type AppBarProps = HTMLAttributes<HTMLElement>
 
 	const { class: containerClasses, ...other }: AppBarProps = $props()
 </script>
 
-<div
+<header
 	{...other}
 	class={cn(
 		'bg-background sticky top-0 z-50 flex w-full max-w-xl flex-row items-center px-4 py-2',
@@ -24,4 +24,10 @@
 			<Avatar.Image hash={'jarvis394'} alt="User avatar" />
 		</Avatar.Root>
 	</div>
-</div>
+</header>
+
+<style>
+	header {
+		view-transition-name: header;
+	}
+</style>
