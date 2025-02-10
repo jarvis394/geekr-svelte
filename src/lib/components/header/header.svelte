@@ -5,6 +5,7 @@
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left'
 	import { Button } from '../ui/button'
 	import { goto } from '$app/navigation'
+	import { onMount } from 'svelte'
 
 	export type HeaderProps = {
 		scrollThreshold?: number
@@ -14,7 +15,17 @@
 		withPositionBar?: boolean
 	} & HTMLAttributes<HTMLElement>
 
-	const { class: containerClasses, children, ...other }: HeaderProps = $props()
+	const hiddenClasses = 'opacity-0 pointer-events-none'
+	const {
+		class: containerClasses,
+		scrollElement,
+		withPositionBar,
+		withShrinking,
+		children,
+		style,
+		...other
+	}: HeaderProps = $props()
+	const isShrunk = $derived(scrollTriggerState.trigger && withShrinking)
 
 	const handleBack = () => {
 		if (history.length > 1) {
@@ -23,28 +34,93 @@
 			goto('/articles')
 		}
 	}
+
+	const getScrollProgress = () => {
+		const docElement = typeof document !== 'undefined' ? document.documentElement : null
+		const element = scrollElement || docElement
+		const progress =
+			element && element.scrollTop / (element.scrollHeight - element.clientHeight - 200)
+		return element ? Math.min(progress || 0, 1) : 0
+	}
+
+	let scrollProgress = $state(getScrollProgress())
+
+	const scrollCallback = () =>
+		requestAnimationFrame(() => {
+			scrollProgress = getScrollProgress()
+		})
+
+	onMount(() => {
+		if (withPositionBar) {
+			// passive: true enhances scrolling experience
+			window.addEventListener('scroll', scrollCallback, { passive: true })
+			return () => window.removeEventListener('scroll', scrollCallback)
+		}
+	})
 </script>
 
 <header
 	{...other}
 	class={cn(
-		'bg-background text-primary font-heading sticky top-0 z-50 flex w-full max-w-xl flex-row items-center gap-1 overflow-hidden px-2 text-xl font-medium',
-		containerClasses
+		'Header bg-background text-primary font-heading sticky top-0 z-50 flex h-12 w-full max-w-xl flex-row items-center gap-1 overflow-hidden px-2 select-none',
+		containerClasses,
+		{ 'bg-sidebar h-8': isShrunk, 'Header--withPositionBar': withPositionBar }
 	)}
+	style={[style, `--progress: ${scrollProgress * 100}%`].join(';')}
 >
 	<Button
 		onclick={handleBack}
 		size="icon"
-		class="size-12 rounded-full [&_svg]:size-6"
+		class={['size-12 rounded-full [&_svg]:size-6', isShrunk && hiddenClasses]}
 		variant="ghost"
 	>
 		<ArrowLeft />
 	</Button>
-	<p class="animate-in fade-in mr-4 w-full overflow-hidden text-nowrap text-ellipsis">{@render children?.()}</p>
+	<p
+		class={[
+			'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
+			isShrunk && hiddenClasses
+		]}
+	>
+		{@render children?.()}
+	</p>
+	<p
+		class={[
+			'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
+			!isShrunk && hiddenClasses
+		]}
+	>
+		{@render children?.()}
+	</p>
 </header>
 
 <style>
-	header {
+	.Header {
 		view-transition-name: header;
+	}
+
+	.Header.Header--withPositionBar::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: var(--progress);
+		z-index: -1;
+		opacity: 0.12;
+		background-color: currentColor;
+	}
+
+	.Header {
+		will-change: transform;
+		transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.Header > p {
+		transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.Header__shrinkedTitle {
+		max-width: calc(100% - var(--spacing) * 8);
 	}
 </style>

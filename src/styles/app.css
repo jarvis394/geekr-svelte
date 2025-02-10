@@ -107,7 +107,7 @@
 		font-family: 'Google Sans';
 
 		@apply select-none;
-		@apply active:not-is-touch:scale-[0.98];
+		@apply active:not-is-touch:scale-[0.97];
 		@apply inline-flex;
 		@apply items-center;
 		@apply justify-center;
@@ -142,8 +142,8 @@
 	}
 
 	.button-ghost {
-		@apply not-is-touch:hover:bg-accent not-is-touch:hover:text-accent-foreground;
-		@apply is-touch:active:bg-accent is-touch:active:duration-0;
+		@apply not-is-touch:hover:bg-accent-foreground/12 not-is-touch:hover:text-accent-foreground;
+		@apply is-touch:active:bg-accent-foreground/12 is-touch:active:duration-0;
 	}
 
 	.article {
@@ -213,12 +213,12 @@
 		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 break-words;
 	}
 
-	.dark .tap-highlight {
-		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+	.tap-highlight {
+		@apply transition-all;
 	}
 
-	.tap-highlight {
-		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.07);
+	.tap-highlight:active {
+		@apply opacity-85 duration-0;
 	}
 
 	.link {

@@ -1,13 +1,5 @@
 <script lang="ts">
-	import {
-		type Element,
-		Html,
-		isTag,
-		type ProcessNode,
-		type Text,
-		Renderer,
-		parse
-	} from 'html-svelte-parser'
+	import { type Element, Html, isTag, type ProcessNode, type Text } from 'html-svelte-parser'
 	import { Image } from '../image'
 	import { Link } from '../link'
 
@@ -16,13 +8,6 @@
 
 	const processNode = (node: Element | Text) => {
 		if (!isTag(node)) return
-
-		// if (node.attribs.xmlns) {
-		// 	return {
-		// 		component: Renderer,
-		// 		props: { nodes: node.children }
-		// 	}
-		// }
 
 		if (node.name === 'a') {
 			return {

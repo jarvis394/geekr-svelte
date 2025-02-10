@@ -30,7 +30,7 @@
 			</div>
 			<h1 class="font-heading text-2xl font-bold">{@html article.titleHtml}</h1>
 			<ArticleLabels {article} />
-			<div class="flex flex-wrap gap-1">
+			<div class="flex flex-wrap gap-1.5">
 				{#each article.hubs as hub}
 					<span class="Article__hub text-muted-foreground text-sm">
 						<Link class="text-muted-foreground text-sm" href={'/hubs/' + hub.alias}>

@@ -13,7 +13,7 @@
 	import { cn } from '$lib/utils'
 
 	const MAX_PREVIEW_TEXT_LENGTH = 600
-	const { article, ...other }: ArticleItemProps = $props()
+	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 
 	const titlePlaintext = $derived(parsePreviewTextHtml(article.titleHtml))
 	const parsedPreviewText = $derived(
@@ -34,7 +34,13 @@
 	const leadImage = $derived(article.leadImage || article.leadData.imageUrl)
 </script>
 
-<div {...other} class="animate-in fade-in border-border relative flex flex-col border-b-[1px]">
+<div
+	{...other}
+	class={cn(
+		'animate-in fade-in border-border relative flex flex-col border-b-[1px]',
+		containerClasses
+	)}
+>
 	<ArticleLabels
 		{article}
 		data-float={!!leadImage}
@@ -47,6 +53,7 @@
 			class="ArticleItem__image ring-default tap-highlight relative flex"
 		>
 			<Image
+				disableZoom
 				containerProps={{
 					class: 'h-[212px] w-full [&_img]:w-full rounded-none object-cover'
 				}}

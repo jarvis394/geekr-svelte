@@ -4,13 +4,14 @@
 	import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
 	import transitions from '$lib/transitions'
+	import { scrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
 
 	import '../styles/app.css'
 	import '../styles/fonts.css'
-	import { scrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
+	import 'photoswipe/style.css'
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)
