@@ -12,8 +12,7 @@
 	import '../styles/app.css'
 	import '../styles/fonts.css'
 	import 'photoswipe/style.css'
-
-	import '@material/web/ripple/ripple.js'
+	import { onMount } from 'svelte'
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)
@@ -43,6 +42,10 @@
 	scrollTrigger()
 
 	let { children } = $props()
+
+	onMount(async () => {
+		await import('@material/web/ripple/ripple.js')
+	})
 </script>
 
 <main class="w-ful main relative mx-auto flex min-h-full w-full max-w-xl flex-col">

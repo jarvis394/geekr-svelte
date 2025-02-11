@@ -40,6 +40,7 @@
 
 <script lang="ts">
 	import { cn } from '$lib/utils'
+	import { onMount } from 'svelte'
 
 	let {
 		class: className,
