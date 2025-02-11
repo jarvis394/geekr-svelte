@@ -38,6 +38,8 @@
 		--sidebar-border: 220 13% 91%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
 		--formula-filter: none;
+		--md-ripple-pressed-opacity: 0.12;
+		--md-ripple-pressed-color: rgb(0, 0, 0);
 	}
 
 	.dark {
@@ -70,10 +72,16 @@
 		--sidebar-border: 240 3.7% 15.9%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
 		--formula-filter: invert(1);
+		--md-ripple-pressed-opacity: 0.12;
+		--md-ripple-pressed-color: rgb(255, 255, 255);
 	}
 }
 
 @layer base {
+	:root {
+		--md-ripple-hover-opacity: 0;
+	}
+
 	* {
 		@apply border-border;
 	}
@@ -106,6 +114,7 @@
 	.button {
 		font-family: 'Google Sans';
 
+		@apply relative;
 		@apply select-none;
 		@apply active:not-is-touch:scale-[0.97];
 		@apply inline-flex;
@@ -132,6 +141,7 @@
 	}
 
 	.button-default {
+		--md-ripple-pressed-color: rgb(0, 0, 0);
 		@apply bg-primary text-primary-foreground not-is-touch:hover:bg-primary/90;
 		@apply is-touch:active:bg-primary/90 is-touch:active:duration-0;
 	}

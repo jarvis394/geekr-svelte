@@ -47,6 +47,7 @@
 		"vite": "^6.1.0"
 	},
 	"dependencies": {
+		"@material/web": "^2.2.0",
 		"@netlify/classnames-template-literals": "^1.0.3",
 		"dayjs": "^1.11.13",
 		"html-svelte-parser": "^1.0.0",

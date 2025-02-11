@@ -51,7 +51,7 @@
 		<a
 			href={articleLink}
 			title={titlePlaintext}
-			class="ArticleItem__image ring-default tap-highlight relative flex"
+			class="ArticleItem__image ring-default relative flex"
 		>
 			<Image
 				disableZoom
@@ -61,6 +61,7 @@
 				src={leadImage}
 				alt={titlePlaintext}
 			/>
+			<md-ripple></md-ripple>
 		</a>
 	{/if}
 	<div class="flex flex-col">
@@ -68,7 +69,7 @@
 			href={articleLink}
 			title={titlePlaintext}
 			class:pt-2={!leadImage}
-			class="ring-default tap-highlight flex flex-col gap-1 p-3 pb-0"
+			class="ring-default flex flex-col gap-1 p-3 pb-0"
 		>
 			<div
 				class="font-heading text-muted-foreground dark:text-hint flex flex-row gap-1.5 text-sm font-medium"
@@ -79,6 +80,7 @@
 				{titlePlaintext}
 			</h2>
 			<p class="text-muted-foreground line-clamp-7 text-[15px]/5">{parsedPreviewText}</p>
+			<md-ripple></md-ripple>
 		</a>
 		<div class="flex items-center justify-between p-1.5 pt-1.5 pb-2">
 			<Button variant="ghost" size="sm" class="pl-1.5">

@@ -56,6 +56,7 @@
 {#if href}
 	<a bind:this={ref} class={cn(buttonVariants({ variant, size }), className)} {href} {...restProps}>
 		{@render children?.()}
+		<md-ripple></md-ripple>
 	</a>
 {:else}
 	<button
@@ -65,5 +66,6 @@
 		{...restProps}
 	>
 		{@render children?.()}
+		<md-ripple></md-ripple>
 	</button>
 {/if}

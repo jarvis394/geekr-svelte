@@ -13,6 +13,8 @@
 	import '../styles/fonts.css'
 	import 'photoswipe/style.css'
 
+	import '@material/web/ripple/ripple.js'
+
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)
 	dayjs.extend(updateLocalePlugin)
