@@ -4,6 +4,7 @@
 	import { Link } from '../link'
 	import { cn } from '$lib/utils'
 	import type { HTMLAttributes } from 'svelte/elements'
+	import formatLink from '$lib/utils/formatLink'
 
 	type TextFormatterProps = { html: string } & HTMLAttributes<HTMLDivElement>
 	const { html, class: containerClasses, ...other }: TextFormatterProps = $props()
@@ -12,9 +13,14 @@
 		if (!isTag(node)) return
 
 		if (node.name === 'a') {
+			const formattedLink = formatLink(node.attribs.href)
 			return {
 				component: Link,
-				props: { ...node.attribs, target: '_blank' }
+				props: {
+					...node.attribs,
+					href: formattedLink || node.attribs.href,
+					target: formattedLink ? node.attribs.target : '_blank'
+				}
 			}
 		}
 

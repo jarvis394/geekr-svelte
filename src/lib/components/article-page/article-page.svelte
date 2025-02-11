@@ -46,7 +46,10 @@
 				{/each}
 			</div>
 		</div>
-		<TextFormatter html={article.textHtml} />
+		<TextFormatter
+			class={article.editorVersion === '1.0' ? 'article--version-1 mt-6' : ''}
+			html={article.textHtml}
+		/>
 	</div>
 </div>
 

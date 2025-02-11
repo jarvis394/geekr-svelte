@@ -10,7 +10,7 @@
 	import MessageSquare from 'lucide-svelte/icons/message-square'
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
 	import ArticleLabels from '../article-labels/article-labels.svelte'
-	import { cn } from '$lib/utils'
+	import { cn, getArticleLeadImage } from '$lib/utils'
 
 	export const ARTICLE_ITEM_IMAGE_HEIGHT = 212
 	const MAX_PREVIEW_TEXT_LENGTH = 600
@@ -32,7 +32,7 @@
 			'комментариев'
 		])
 	)
-	const leadImage = $derived(article.leadImage || article.leadData.imageUrl)
+	const leadImage = $derived(getArticleLeadImage(article))
 </script>
 
 <div
@@ -56,8 +56,9 @@
 			<Image
 				disableZoom
 				containerProps={{
-					class: 'h-[212px] w-full [&_img]:w-full rounded-none object-cover'
+					class: 'h-[212px] w-full rounded-none object-cover'
 				}}
+				class="h-full object-cover"
 				src={leadImage}
 				alt={titlePlaintext}
 			/>

@@ -10,8 +10,10 @@
 <div class="flex h-full w-full flex-col">
 	{#await data.article}
 		<Header />
-		<div class="flex h-full w-full items-center justify-center">
-			<LoaderCircle class="animate-spin" />
+		<div class="relative h-[10000px] w-full">
+			<div class="sticky top-12 flex w-full items-center justify-center py-16">
+				<LoaderCircle class="animate-spin" />
+			</div>
 		</div>
 	{:then article}
 		<Header withPositionBar withShrinking>{article.titleHtml}</Header>

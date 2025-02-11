@@ -233,6 +233,26 @@
 		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 break-words;
 	}
 
+	.article.article--version-1 {
+		& h1 + p,
+		h2 + p,
+		h3 + p,
+		h4 + p,
+		p + p,
+		pre + p {
+			@apply my-0;
+		}
+
+		& h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			@apply mt-1 mb-0;
+		}
+	}
+
 	.tap-highlight {
 		@apply transition-all;
 	}
