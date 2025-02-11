@@ -82,7 +82,6 @@
 		'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle',
 		containerClasses
 	)}
-	id={src}
 	data-loaded={loaded}
 >
 	{#if shouldShowPlaceholder}

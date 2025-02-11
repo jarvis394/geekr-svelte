@@ -12,7 +12,7 @@
 <header
 	{...other}
 	class={cn(
-		'bg-background sticky top-0 z-50 flex w-full max-w-xl flex-row items-center px-4 py-2',
+		'bg-background fixed top-0 z-50 flex w-full max-w-xl flex-row items-center px-4 py-2',
 		containerClasses
 	)}
 >
@@ -25,6 +25,7 @@
 		</Avatar.Root>
 	</div>
 </header>
+<div class="h-12"></div>
 
 <style>
 	header {

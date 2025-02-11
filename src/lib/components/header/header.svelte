@@ -64,7 +64,7 @@
 <header
 	{...other}
 	class={cn(
-		'Header bg-background text-primary font-heading sticky top-0 z-50 flex h-12 w-full max-w-xl flex-row items-center gap-1 overflow-hidden px-2 select-none',
+		'Header bg-background text-primary font-heading fixed top-0 z-50 flex h-12 w-full max-w-xl flex-row items-center gap-1 overflow-hidden px-2 select-none',
 		containerClasses,
 		{ 'bg-sidebar h-8': isShrunk, 'Header--withPositionBar': withPositionBar }
 	)}
@@ -95,6 +95,7 @@
 		{@render children?.()}
 	</p>
 </header>
+<div class="h-12"></div>
 
 <style>
 	.Header {

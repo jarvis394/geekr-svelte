@@ -25,10 +25,16 @@
 					/>
 					<Avatar.Fallback />
 				</Avatar.Root>
-				<h3 class="font-heading text-base font-medium">{article.author.alias}</h3>
-				<p class="font-heading text-muted-foreground text-base font-medium">{timestampText}</p>
+				<h3 class="font-heading text-base font-medium">
+					{article.author.alias}
+				</h3>
+				<p class="font-heading text-muted-foreground text-base font-medium">
+					{timestampText}
+				</p>
 			</div>
-			<h1 class="font-heading text-2xl font-bold">{@html article.titleHtml}</h1>
+			<h1 class="font-heading text-2xl font-bold">
+				{@html article.titleHtml}
+			</h1>
 			<ArticleLabels {article} />
 			<div class="flex flex-wrap gap-1.5">
 				{#each article.hubs as hub}

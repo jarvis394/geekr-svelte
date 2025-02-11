@@ -79,7 +79,9 @@
 			<h2 class="font-heading text-primary text-xl font-bold">
 				{titlePlaintext}
 			</h2>
-			<p class="text-muted-foreground line-clamp-7 text-[15px]/5">{parsedPreviewText}</p>
+			<p class="text-muted-foreground line-clamp-7 text-[15px]/5">
+				{parsedPreviewText}
+			</p>
 			<md-ripple></md-ripple>
 		</a>
 		<div class="flex items-center justify-between p-1.5 pt-1.5 pb-2">

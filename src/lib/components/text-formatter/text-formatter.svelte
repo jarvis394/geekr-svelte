@@ -2,9 +2,11 @@
 	import { type Element, Html, isTag, type ProcessNode, type Text } from 'html-svelte-parser'
 	import { Image } from '../image'
 	import { Link } from '../link'
+	import { cn } from '$lib/utils'
+	import type { HTMLAttributes } from 'svelte/elements'
 
-	type TextFormatterProps = { html: string }
-	const { html }: TextFormatterProps = $props()
+	type TextFormatterProps = { html: string } & HTMLAttributes<HTMLDivElement>
+	const { html, class: containerClasses, ...other }: TextFormatterProps = $props()
 
 	const processNode = (node: Element | Text) => {
 		if (!isTag(node)) return
@@ -35,6 +37,6 @@
 	}
 </script>
 
-<div class="TextFormatter article">
+<div {...other} class={cn('TextFormatter article', containerClasses)}>
 	<Html {html} processNode={processNode as ProcessNode} />
 </div>
