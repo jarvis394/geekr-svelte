@@ -241,7 +241,7 @@
 		@apply opacity-85 duration-0;
 	}
 
-	.link {
+	.link:not(:has(> .Image)) {
 		@apply decoration-accent-foreground/24 decoration-2 underline-offset-2 hover:decoration-transparent hover:underline-offset-3 active:decoration-transparent active:underline-offset-3;
 		@apply text-accent-foreground relative rounded-xs box-decoration-clone ring-2 ring-transparent transition-all active:transition-none;
 		@apply not-is-touch:hover:bg-border not-is-touch:hover:ring-4 not-is-touch:hover:ring-border;

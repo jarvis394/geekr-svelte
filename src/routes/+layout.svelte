@@ -51,3 +51,10 @@
 <main class="w-ful main relative mx-auto flex min-h-full w-full max-w-xl flex-col">
 	{@render children()}
 </main>
+
+<style>
+	main {
+		padding-top: env(safe-area-inset-top);
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+</style>
