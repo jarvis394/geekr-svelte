@@ -38,7 +38,7 @@
 		--sidebar-border: 220 13% 91%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
 		--formula-filter: none;
-		--md-ripple-pressed-opacity: 0.12;
+		--md-ripple-pressed-opacity: 0.05;
 		--md-ripple-pressed-color: rgb(0, 0, 0);
 	}
 
@@ -78,7 +78,11 @@
 
 	@media (pointer: coarse) {
 		:root {
-			--md-ripple-pressed-opacity: 0.05;
+			--md-ripple-pressed-opacity: 0.09;
+		}
+
+		.dark {
+			--md-ripple-pressed-opacity: 0.09;
 		}
 	}
 }
@@ -149,17 +153,17 @@
 	.button-default {
 		--md-ripple-pressed-color: rgb(0, 0, 0);
 		@apply bg-primary text-primary-foreground not-is-touch:hover:bg-primary/90;
-		@apply is-touch:active:bg-primary/90 is-touch:active:duration-0;
+		/* @apply is-touch:active:bg-primary/90 is-touch:active:duration-0; */
 	}
 
 	.button-secondary {
 		@apply bg-secondary text-secondary-foreground not-is-touch:hover:bg-secondary/80;
-		@apply is-touch:active:bg-secondary/80 is-touch:active:duration-0;
+		/* @apply is-touch:active:bg-secondary/80 is-touch:active:duration-0; */
 	}
 
 	.button-ghost {
 		@apply not-is-touch:hover:bg-accent-foreground/12 not-is-touch:hover:text-accent-foreground;
-		@apply is-touch:active:bg-accent-foreground/12 is-touch:active:duration-0;
+		/* @apply is-touch:active:bg-accent-foreground/12 is-touch:active:duration-0; */
 	}
 
 	.article {
