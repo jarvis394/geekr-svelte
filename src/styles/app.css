@@ -72,8 +72,14 @@
 		--sidebar-border: 240 3.7% 15.9%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
 		--formula-filter: invert(1);
-		--md-ripple-pressed-opacity: 0.12;
+		--md-ripple-pressed-opacity: 0.05;
 		--md-ripple-pressed-color: rgb(255, 255, 255);
+	}
+
+	@media (pointer: coarse) {
+		:root {
+			--md-ripple-pressed-opacity: 0.05;
+		}
 	}
 }
 
