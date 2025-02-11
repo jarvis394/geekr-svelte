@@ -246,18 +246,18 @@
 		position: fixed;
 		pointer-events: none;
 		width: 100%;
-		background: #09090b;
+		background: var(--background);
 	}
 
 	body::before {
-		left: calc(50% - var(--container-xl) / 2);
+		left: calc(50% - var(--container-xl) / 2 - var(--scrollbar-width, 0px) / 2);
 		transform: translateX(-100%);
 		border-right: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-left;
 	}
 
 	body::after {
-		right: calc(50% - var(--container-xl) / 2);
+		right: calc(50% - var(--container-xl) / 2 + var(--scrollbar-width, 0px) / 2);
 		transform: translateX(100%);
 		border-left: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-right;

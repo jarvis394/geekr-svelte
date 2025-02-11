@@ -106,3 +106,14 @@ export const makeArticlesPageUrlFromParams = (
 
 	return res ? '/' + res : ''
 }
+
+export const getArticlesQueryKey = (articleParams: GetArticlesParamsData) => {
+	return [
+		'articles',
+		articleParams.mode,
+		articleParams.period,
+		articleParams.rating,
+		articleParams.complexity,
+		articleParams.page
+	]
+}

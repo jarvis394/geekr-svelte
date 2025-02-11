@@ -8,7 +8,7 @@
 		activeSnapPoint = $bindable(null),
 		children,
 		...restProps
-	}: WithChildren<DrawerPrimitive.Props> = $props()
+	}: WithChildren<DrawerPrimitive.RootProps> = $props()
 </script>
 
 <DrawerPrimitive.Root {shouldScaleBackground} bind:open bind:activeSnapPoint {...restProps}>

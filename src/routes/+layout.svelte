@@ -3,7 +3,7 @@
 	import calendarPlugin from 'dayjs/plugin/calendar'
 	import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
-	import transitions from '$lib/transitions'
+	import transitions from '$lib/utils/transitions'
 	import { scrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
 
 	import 'dayjs/locale/en'

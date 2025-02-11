@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils.js'
+	import { cn } from '$lib/utils'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import PhotoSwipeLightbox from 'photoswipe/lightbox'
 	import type { HTMLImgAttributes, HTMLAttributes } from 'svelte/elements'

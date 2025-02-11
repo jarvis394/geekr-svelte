@@ -12,6 +12,7 @@
 	import ArticleLabels from '../article-labels/article-labels.svelte'
 	import { cn } from '$lib/utils'
 
+	export const ARTICLE_ITEM_IMAGE_HEIGHT = 212
 	const MAX_PREVIEW_TEXT_LENGTH = 600
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 
@@ -69,7 +70,9 @@
 			class:pt-2={!leadImage}
 			class="ring-default tap-highlight flex flex-col gap-1 p-3 pb-0"
 		>
-			<div class="font-heading text-hint flex flex-row gap-1.5 text-[13px]/[17px] font-medium">
+			<div
+				class="font-heading text-muted-foreground dark:text-hint flex flex-row gap-1.5 text-sm font-medium"
+			>
 				{timestampText}<span>•</span>{viewsText}
 			</div>
 			<h2 class="font-heading text-primary text-xl font-bold">
