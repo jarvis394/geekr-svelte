@@ -246,7 +246,7 @@
 		position: fixed;
 		pointer-events: none;
 		width: 100%;
-		background: var(--background);
+		background: hsl(var(--background) / 1);
 	}
 
 	body::before {

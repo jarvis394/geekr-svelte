@@ -43,7 +43,10 @@ export const scrollTrigger = (options: Partial<Options> = {}) => {
 			(target && ('scrollY' in target ? target?.scrollY : target?.scrollTop)) || 0
 
 		// Set the trigger to show if the scroll position is lower than a threshold
-		if (currentScroll < scrollThreshold) return State.SHOW
+		if (currentScroll < scrollThreshold) {
+			state.trigger = State.SHOW
+			return
+		}
 
 		// Set current scroll direction
 		if (currentScroll > previousScroll) {

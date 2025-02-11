@@ -1,7 +1,8 @@
 import { onNavigate } from '$app/navigation'
 import type { OnNavigate } from '@sveltejs/kit'
 
-const SLIDE_OFFSET = 32
+const ANIMATION_DURATION = 300
+const SLIDE_OFFSET = 64
 
 class Transitions {
 	pageConfig = [
@@ -87,8 +88,10 @@ class Transitions {
 		}
 	}
 
+	// TODO: better types
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	performViewTransition(config: { direction: any; source: any; target: any }) {
+		// TODO: do better
 		if (config.direction == 'entering') {
 			// this.animatePage(config.source.leave, 'old')
 			// this.animatePage(config.target.enter, 'new', true)
@@ -107,10 +110,11 @@ class Transitions {
 		let keyframes: Keyframe[] = []
 		const options: KeyframeAnimationOptions = {
 			easing: 'cubic-bezier(0.2, 0, 0, 1)',
-			duration: 300,
+			duration: ANIMATION_DURATION,
 			pseudoElement: `::view-transition-${el}(root)`
 		}
 
+		// TODO: do better
 		if (animation.name == 'fade-in') {
 			keyframes = [{ opacity: '0' }, { opacity: '1' }]
 		}
@@ -118,28 +122,16 @@ class Transitions {
 			keyframes = [{ opacity: '1' }, { opacity: '0' }]
 		}
 		if (animation.name == 'slide-in-from-left') {
-			keyframes = [
-				{ transform: `translate(-${SLIDE_OFFSET}px)`, opacity: 0 },
-				{ transform: 'translate(0)', opacity: 1 }
-			]
+			keyframes = [{ transform: `translate(-${SLIDE_OFFSET}px)` }, { transform: 'translate(0)' }]
 		}
 		if (animation.name == 'slide-out-to-left') {
-			keyframes = [
-				{ transform: 'translate(0)', opacity: 1 },
-				{ transform: `translate(${SLIDE_OFFSET}px)`, opacity: 0 }
-			]
+			keyframes = [{ transform: 'translate(0)' }, { transform: `translate(${SLIDE_OFFSET}px)` }]
 		}
 		if (animation.name == 'slide-in-from-right') {
-			keyframes = [
-				{ transform: `translate(${SLIDE_OFFSET}px)`, opacity: 0 },
-				{ transform: 'translate(0)', opacity: 1 }
-			]
+			keyframes = [{ transform: `translate(${SLIDE_OFFSET}px)` }, { transform: 'translate(0)' }]
 		}
 		if (animation.name == 'slide-out-to-right') {
-			keyframes = [
-				{ transform: 'translate(0)', opacity: 1 },
-				{ transform: `translate(-${SLIDE_OFFSET}px)`, opacity: 0 }
-			]
+			keyframes = [{ transform: 'translate(0)' }, { transform: `translate(-${SLIDE_OFFSET}px)` }]
 		}
 
 		if (onTop) {
@@ -148,6 +140,12 @@ class Transitions {
 		}
 
 		document.documentElement.animate(keyframes, options)
+		document.documentElement.animate(
+			animation.name.startsWith('slide-in')
+				? [{ opacity: 0 }, { opacity: 1 }]
+				: [{ opacity: 1 }, { opacity: 0 }],
+			{ ...options, easing: 'cubic-bezier(0.7, 0, 0, 1)' }
+		)
 	}
 }
 

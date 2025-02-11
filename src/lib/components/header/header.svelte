@@ -52,6 +52,8 @@
 
 	onMount(() => {
 		if (withPositionBar) {
+			// Reset scroll trigger state, as it might be `false` when navigating from previous page
+			scrollTriggerState.trigger = false
 			// passive: true enhances scrolling experience
 			window.addEventListener('scroll', scrollCallback, { passive: true })
 			return () => window.removeEventListener('scroll', scrollCallback)
