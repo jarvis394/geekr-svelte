@@ -2,9 +2,24 @@
 	"name": "geekr.",
 	"short_name": "geekr.",
 	"icons": [
-		{ "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-		{ "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+		{
+			"src": "/android-chrome-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/android-chrome-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		}
 	],
+	"intent_filters": {
+		"scope_url_scheme": "https",
+		"scope_url_host": "habr.com",
+		"scope_url_path": "/"
+	},
 	"theme_color": "#0b0809",
 	"background_color": "#0b0809",
 	"display": "standalone",
