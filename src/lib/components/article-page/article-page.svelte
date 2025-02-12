@@ -7,12 +7,16 @@
 	import { Link } from '../link'
 	import * as Avatar from '../ui/avatar'
 	import dayjs from 'dayjs'
+	import { Button } from '../ui/button'
 
 	type ArticlePageProps = { article: Article } & HTMLAttributes<HTMLDivElement>
 	const { article, class: containerClasses, ...other }: ArticlePageProps = $props()
 	const timestampText = $derived(dayjs(article.timePublished).calendar().toLowerCase())
 </script>
 
+<svelte:head>
+	<title>{article.titleHtml} / geekr.</title>
+</svelte:head>
 <div {...other} class={cn('animate-in fade-in flex flex-col gap-4 p-4', containerClasses)}>
 	<div class="flex flex-col">
 		<div class="flex flex-col gap-3">
@@ -51,6 +55,7 @@
 			html={article.textHtml}
 		/>
 	</div>
+	<Button href={window.location.pathname + '/comments'} variant="ghost">Комментарии</Button>
 </div>
 
 <style>

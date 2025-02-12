@@ -6,7 +6,12 @@ const SLIDE_OFFSET = 64
 
 class Transitions {
 	pageConfig = [
-		this.makePageConfig('/articles/[...params]', 'slide-left', '/articles/[id]', 'slide-left'),
+		this.makePageConfig(
+			'/articles/[...params]',
+			'slide-left',
+			'/articles/[id=article]',
+			'slide-left'
+		),
 		this.makePageConfig(
 			'/articles/[...params]',
 			'slide-left',

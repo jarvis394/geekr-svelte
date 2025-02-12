@@ -48,7 +48,12 @@
 	})
 </script>
 
-<main class="w-ful main relative mx-auto flex min-h-full w-full max-w-xl flex-col">
+<svelte:head>
+	<title>geekr.</title>
+</svelte:head>
+<main
+	class="main selection:text-primary relative mx-auto flex min-h-full w-full max-w-xl flex-col selection:bg-blue-200 dark:selection:bg-sky-950"
+>
 	{@render children()}
 </main>
 

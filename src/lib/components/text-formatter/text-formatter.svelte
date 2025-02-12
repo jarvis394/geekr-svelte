@@ -7,7 +7,11 @@
 	import formatLink from '$lib/utils/formatLink'
 
 	type TextFormatterProps = { html: string } & HTMLAttributes<HTMLDivElement>
-	const { html, class: containerClasses, ...other }: TextFormatterProps = $props()
+	const { html: propsHTML, class: containerClasses, ...other }: TextFormatterProps = $props()
+
+	// Removes unnecessary <div> placed by Habr editor
+	const divRegexp = /<div[^>]+xmlns="http:\/\/www\.w3\.org\/1999\/xhtml">([\s\S]*)<\/div>$/g
+	const html = $derived(divRegexp.exec(propsHTML)?.[1] || propsHTML)
 
 	const processNode = (node: Element | Text) => {
 		if (!isTag(node)) return

@@ -7,6 +7,9 @@
 	const { data }: PageProps = $props()
 </script>
 
+<svelte:head>
+	<title>Статья / geekr.</title>
+</svelte:head>
 <div class="flex h-full w-full flex-col">
 	{#await data.article}
 		<Header />

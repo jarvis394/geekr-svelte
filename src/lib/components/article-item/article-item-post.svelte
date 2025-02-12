@@ -58,7 +58,7 @@
 				containerProps={{
 					class: 'h-[212px] w-full rounded-none object-cover'
 				}}
-				class="h-full object-cover"
+				class="h-full w-full object-cover"
 				src={leadImage}
 				alt={titlePlaintext}
 			/>
