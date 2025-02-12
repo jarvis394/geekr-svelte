@@ -52,13 +52,13 @@
 	<title>geekr.</title>
 </svelte:head>
 <main
-	class="main selection:text-primary relative mx-auto flex min-h-full w-full max-w-xl flex-col selection:bg-blue-200 dark:selection:bg-sky-950"
+	class="main selection:text-primary relative mx-auto flex min-h-full w-full max-w-xl flex-col overscroll-x-none selection:bg-blue-200 dark:selection:bg-sky-950"
 >
 	{@render children()}
 </main>
 
 <style>
-	main {
+	.main {
 		padding-top: env(safe-area-inset-top);
 		padding-bottom: env(safe-area-inset-bottom);
 	}

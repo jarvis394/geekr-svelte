@@ -2,7 +2,7 @@ import { onNavigate } from '$app/navigation'
 import type { OnNavigate } from '@sveltejs/kit'
 
 const ANIMATION_DURATION = 300
-const SLIDE_OFFSET = 64
+const SLIDE_OFFSET = 48
 
 class Transitions {
 	pageConfig = [
@@ -41,7 +41,7 @@ class Transitions {
 			'slide-left',
 			'/companies/[alias]/articles/[id]/comments',
 			'slide-left'
-		),
+		)
 	]
 
 	makePageConfig(
@@ -124,18 +124,18 @@ class Transitions {
 		if (config.direction == 'entering') {
 			// this.animatePage(config.source.leave, 'old')
 			// this.animatePage(config.target.enter, 'new', true)
-			this.animatePage({ name: 'slide-out-to-right' }, 'old', true)
+			this.animatePage({ name: 'slide-out-to-right' }, 'old')
 			this.animatePage({ name: 'slide-in-from-right' }, 'new')
 		}
 		if (config.direction == 'leaving') {
 			// this.animatePage(config.target.leave, 'old', true)
 			// this.animatePage(config.source.enter, 'new')
 			this.animatePage({ name: 'slide-out-to-left', leaving: true }, 'old')
-			this.animatePage({ name: 'slide-in-from-left', leaving: true }, 'new', true)
+			this.animatePage({ name: 'slide-in-from-left', leaving: true }, 'new')
 		}
 	}
 
-	animatePage(animation: { name: string; leaving?: boolean }, el: 'old' | 'new', onTop?: boolean) {
+	animatePage(animation: { name: string; leaving?: boolean }, el: 'old' | 'new') {
 		let keyframes: Keyframe[] = []
 		const options: KeyframeAnimationOptions = {
 			easing: 'cubic-bezier(0.2, 0, 0, 1)',
@@ -163,17 +163,12 @@ class Transitions {
 			keyframes = [{ transform: 'translate(0)' }, { transform: `translate(-${SLIDE_OFFSET}px)` }]
 		}
 
-		if (onTop) {
-			keyframes[0].zIndex = '1000'
-			keyframes[1].zIndex = '1000'
-		}
-
-		document.documentElement.animate(keyframes, options)
+		document.documentElement.animate(keyframes, { ...options, duration: 500 })
 		document.documentElement.animate(
 			animation.name.startsWith('slide-in')
 				? [{ opacity: 0 }, { opacity: 1 }]
 				: [{ opacity: 1 }, { opacity: 0 }],
-			{ ...options, easing: 'cubic-bezier(0.7, 0, 0, 1)' }
+			{ ...options, duration: 300, easing: 'cubic-bezier(0.7, 0, 0, 1)' }
 		)
 	}
 }
