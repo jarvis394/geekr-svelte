@@ -61,7 +61,7 @@
 					{dayjs(comment.timePublished).format('DD.MM.YYYY [в] HH:mm')}
 				</p>
 			</div>
-			<TextFormatter class="*:first-of-type:m-0 *:last-of-type:m-0" html={comment.message} />
+			<TextFormatter class="*:first-of-type:mt-0 *:last-of-type:mb-0" html={comment.message} />
 		{:else}
 			<TextFormatter html={'НЛО прилетело здесь'} />
 		{/if}
