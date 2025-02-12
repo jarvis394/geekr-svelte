@@ -17,7 +17,31 @@ class Transitions {
 			'slide-left',
 			'/companies/[alias]/articles/[id]',
 			'slide-left'
-		)
+		),
+		this.makePageConfig(
+			'/articles/[...params]',
+			'slide-left',
+			'/articles/[id=article]/comments',
+			'slide-left'
+		),
+		this.makePageConfig(
+			'/articles/[...params]',
+			'slide-left',
+			'/companies/[alias]/articles/[id]/comments',
+			'slide-left'
+		),
+		this.makePageConfig(
+			'/articles/[id=article]',
+			'slide-left',
+			'/articles/[id=article]/comments',
+			'slide-left'
+		),
+		this.makePageConfig(
+			'/companies/[alias]/articles/[id]',
+			'slide-left',
+			'/companies/[alias]/articles/[id]/comments',
+			'slide-left'
+		),
 	]
 
 	makePageConfig(
