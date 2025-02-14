@@ -1,21 +1,21 @@
 import type { Profile } from './Profile'
 
-// interface CommentBranch {
-// 	hidden?: boolean
-// 	noBorder?: boolean
-// 	parentId: string
-// 	childrenIds: string[]
-// }
+export interface CommentBranch {
+	hidden?: boolean
+	noBorder?: boolean
+	parentId: string
+	childrenIds: string[]
+}
 
 export interface Comment {
-	/** Generated at comments parsing */
-	// isLastInThread?: boolean
-	// isNewLevel?: boolean
-	// isSubthreadStart?: boolean
-	// threadLevel?: number
-	// hiddenBranches?: Set<number>
-	// branches?: CommentBranch[]
-	// childrenIds?: string[]
+	/// Generated at comments parsing ///
+	isLastInThread?: boolean
+	isNewLevel?: boolean
+	isSubthreadStart?: boolean
+	threadLevel?: number
+	hiddenBranches?: Set<number>
+	branches?: CommentBranch[]
+	childrenIds?: string[]
 
 	id: string
 	parentId: string

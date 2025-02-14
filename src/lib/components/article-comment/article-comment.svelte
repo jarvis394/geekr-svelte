@@ -1,51 +1,67 @@
 <script lang="ts">
-	import type { Comment, Comments } from '$lib/types'
+	import type { Comment, CommentBranch } from '$lib/types'
 	import TextFormatter from '../text-formatter/text-formatter.svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn } from '$lib/utils'
 	import * as Avatar from '../ui/avatar'
 	import { Button } from '../ui/button'
-	import { ArticleComment } from '.'
 	import dayjs from 'dayjs'
+	import { ArticleLabel } from '../article-label'
 
 	type ArticleCommentProps = {
 		comment: Comment
-		comments?: Comments['comments']
+		onBranchClick: (branch: CommentBranch) => void
+		highlightBranch: (branch: CommentBranch) => void
+		resetBranchHighlight: (branch: CommentBranch) => void
 	} & HTMLAttributes<HTMLElement>
-	const { comment, comments, class: containerClasses, ...other }: ArticleCommentProps = $props()
+	const {
+		comment,
+		onBranchClick,
+		highlightBranch,
+		resetBranchHighlight,
+		class: containerClasses,
+		...other
+	}: ArticleCommentProps = $props()
 	const isThread = $derived(comment.level === 0)
-	let element: HTMLElement | null = null
-	let isCollapsed = $state(false)
 
-	const handleBranchClick = () => {
-		isCollapsed = true
-		if (element) {
-			window.scrollTo({
-				top: element.offsetTop - 48,
-				behavior: 'smooth'
-			})
-		}
+	const handleBranchClick = (branch: CommentBranch) => {
+		onBranchClick(branch)
 	}
 
-	const handleCollapsedClick = () => {
-		isCollapsed = false
+	const handleBranchHover = (branch: CommentBranch) => {
+		highlightBranch(branch)
+	}
+
+	const handleBranchReset = (branch: CommentBranch) => {
+		resetBranchHighlight(branch)
 	}
 </script>
 
 <section
 	{...other}
-	bind:this={element}
-	class={cn('relative mt-3 flex grow flex-col', containerClasses, {
-		'border-border mt-0 border-b-1 pt-4 pb-3': isThread
+	data-comment-id={comment.id}
+	class={cn('relative flex grow flex-row', containerClasses, {
+		'pl-4': !isThread,
+		'border-border border-b-1': comment.isLastInThread
 	})}
 >
+	{#each comment.branches || [] as branch}
+		<button
+			class="ArticleComment__branch border-border hover:border-accent-foreground flex w-5 shrink-0 cursor-pointer flex-row border-l-1 hover:border-l-2"
+			aria-label={`Comment branch toggle`}
+			onclick={handleBranchClick.bind(null, branch)}
+			onmouseenter={handleBranchHover.bind(null, branch)}
+			onmouseleave={handleBranchReset.bind(null, branch)}
+			data-comment-branch-for={branch.parentId}
+		></button>
+	{/each}
 	<article
-		class={cn('flex flex-col pr-4', {
-			'px-4': isThread
+		class={cn('flex w-full flex-col pt-4 pr-4 pb-3', {
+			'pl-4': isThread
 		})}
 	>
 		{#if comment.author}
-			<div class="mb-2 flex flex-row gap-2">
+			<div class="ArticleComment__header mb-2 flex flex-row gap-2">
 				<Avatar.Root class="h-6 w-6">
 					<Avatar.Image
 						hash={comment.author.alias}
@@ -61,33 +77,25 @@
 					{dayjs(comment.timePublished).format('DD.MM.YYYY [в] HH:mm')}
 				</p>
 			</div>
-			<TextFormatter class="*:first-of-type:mt-0 *:last-of-type:mb-0" html={comment.message} />
+			<TextFormatter class="*:first:mt-0 *:last:mb-0" html={comment.message} />
+			<div class="mt-1.5 flex flex-row items-center justify-between">
+				<Button variant="ghost" size="sm">Ответить</Button>
+				<ArticleLabel score={comment.score} />
+			</div>
 		{:else}
 			<TextFormatter html={'НЛО прилетело здесь'} />
 		{/if}
 	</article>
-	{#if isCollapsed}
-		<Button onclick={handleCollapsedClick} variant="ghost" size="sm">Раскрыть ветку</Button>
-	{/if}
-	{#if !isCollapsed && comment.children.length !== 0 && comments}
-		<div
-			class={cn('flex', {
-				'ml-3': isThread
-			})}
-		>
-			<button
-				class="border-border hover:border-accent-foreground mt-2 flex w-4 shrink-0 cursor-pointer flex-row border-l-1 hover:border-l-2"
-				onclick={handleBranchClick}
-				aria-label={`Comment branch toggle for ${comment.id}`}
-			></button>
-			<div class="flex min-w-0 flex-1 flex-col">
-				{#each comment.children as childCommentId}
-					{@const childComment = comments[childCommentId]}
-					{#if childComment}
-						<ArticleComment comment={childComment} {comments} />
-					{/if}
-				{/each}
-			</div>
-		</div>
-	{/if}
 </section>
+
+<style>
+	.ArticleComment__header {
+		content-visibility: auto;
+		contain-intrinsic-size: 1px 24px;
+	}
+
+	:global(.ArticleComment__branch--highlighted) {
+		border-color: white;
+		border-left-width: 2px;
+	}
+</style>

@@ -14,6 +14,8 @@
 
 	const closeSVG =
 		'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>'
+	const zoomSVG =
+		'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zoom-in"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg>'
 	const {
 		src,
 		placeholderSrc,
@@ -24,6 +26,24 @@
 		...other
 	}: ImageProps = $props()
 	const { class: containerClasses, ...otherContainerProps } = containerProps
+	const lightbox = new PhotoSwipeLightbox({
+		clickToCloseNonZoomable: true,
+		showHideOpacity: true,
+		showAnimationDuration: 300,
+		hideAnimationDuration: 300,
+		bgOpacity: 0.8,
+		pinchToClose: true,
+		bgClickAction: 'close',
+		arrowNext: false,
+		arrowPrev: false,
+		wheelToZoom: true,
+		closeOnVerticalDrag: true,
+		counter: false,
+		closeSVG,
+		zoomSVG,
+		close: true,
+		pswpModule: () => import('photoswipe')
+	})
 	let shouldShowPlaceholder = $state(false)
 	let loaded = $state(true)
 	let imageDimensions = $state({ width: 0, height: 0 })
@@ -47,31 +67,13 @@
 		const windowWidth = window.innerWidth - 32
 		const scaleFactor = windowWidth / imageDimensions.width
 
-		const lightbox = new PhotoSwipeLightbox({
-			dataSource: [
-				{
-					src,
-					width: window.innerWidth - 32,
-					height: imageDimensions.height * scaleFactor
-				}
-			],
-			showHideOpacity: true,
-			showAnimationDuration: 300,
-			hideAnimationDuration: 300,
-			bgOpacity: 0.8,
-			pinchToClose: false,
-			bgClickAction: 'close',
-			maxZoomLevel: 4,
-			arrowNext: false,
-			arrowPrev: false,
-			wheelToZoom: true,
-			closeOnVerticalDrag: true,
-			counter: false,
-			closeSVG,
-			close: true,
-			pswpModule: () => import('photoswipe')
-		})
-		lightbox.init()
+		lightbox.options.dataSource = [
+			{
+				src,
+				width: window.innerWidth - 32,
+				height: imageDimensions.height * scaleFactor
+			}
+		]
 		lightbox.loadAndOpen(0)
 	}
 </script>
@@ -79,7 +81,7 @@
 <div
 	{...otherContainerProps}
 	class={cn(
-		'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle',
+		'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-all',
 		containerClasses
 	)}
 	data-loaded={loaded}
@@ -113,7 +115,7 @@
 		onload={handleLoad}
 		onclick={handleClick}
 		data-loaded={loaded}
-		class={cn('fade-in animate-in no-drag z-0', imageClasses)}
+		class={cn('fade-in animate-in no-drag z-0 transition-all', imageClasses)}
 		class:absolute={placeholderSrc && shouldShowPlaceholder}
 		loading="lazy"
 	/>

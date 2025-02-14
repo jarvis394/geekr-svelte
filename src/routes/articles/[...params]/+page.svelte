@@ -9,7 +9,6 @@
 	import { AppBar } from '$lib/components/appbar'
 
 	const { data }: PageProps = $props()
-
 	const handlePageChange = (page: number) => {
 		goto('/articles' + makeArticlesPageUrlFromParams({ ...data.articleParams, page }))
 	}

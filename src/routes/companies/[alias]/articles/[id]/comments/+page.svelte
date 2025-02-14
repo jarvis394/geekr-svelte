@@ -3,7 +3,7 @@
 	import { Header } from '$lib/components/header'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PageProps } from './$types'
-
+	import ArticleCommentsPage from '$lib/components/article-comments-page/article-comments-page.svelte'
 	const { data }: PageProps = $props()
 </script>
 
@@ -16,10 +16,6 @@
 			</div>
 		</div>
 	{:then comments}
-		<Header>Комментарии</Header>
-		{#each comments.threads as threadId}
-			{@const comment = comments.comments[threadId]}
-			<ArticleComment {comment} comments={comments.comments} />
-		{/each}
+		<ArticleCommentsPage {comments} />
 	{/await}
 </div>

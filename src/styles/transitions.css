@@ -1,0 +1,142 @@
+@layer base {
+	:root {
+		--transition-slide-offset: 40px;
+		--transition-zoom-in-scale: 1.05;
+		--transition-zoom-out-scale: 0.9;
+	}
+
+	@media (min-width: 672px) {
+		:root {
+			--transition-slide-offset: 40px;
+			--transition-zoom-in-scale: 1.02;
+			--transition-zoom-out-scale: 0.95;
+		}
+	}
+
+	:root::view-transition-new(root) {
+		animation: none;
+	}
+	:root::view-transition-old(root) {
+		animation: none;
+	}
+
+	html.entering::view-transition-new(root) {
+		animation:
+			zoom-in-enter 500ms cubic-bezier(0.2, 0, 0, 1),
+			fade-in 300ms cubic-bezier(0.7, 0, 0, 1);
+	}
+	html.entering::view-transition-old(root) {
+		animation:
+			zoom-out-enter 500ms cubic-bezier(0.2, 0, 0, 1) forwards,
+			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) forwards;
+	}
+
+	html.leaving::view-transition-new(root) {
+		animation:
+			zoom-in-leave 500ms cubic-bezier(0.2, 0, 0, 1),
+			fade-in 300ms cubic-bezier(0.7, 0, 0, 1);
+	}
+	html.leaving::view-transition-old(root) {
+		animation:
+			zoom-out-leave 500ms cubic-bezier(0.2, 0, 0, 1) forwards,
+			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) forwards;
+	}
+
+	@keyframes zoom-in-enter {
+		from {
+			z-index: 1000;
+			transform: scale(var(--transition-zoom-in-scale));
+		}
+		to {
+			z-index: 1000;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes zoom-out-enter {
+		from {
+			transform: scale(1);
+		}
+		to {
+			transform: scale(var(--transition-zoom-out-scale));
+		}
+	}
+
+	@keyframes zoom-in-leave {
+		from {
+			z-index: 1000;
+			transform: scale(var(--transition-zoom-out-scale));
+		}
+		to {
+			z-index: 1000;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes zoom-out-leave {
+		from {
+			transform: scale(1);
+		}
+		to {
+			transform: scale(var(--transition-zoom-in-scale));
+		}
+	}
+
+	@keyframes slide-in-from-right {
+		from {
+			z-index: 1000;
+			transform: translateX(var(--transition-slide-offset));
+		}
+		to {
+			z-index: 1000;
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes slide-in-from-left {
+		from {
+			transform: translateX(calc(-1 * var(--transition-slide-offset)));
+		}
+		to {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes slide-out-to-right {
+		from {
+			z-index: 1000;
+			transform: translateX(0);
+		}
+		to {
+			z-index: 1000;
+			transform: translateX(var(--transition-slide-offset));
+		}
+	}
+
+	@keyframes slide-out-to-left {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(calc(-1 * var(--transition-slide-offset)));
+		}
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+}

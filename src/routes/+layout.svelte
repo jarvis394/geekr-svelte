@@ -3,16 +3,20 @@
 	import calendarPlugin from 'dayjs/plugin/calendar'
 	import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
-	import transitions from '$lib/utils/transitions'
 	import { scrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
+	import { setupViewTransition } from 'sveltekit-view-transition'
+	import { onMount } from 'svelte'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
 
 	import '../styles/app.css'
 	import '../styles/fonts.css'
+	import '../styles/transitions.css'
 	import 'photoswipe/style.css'
-	import { onMount } from 'svelte'
+
+	let { children } = $props()
+	const { classes } = setupViewTransition()
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)
@@ -36,12 +40,23 @@
 	})
 
 	dayjs.locale('ru')
-
-	transitions.onNavigateViewTransition()
-
 	scrollTrigger()
 
-	let { children } = $props()
+	classes(({ navigation }) => {
+		// Catches navigation inside article page and disables transition
+		if (
+			navigation.from?.route.id === navigation.to?.route.id &&
+			navigation.from?.params?.id === navigation.to?.params?.id
+		) {
+			return []
+		}
+
+		if (navigation.type === 'popstate') {
+			return ['leaving']
+		}
+
+		return ['entering']
+	})
 
 	onMount(async () => {
 		await import('@material/web/ripple/ripple.js')
@@ -52,7 +67,7 @@
 	<title>geekr.</title>
 </svelte:head>
 <main
-	class="main selection:text-primary relative mx-auto flex min-h-full w-full max-w-xl flex-col overscroll-x-none selection:bg-blue-200 dark:selection:bg-sky-950"
+	class="main selection:text-primary relative mx-auto flex min-h-full w-full max-w-2xl flex-col overscroll-x-none selection:bg-blue-200 dark:selection:bg-sky-900"
 >
 	{@render children()}
 </main>

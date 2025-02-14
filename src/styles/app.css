@@ -126,7 +126,7 @@
 
 		@apply relative;
 		@apply select-none;
-		@apply active:not-is-touch:scale-[0.97];
+		@apply active:not-is-touch:scale-[0.98];
 		@apply inline-flex;
 		@apply items-center;
 		@apply justify-center;
@@ -230,7 +230,7 @@
 			@apply w-full border-none;
 		}
 
-		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 break-words;
+		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 max-w-2xl break-words;
 	}
 
 	.article.article--version-1 {
@@ -261,21 +261,13 @@
 		@apply opacity-85 duration-0;
 	}
 
-	.link:not(:has(> .Image)) {
+	.link:not(:has(.Image)) {
 		@apply decoration-accent-foreground/24 decoration-2 underline-offset-2 hover:decoration-transparent hover:underline-offset-3 active:decoration-transparent active:underline-offset-3;
 		@apply text-accent-foreground relative rounded-xs box-decoration-clone ring-2 ring-transparent transition-all active:transition-none;
 		@apply not-is-touch:hover:bg-border not-is-touch:hover:ring-4 not-is-touch:hover:ring-border;
 		@apply not-is-touch:active:bg-border not-is-touch:active:ring-4 not-is-touch:active:ring-border not-is-touch:active:brightness-85 dark:not-is-touch:active:brightness-150;
 		@apply is-touch:active:bg-border is-touch:active:ring-4 is-touch:active:ring-border;
 	}
-
-	/* Disable the default view transition animation. */
-	/* :root::view-transition-new(root) {
-		animation: none;
-	}
-	:root::view-transition-old(root) {
-		animation: none;
-	} */
 
 	body::after,
 	body::before {
@@ -290,14 +282,14 @@
 	}
 
 	body::before {
-		left: calc(50% - var(--container-xl) / 2 - var(--scrollbar-width, 0px) / 2);
+		left: calc(50% - var(--container-2xl) / 2 - var(--scrollbar-width, 0px) / 2);
 		transform: translateX(-100%);
 		border-right: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-left;
 	}
 
 	body::after {
-		right: calc(50% - var(--container-xl) / 2 + var(--scrollbar-width, 0px) / 2);
+		right: calc(50% - var(--container-2xl) / 2 + var(--scrollbar-width, 0px) / 2);
 		transform: translateX(100%);
 		border-left: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-right;
