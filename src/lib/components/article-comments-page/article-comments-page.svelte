@@ -4,6 +4,8 @@
 	import { WindowVirtualizer } from 'virtua/svelte'
 	import { ArticleComment } from '../article-comment'
 	import { createBranches } from '$lib/utils/comments'
+	import { SvelteMap } from 'svelte/reactivity'
+	import { tick } from 'svelte'
 
 	type ArticleCommentsPageProps = { comments: APIResponseComments }
 	const { comments: propsComments }: ArticleCommentsPageProps = $props()
@@ -33,8 +35,11 @@
 		return createBranches(result)
 	}
 
-	let comments = $state<Array<Comment | string>>(flattenComments(propsComments))
+	let comments = $state<Comment[]>(flattenComments(propsComments))
+	const collapsedRoots = new SvelteMap<string, { collapsedAmount: number }>()
+	let highlightedCommentIndex = $state(-1)
 	let branchHighlightStyles = $state('')
+	let virtualizer: WindowVirtualizer<Comment>
 
 	const highlightBranch = (branch: CommentBranch) => {
 		branchHighlightStyles = `<style>
@@ -49,31 +54,101 @@
 		branchHighlightStyles = ''
 	}
 
+	const scrollToIndex = async (index: number) => {
+		highlightedCommentIndex = -1
+		await tick()
+		virtualizer.scrollToIndex(index, {
+			smooth: true,
+			offset: -48
+		})
+		highlightedCommentIndex = index
+	}
+
 	const onBranchClick = (branch: CommentBranch) => {
-		const startIndex = comments.findIndex((e) => typeof e !== 'string' && e.id === branch.parentId)
-		let deleteCount = 0
-		for (let i = startIndex + 1; i < comments.length; i++) {
+		let startIndex = -1
+		let collapsedAmount = 0
+
+		for (let i = 0; i < comments.length; i++) {
 			const current = comments[i]
+
+			if (startIndex === -1) {
+				if (current.id === branch.parentId) {
+					startIndex = i
+				}
+				continue
+			}
+
 			const startComment = comments[startIndex]
 
-			if (typeof current === 'string' || typeof startComment === 'string') continue
 			if (current.level > startComment.level) {
-				deleteCount++
+				comments[i].isCollapsed = true
+				collapsedAmount++
 			} else {
 				break
 			}
 		}
 
-		comments.splice(startIndex + 1, deleteCount)
+		collapsedRoots.set(branch.parentId, {
+			collapsedAmount
+		})
+
+		resetBranchHighlight()
+		scrollToIndex(startIndex)
+	}
+
+	const expandBranch = (comment: Comment) => {
+		let startIndex = -1
+		let otherCollapsedLevel = Infinity
+
+		for (let i = 0; i < comments.length; i++) {
+			const current = comments[i]
+
+			if (startIndex === -1) {
+				if (current.id === comment.id) {
+					startIndex = i
+				}
+				continue
+			}
+
+			if (otherCollapsedLevel <= current.level) {
+				continue
+			} else {
+				otherCollapsedLevel = Infinity
+			}
+
+			if (collapsedRoots.has(current.id)) {
+				otherCollapsedLevel = current.level + 1
+			}
+
+			const startComment = comments[startIndex]
+
+			if (current.level > startComment.level) {
+				comments[i].isCollapsed = false
+			} else {
+				break
+			}
+		}
+
+		collapsedRoots.delete(comment.id)
 	}
 </script>
 
 <div class="ArticleComments">
 	{@html branchHighlightStyles}
 	<Header>Комментарии</Header>
-	<WindowVirtualizer getKey={(item: Comment) => item.id} data={comments}>
-		{#snippet children(item: Comment)}
-			<ArticleComment {onBranchClick} {highlightBranch} {resetBranchHighlight} comment={item} />
+	<WindowVirtualizer bind:this={virtualizer} getKey={(item: Comment) => item.id} data={comments}>
+		{#snippet children(item: Comment, index)}
+			{#if !item.isCollapsed}
+				<ArticleComment
+					{expandBranch}
+					{onBranchClick}
+					{highlightBranch}
+					{resetBranchHighlight}
+					comment={item}
+					highlighted={highlightedCommentIndex === index}
+					collapsedRoot={collapsedRoots.get(item.id)}
+				/>
+			{/if}
 		{/snippet}
 	</WindowVirtualizer>
 </div>

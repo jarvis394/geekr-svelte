@@ -17,6 +17,8 @@ export interface Comment {
 	branches?: CommentBranch[]
 	childrenIds?: string[]
 
+	isCollapsed?: boolean
+
 	id: string
 	parentId: string
 	level: number

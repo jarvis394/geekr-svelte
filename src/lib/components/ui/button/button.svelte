@@ -18,23 +18,31 @@
 			size: {
 				default: 'h-10 px-4 py-2',
 				sm: 'h-9 rounded-md px-3',
-				lg: 'h-11 rounded-xl px-8',
+				lg: 'h-11 rounded-xl px-4 text-base',
 				icon: 'h-10 w-10 shrink-0'
+			},
+			align: {
+				center: '',
+				start: 'justify-start',
+				end: 'justify-end'
 			}
 		},
 		defaultVariants: {
 			variant: 'default',
-			size: 'default'
+			size: 'default',
+			align: 'center'
 		}
 	})
 
 	export type ButtonVariant = VariantProps<typeof buttonVariants>['variant']
 	export type ButtonSize = VariantProps<typeof buttonVariants>['size']
+	export type ButtonAlign = VariantProps<typeof buttonVariants>['align']
 
 	export type ButtonProps = WithElementRef<HTMLButtonAttributes> &
 		WithElementRef<HTMLAnchorAttributes> & {
 			variant?: ButtonVariant
 			size?: ButtonSize
+			align?: ButtonAlign
 		}
 </script>
 
@@ -45,6 +53,7 @@
 		class: className,
 		variant = 'default',
 		size = 'default',
+		align = 'center',
 		ref = $bindable(null),
 		href = undefined,
 		type = 'button',
@@ -54,14 +63,19 @@
 </script>
 
 {#if href}
-	<a bind:this={ref} class={cn(buttonVariants({ variant, size }), className)} {href} {...restProps}>
+	<a
+		bind:this={ref}
+		class={cn(buttonVariants({ variant, size, align }), className)}
+		{href}
+		{...restProps}
+	>
 		{@render children?.()}
 		<md-ripple></md-ripple>
 	</a>
 {:else}
 	<button
 		bind:this={ref}
-		class={cn(buttonVariants({ variant, size }), className)}
+		class={cn(buttonVariants({ variant, size, align }), className)}
 		{type}
 		{...restProps}
 	>

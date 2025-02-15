@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { ArticleComment } from '$lib/components/article-comment'
 	import { Header } from '$lib/components/header'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PageProps } from './$types'

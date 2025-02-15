@@ -47,6 +47,7 @@
 		"vite": "^6.1.0"
 	},
 	"dependencies": {
+		"@formkit/auto-animate": "^0.8.2",
 		"@material/web": "^2.2.0",
 		"@netlify/classnames-template-literals": "^1.0.3",
 		"dayjs": "^1.11.13",

@@ -6,16 +6,24 @@
 	import * as Avatar from '../ui/avatar'
 	import { Button } from '../ui/button'
 	import dayjs from 'dayjs'
-	import { ArticleLabel } from '../article-label'
+	import ScoreBadge, { type ScoreBadgeVariant } from './score-badge.svelte'
+	import ChevronUp from 'lucide-svelte/icons/chevron-up'
+	import ChevronDown from 'lucide-svelte/icons/chevron-down'
 
 	type ArticleCommentProps = {
 		comment: Comment
-		onBranchClick: (branch: CommentBranch) => void
-		highlightBranch: (branch: CommentBranch) => void
-		resetBranchHighlight: (branch: CommentBranch) => void
+		highlighted?: boolean
+		collapsedRoot?: { collapsedAmount: number }
+		expandBranch?: (comment: Comment) => void
+		onBranchClick?: (branch: CommentBranch) => void
+		highlightBranch?: (branch: CommentBranch) => void
+		resetBranchHighlight?: (branch: CommentBranch) => void
 	} & HTMLAttributes<HTMLElement>
 	const {
 		comment,
+		highlighted,
+		collapsedRoot,
+		expandBranch,
 		onBranchClick,
 		highlightBranch,
 		resetBranchHighlight,
@@ -23,17 +31,25 @@
 		...other
 	}: ArticleCommentProps = $props()
 	const isThread = $derived(comment.level === 0)
+	const scoreBadgeVariant = $derived.by<ScoreBadgeVariant>(() => {
+		if (comment.score === 0) return 'neutral'
+		return comment.score > 0 ? 'positive' : 'negative'
+	})
 
 	const handleBranchClick = (branch: CommentBranch) => {
-		onBranchClick(branch)
+		onBranchClick?.(branch)
 	}
 
 	const handleBranchHover = (branch: CommentBranch) => {
-		highlightBranch(branch)
+		highlightBranch?.(branch)
 	}
 
-	const handleBranchReset = (branch: CommentBranch) => {
-		resetBranchHighlight(branch)
+	const handleBranchResetHighlight = (branch: CommentBranch) => {
+		resetBranchHighlight?.(branch)
+	}
+
+	const handleExpandBranch = (comment: Comment) => {
+		expandBranch?.(comment)
 	}
 </script>
 
@@ -42,16 +58,17 @@
 	data-comment-id={comment.id}
 	class={cn('relative flex grow flex-row', containerClasses, {
 		'pl-4': !isThread,
-		'border-border border-b-1': comment.isLastInThread
+		'border-border border-b-1': comment.isLastInThread,
+		'animate-highlight': highlighted
 	})}
 >
 	{#each comment.branches || [] as branch}
 		<button
-			class="ArticleComment__branch border-border hover:border-accent-foreground flex w-5 shrink-0 cursor-pointer flex-row border-l-1 hover:border-l-2"
+			class="ArticleComment__branch tap-highlight border-border hover:border-accent-foreground flex w-5 shrink-0 cursor-pointer flex-row border-l-1 hover:border-l-2"
 			aria-label={`Comment branch toggle`}
 			onclick={handleBranchClick.bind(null, branch)}
 			onmouseenter={handleBranchHover.bind(null, branch)}
-			onmouseleave={handleBranchReset.bind(null, branch)}
+			onmouseleave={handleBranchResetHighlight.bind(null, branch)}
 			data-comment-branch-for={branch.parentId}
 		></button>
 	{/each}
@@ -80,10 +97,23 @@
 			<TextFormatter class="*:first:mt-0 *:last:mb-0" html={comment.message} />
 			<div class="mt-1.5 flex flex-row items-center justify-between">
 				<Button variant="ghost" size="sm">Ответить</Button>
-				<ArticleLabel score={comment.score} />
+				<div class="flex items-center justify-center gap-1">
+					<Button variant="ghost" class="text-muted-foreground h-9 w-9"
+						><ChevronUp strokeWidth={3} /></Button
+					>
+					<ScoreBadge variant={scoreBadgeVariant}>{comment.score}</ScoreBadge>
+					<Button variant="ghost" class="text-muted-foreground h-9 w-9"
+						><ChevronDown strokeWidth={3} /></Button
+					>
+				</div>
 			</div>
 		{:else}
 			<TextFormatter html={'НЛО прилетело здесь'} />
+		{/if}
+		{#if collapsedRoot}
+			<Button variant="ghost" size="lg" onclick={handleExpandBranch.bind(null, comment)}>
+				Раскрыть ветку ({collapsedRoot.collapsedAmount})
+			</Button>
 		{/if}
 	</article>
 </section>

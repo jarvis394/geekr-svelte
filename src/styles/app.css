@@ -254,7 +254,7 @@
 	}
 
 	.tap-highlight {
-		@apply transition-all;
+		@apply transition-opacity;
 	}
 
 	.tap-highlight:active {
