@@ -8,7 +8,6 @@
 	import * as Avatar from '../ui/avatar'
 	import dayjs from 'dayjs'
 	import { Button } from '../ui/button'
-	import { fade } from 'svelte/transition'
 
 	type ArticlePageProps = { article: Article } & HTMLAttributes<HTMLDivElement>
 	const { article, class: containerClasses, ...other }: ArticlePageProps = $props()

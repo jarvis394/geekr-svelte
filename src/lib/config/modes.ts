@@ -1,10 +1,10 @@
 import type { GetArticlesParamsData } from '$lib/utils'
 
 export type ModeItem = Partial<GetArticlesParamsData> & {
-  label: string
-  tabbarLabel: string
-  // TODO: rethink, maybe not needed
-  smUp?: boolean
+	label: string
+	tabbarLabel: string
+	// TODO: rethink, maybe not needed
+	smUp?: boolean
 }
 
 export const TOP_MODES: ModeItem[] = [

@@ -12,7 +12,6 @@
 	import ArticleLabels from '../article-labels/article-labels.svelte'
 	import { cn, getArticleLeadImage } from '$lib/utils'
 	import Gauge from 'lucide-svelte/icons/gauge'
-	import { ARTICLE_COMPLEXITY } from '$lib/config/modes'
 
 	export const ARTICLE_ITEM_IMAGE_HEIGHT = 212
 	const MAX_PREVIEW_TEXT_LENGTH = 600

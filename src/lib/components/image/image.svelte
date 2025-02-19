@@ -4,7 +4,6 @@
 	import type { PreparedPhotoSwipeOptions } from 'photoswipe'
 	import PhotoSwipeLightbox from 'photoswipe/lightbox'
 	import type { HTMLImgAttributes, HTMLAttributes } from 'svelte/elements'
-	import { fade } from 'svelte/transition'
 
 	export type ImageProps = {
 		src: string
