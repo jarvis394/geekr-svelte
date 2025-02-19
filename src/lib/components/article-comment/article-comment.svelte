@@ -74,7 +74,8 @@
 	{/each}
 	<article
 		class={cn('flex w-full flex-col pt-4 pr-4 pb-3', {
-			'pl-4': isThread
+			'pl-4': isThread,
+			'pt-3': !comment.author
 		})}
 	>
 		{#if comment.author}

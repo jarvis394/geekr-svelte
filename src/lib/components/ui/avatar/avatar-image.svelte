@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Avatar as AvatarPrimitive } from 'bits-ui'
 	import { cn } from '$lib/utils'
+	import { fade } from 'svelte/transition'
 
 	let {
 		ref = $bindable(null),
@@ -19,9 +20,9 @@
 	})
 </script>
 
-<AvatarPrimitive.Image
-	bind:ref
+<img
+	bind:this={ref}
 	src={src || placeholderAvatarUrl}
-	class={cn('fade-in animate-in aspect-square h-full w-full', className)}
+	class={cn('animate-in fade-in aspect-square h-full w-full', className)}
 	{...restProps}
 />

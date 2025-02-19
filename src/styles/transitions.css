@@ -13,10 +13,9 @@
 		}
 	}
 
-	:root::view-transition-new(root) {
-		animation: none;
-	}
-	:root::view-transition-old(root) {
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
 		animation: none;
 	}
 

@@ -29,7 +29,7 @@ export interface Article {
 	id: string | number
 	author: ProfileExtended
 	commentsEnabled: boolean
-	complexity: 'low' | 'medium' | 'hard' | null
+	complexity: 'low' | 'medium' | 'high' | null
 	format: 'review' | 'opinion' | 'analytics' | 'retrospective' | 'tutorial' | null
 	editorVersion: '1.0' | '2.0'
 	flows: Flow[]

@@ -43,11 +43,8 @@
 	scrollTrigger()
 
 	classes(({ navigation }) => {
-		// Catches navigation inside article page and disables transition
-		if (
-			navigation.from?.route.id === navigation.to?.route.id &&
-			navigation.from?.params?.id === navigation.to?.params?.id
-		) {
+		// Catches navigation inside the page and disables transition
+		if (navigation.from?.route.id === navigation.to?.route.id) {
 			return []
 		}
 

@@ -136,19 +136,21 @@
 <div class="ArticleComments">
 	{@html branchHighlightStyles}
 	<Header>Комментарии</Header>
-	<WindowVirtualizer bind:this={virtualizer} getKey={(item: Comment) => item.id} data={comments}>
-		{#snippet children(item: Comment, index)}
-			{#if !item.isCollapsed}
-				<ArticleComment
-					{expandBranch}
-					{onBranchClick}
-					{highlightBranch}
-					{resetBranchHighlight}
-					comment={item}
-					highlighted={highlightedCommentIndex === index}
-					collapsedRoot={collapsedRoots.get(item.id)}
-				/>
-			{/if}
-		{/snippet}
-	</WindowVirtualizer>
+	<div class="animate-in fade-in">
+		<WindowVirtualizer bind:this={virtualizer} getKey={(item: Comment) => item.id} data={comments}>
+			{#snippet children(item: Comment, index)}
+				{#if !item.isCollapsed}
+					<ArticleComment
+						{expandBranch}
+						{onBranchClick}
+						{highlightBranch}
+						{resetBranchHighlight}
+						comment={item}
+						highlighted={highlightedCommentIndex === index}
+						collapsedRoot={collapsedRoots.get(item.id)}
+					/>
+				{/if}
+			{/snippet}
+		</WindowVirtualizer>
+	</div>
 </div>

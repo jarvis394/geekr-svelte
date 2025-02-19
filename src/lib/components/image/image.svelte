@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { cn } from '$lib/utils'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
+	import type { PreparedPhotoSwipeOptions } from 'photoswipe'
 	import PhotoSwipeLightbox from 'photoswipe/lightbox'
 	import type { HTMLImgAttributes, HTMLAttributes } from 'svelte/elements'
+	import { fade } from 'svelte/transition'
 
 	export type ImageProps = {
 		src: string
@@ -26,7 +28,7 @@
 		...other
 	}: ImageProps = $props()
 	const { class: containerClasses, ...otherContainerProps } = containerProps
-	const lightbox = new PhotoSwipeLightbox({
+	const lightboxOptions: Partial<PreparedPhotoSwipeOptions> = {
 		clickToCloseNonZoomable: true,
 		showHideOpacity: true,
 		showAnimationDuration: 300,
@@ -43,7 +45,7 @@
 		zoomSVG,
 		close: true,
 		pswpModule: () => import('photoswipe')
-	})
+	}
 	let shouldShowPlaceholder = $state(false)
 	let loaded = $state(true)
 	let imageDimensions = $state({ width: 0, height: 0 })
@@ -66,6 +68,8 @@
 
 		const windowWidth = window.innerWidth - 32
 		const scaleFactor = windowWidth / imageDimensions.width
+
+		const lightbox = new PhotoSwipeLightbox(lightboxOptions)
 
 		lightbox.options.dataSource = [
 			{
@@ -115,7 +119,7 @@
 		onload={handleLoad}
 		onclick={handleClick}
 		data-loaded={loaded}
-		class={cn('fade-in animate-in no-drag z-0 transition-all', imageClasses)}
+		class={cn('animate-in fade-in no-drag z-0 transition-all', imageClasses)}
 		class:absolute={placeholderSrc && shouldShowPlaceholder}
 		loading="lazy"
 	/>

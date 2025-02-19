@@ -6,10 +6,10 @@
 		variants: {
 			variant: {
 				default: 'bg-primary text-primary-foreground',
-				secondary: 'bg-secondary text-secondary-foreground',
 				outline: 'text-foreground border'
 			},
 			color: {
+				secondary: 'bg-secondary text-secondary-foreground',
 				white: 'bg-primary text-primary-foreground',
 				lightgray: 'text-primary dark:text-primary-foreground/85 bg-[#E9E9E9]',
 				sky: 'bg-sky-600 text-sky-50 dark:bg-sky-700',
@@ -17,7 +17,10 @@
 				indigo: 'bg-indigo-500 text-indigo-50',
 				orange: 'bg-orange-500 text-orange-50',
 				destructive: 'bg-destructive text-destructive-foreground',
-				valid: 'text-primary/80 dark:text-background/80 bg-[#64EA58]'
+				valid: 'text-primary/80 dark:text-background/80 bg-[#64EA58]',
+				darkGreen: 'bg-emerald-950 text-emerald-100',
+				darkBlue: 'bg-blue-950 text-blue-100',
+				darkRed: 'bg-red-950 text-red-100'
 			}
 		},
 		defaultVariants: {

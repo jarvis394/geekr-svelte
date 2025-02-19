@@ -6,37 +6,33 @@
 	import { cn } from '$lib/utils'
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
 	import { goto } from '$app/navigation'
+	import * as Tabs from '../ui/tabs'
+	import autoAnimate from '@formkit/auto-animate'
+	import {
+		type ModeItem,
+		ARTICLE_COMPLEXITY,
+		TOP_MODES,
+		NEW_MODES,
+		TABBAR_MODES
+	} from '$lib/config/modes'
+	// import { MediaQuery } from 'svelte/reactivity'
 
-	type ModeItem = Partial<GetArticlesParamsData & { label: string }>
 	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement> & {
 		articleParams: GetArticlesParamsData
 	}
 
 	const { class: containerClasses, articleParams, ...other }: ArticlesSwitcherProps = $props()
-	const modes: ModeItem[] = [
-		{
-			label: 'Топ дня',
-			mode: 'top',
-			period: 'daily'
-		},
-		{
-			label: 'Топ недели',
-			mode: 'top',
-			period: 'weekly'
-		},
-		{
-			label: 'Новые',
-			mode: 'new'
-		}
-	]
 
-	const isSelected = (mode: ModeItem) => {
+	// const smUp = new MediaQuery('min-width: 640px')
+	const excludeKeys = (key: string): key is 'label' | 'tabbarLabel' | 'complexity' | 'smUp' =>
+		['label', 'tabbarLabel', 'smUp', 'complexity'].includes(key)
+	const isSelected = (mode: ModeItem, selectedMode: Partial<ModeItem> = articleParams) => {
 		for (const key in mode) {
 			const typedKey = key as keyof ModeItem
-			if (typedKey === 'label') continue
+			if (excludeKeys(typedKey)) continue
 
 			const value = mode[typedKey]
-			const propsValue = articleParams[typedKey]
+			const propsValue = selectedMode[typedKey]
 
 			if (value !== propsValue) {
 				return false
@@ -45,25 +41,121 @@
 		return true
 	}
 
+	const isSelectedInsideModes = (mode: ModeItem, modes: ModeItem[]) => {
+		return modes.some((e) => {
+			// TODO: rethink
+			// if (e.smUp && !smUp.current) return false
+			return isSelected(e, mode)
+		})
+	}
+
+	const getSelectedComplexityFromParams = () => {
+		return ARTICLE_COMPLEXITY.find((item) => item.complexity === articleParams.complexity)
+	}
+
+	const initialSelectedMode = TOP_MODES.concat(NEW_MODES).find((mode) => isSelected(mode))
+	const initialSelectedComplexity = getSelectedComplexityFromParams()
+	let selectedMode = $state(initialSelectedMode || TOP_MODES[0])
+	let drawerSelectedMode = $state<ModeItem>(initialSelectedMode || TOP_MODES[0])
+	let selectedComplexity = $state<ModeItem>(initialSelectedComplexity || ARTICLE_COMPLEXITY[0])
+	const shouldShowModeInTabbar = $derived(
+		selectedMode && !isSelectedInsideModes(selectedMode, TABBAR_MODES)
+	)
+
+	const resetDrawerSelectedMode = () => {
+		drawerSelectedMode = selectedMode
+		selectedComplexity = getSelectedComplexityFromParams() || selectedComplexity
+	}
+
 	const handleClick = (mode: ModeItem) => {
 		if (isSelected(mode)) return
+		selectedMode = mode
+		drawerSelectedMode = mode
+		// Reset selectedComplexity to "all"
+		selectedComplexity = ARTICLE_COMPLEXITY[0]
 		goto('/articles' + makeArticlesPageUrlFromParams(mode))
 	}
+
+	const handleDrawerModeClick = (mode: ModeItem) => {
+		if (mode.complexity) {
+			drawerSelectedMode = { ...drawerSelectedMode, complexity: mode.complexity }
+			selectedComplexity = mode
+		} else {
+			drawerSelectedMode = { ...drawerSelectedMode, ...mode }
+		}
+	}
+
+	const handleDrawerConfirm = () => {
+		if (!drawerSelectedMode) return
+		selectedMode = { ...drawerSelectedMode, complexity: selectedComplexity.complexity }
+		goto('/articles' + makeArticlesPageUrlFromParams(drawerSelectedMode))
+	}
 </script>
+
+{#snippet TabContent(value: string, modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
+	<Tabs.Content {value} class="flex flex-col">
+		<small class="text-muted-foreground mb-3 text-base leading-none font-medium">Период</small>
+		<div class="mb-3 grid grid-cols-2 gap-2">
+			{#each modes as mode}
+				{@const selected = isSelected(mode, drawerSelectedMode)}
+				<Button
+					variant={selected ? 'default' : 'secondary'}
+					size="lg"
+					class={cn('grid-cols-1', {
+						'col-span-2': withAlltimeButtonExpanded && mode.period === 'alltime'
+					})}
+					onclick={handleDrawerModeClick.bind(null, mode)}
+				>
+					{mode.label}
+				</Button>
+			{/each}
+		</div>
+		<small class="text-muted-foreground mb-3 text-base leading-none font-medium">Сложность</small>
+		<div class="xs:grid-cols-4 grid grid-cols-2 gap-2">
+			{#each ARTICLE_COMPLEXITY as item}
+				{@const selected = selectedComplexity.complexity === item.complexity}
+				<Button
+					variant={selected ? 'default' : 'secondary'}
+					size="lg"
+					onclick={handleDrawerModeClick.bind(null, item)}
+				>
+					{item.label}
+				</Button>
+			{/each}
+		</div>
+	</Tabs.Content>
+{/snippet}
+
+{#snippet TabbarButton(mode: ModeItem)}
+	{@const selected = isSelected(mode)}
+	<Button
+		variant={selected ? 'default' : 'secondary'}
+		onclick={handleClick.bind(null, mode)}
+		class={cn('rounded-xl text-base font-medium', {
+			// TODO: rethink, maybe not needed
+			// 'hidden sm:flex': mode.smUp
+		})}
+	>
+		{mode.tabbarLabel}
+	</Button>
+{/snippet}
 
 <Drawer.Root>
 	<div
 		{...other}
 		class={cn('flex flex-row items-center gap-1 overflow-x-auto p-2 pt-1', containerClasses)}
+		use:autoAnimate
 	>
-		{#each modes as mode}
-			<Button
-				variant={isSelected(mode) ? 'default' : 'secondary'}
-				onclick={handleClick.bind(null, mode)}
-				class="rounded-xl text-base font-medium">{mode.label}</Button
-			>
+		{#each TABBAR_MODES as mode}
+			{#if mode.mode !== 'new' || !shouldShowModeInTabbar}
+				{@render TabbarButton(mode)}
+			{/if}
 		{/each}
+		{#if shouldShowModeInTabbar}
+			{@render TabbarButton(selectedMode)}
+		{/if}
 		<Drawer.Trigger
+			onclick={resetDrawerSelectedMode}
 			class={buttonVariants({
 				variant: 'secondary',
 				size: 'icon',
@@ -75,13 +167,33 @@
 
 		<Drawer.Portal>
 			<Drawer.Content>
-				<Drawer.Header>
-					<Drawer.Title>Are you sure absolutely sure?</Drawer.Title>
-					<Drawer.Description>This action cannot be undone.</Drawer.Description>
-				</Drawer.Header>
+				<Tabs.Root
+					value={drawerSelectedMode?.mode || selectedMode?.mode}
+					class="flex flex-col gap-2 p-4 pb-0"
+				>
+					<div class="flex flex-col gap-3">
+						<small class="text-muted-foreground text-base leading-none font-medium">
+							Сначала показывать
+						</small>
+						<Tabs.List>
+							<Tabs.Trigger value="top">Лучшие</Tabs.Trigger>
+							<Tabs.Trigger value="new">Новые</Tabs.Trigger>
+						</Tabs.List>
+					</div>
+					{@render TabContent('top', TOP_MODES, true)}
+					{@render TabContent('new', NEW_MODES)}
+				</Tabs.Root>
 				<Drawer.Footer>
-					<Button>Submit</Button>
-					<Drawer.Close>Cancel</Drawer.Close>
+					<Drawer.Close
+						onclick={handleDrawerConfirm}
+						class={buttonVariants({
+							variant: 'default',
+							size: 'lg'
+						})}
+					>
+						Применить
+						<md-ripple></md-ripple>
+					</Drawer.Close>
 				</Drawer.Footer>
 			</Drawer.Content>
 		</Drawer.Portal>

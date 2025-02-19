@@ -11,6 +11,8 @@
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
 	import ArticleLabels from '../article-labels/article-labels.svelte'
 	import { cn, getArticleLeadImage } from '$lib/utils'
+	import Gauge from 'lucide-svelte/icons/gauge'
+	import { ARTICLE_COMPLEXITY } from '$lib/config/modes'
 
 	export const ARTICLE_ITEM_IMAGE_HEIGHT = 212
 	const MAX_PREVIEW_TEXT_LENGTH = 600
@@ -33,6 +35,26 @@
 		])
 	)
 	const leadImage = $derived(getArticleLeadImage(article))
+	const complexityLabel = $derived.by(() => {
+		if (article.complexity === 'low') {
+			return 'Лёгкий'
+		} else if (article.complexity === 'medium') {
+			return 'Средний'
+		} else if (article.complexity === 'high') {
+			return 'Сложный'
+		}
+		return ''
+	})
+	const complexityColor = $derived.by(() => {
+		if (article.complexity === 'low') {
+			return 'text-emerald-600 dark:text-emerald-400'
+		} else if (article.complexity === 'medium') {
+			return 'text-blue-600 dark:text-blue-400'
+		} else if (article.complexity === 'high') {
+			return 'text-red-600 dark:text-red-400'
+		}
+		return ''
+	})
 </script>
 
 <div
@@ -73,9 +95,16 @@
 			class="ring-default flex flex-col gap-1 p-3 pb-0"
 		>
 			<div
-				class="font-heading text-muted-foreground dark:text-hint flex flex-row gap-1.5 text-sm font-medium"
+				class="font-heading text-muted-foreground dark:text-hint flex flex-row flex-wrap gap-1.5 gap-y-0.5 text-sm font-medium"
 			>
 				{timestampText}<span>•</span>{viewsText}
+				{#if article.complexity}
+					<span>•</span>
+					<div class={cn('flex items-center gap-1', complexityColor)}>
+						<Gauge size={16} strokeWidth={2.5} />
+						{complexityLabel}
+					</div>
+				{/if}
 			</div>
 			<h2 class="font-heading text-primary text-xl font-bold">
 				{titlePlaintext}
