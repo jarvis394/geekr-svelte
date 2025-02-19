@@ -95,7 +95,7 @@
 {#snippet TabContent(value: string, modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
 	<Tabs.Content {value} class="flex flex-col">
 		<small class="text-muted-foreground mb-3 text-base leading-none font-heading font-medium">Период</small>
-		<div class="mb-3 grid grid-cols-2 gap-2">
+		<div class="mb-4 grid grid-cols-2 gap-2">
 			{#each modes as mode}
 				{@const selected = isSelected(mode, drawerSelectedMode)}
 				<Button
