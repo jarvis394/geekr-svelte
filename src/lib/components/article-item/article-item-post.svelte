@@ -11,9 +11,8 @@
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
 	import ArticleLabels from '../article-labels/article-labels.svelte'
 	import { cn, getArticleLeadImage } from '$lib/utils'
-	import Gauge from 'lucide-svelte/icons/gauge'
 
-	export const ARTICLE_ITEM_IMAGE_HEIGHT = 212
+	const ARTICLE_ITEM_IMAGE_HEIGHT = 212
 	const MAX_PREVIEW_TEXT_LENGTH = 600
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 
@@ -54,6 +53,16 @@
 		}
 		return ''
 	})
+	const gaugePointerPath = $derived.by(() => {
+		if (article.complexity === 'low') {
+			return '-4-4'
+		} else if (article.complexity === 'medium') {
+			return '0-5'
+		} else if (article.complexity === 'high') {
+			return '4-4'
+		}
+		return '0-5'
+	})
 </script>
 
 <div
@@ -77,7 +86,8 @@
 			<Image
 				disableZoom
 				containerProps={{
-					class: 'h-[212px] w-full rounded-none object-cover'
+					class: 'w-full rounded-none object-cover',
+					style: `height: ${ARTICLE_ITEM_IMAGE_HEIGHT}px`
 				}}
 				class="h-full w-full object-cover"
 				src={leadImage}
@@ -100,7 +110,21 @@
 				{#if article.complexity}
 					<span>•</span>
 					<div class={cn('flex items-center gap-1', complexityColor)}>
-						<Gauge size={16} strokeWidth={2.5} />
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-gauge mb-[1px]"
+						>
+							<path d={`m12 14 ${gaugePointerPath}`} />
+							<path d="M3.34 19a10 10 0 1 1 17.32 0" />
+						</svg>
 						{complexityLabel}
 					</div>
 				{/if}
