@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { pushState } from '$app/navigation'
 	import { cn } from '$lib/utils'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PreparedPhotoSwipeOptions } from 'photoswipe'
@@ -21,12 +22,14 @@
 		src,
 		placeholderSrc,
 		alt,
+		width = 'auto',
+		height = 'auto',
 		containerProps = {},
 		class: imageClasses,
 		disableZoom,
 		...other
 	}: ImageProps = $props()
-	const { class: containerClasses, ...otherContainerProps } = containerProps
+	const { class: containerClasses, style, ...otherContainerProps } = containerProps
 	const lightboxOptions: Partial<PreparedPhotoSwipeOptions> = {
 		clickToCloseNonZoomable: true,
 		showHideOpacity: true,
@@ -45,16 +48,19 @@
 		close: true,
 		pswpModule: () => import('photoswipe')
 	}
+	const lightbox = new PhotoSwipeLightbox(lightboxOptions)
 	let shouldShowPlaceholder = $state(false)
 	let loaded = $state(true)
-	let imageDimensions = $state({ width: 0, height: 0 })
+	let imageDimensions = $state({
+		width: isNaN(Number(width)) ? 0 : Number(width),
+		height: isNaN(Number(height)) ? 0 : Number(height)
+	})
 
 	const handleLoad = (e: { currentTarget: EventTarget & Element }) => {
-		const rect = e.currentTarget.getBoundingClientRect()
 		loaded = true
 		imageDimensions = {
-			width: rect?.width || 0,
-			height: rect?.height || 0
+			width: (e.currentTarget as HTMLImageElement).naturalWidth || 0,
+			height: (e.currentTarget as HTMLImageElement).naturalHeight || 0
 		}
 	}
 
@@ -68,8 +74,6 @@
 		const windowWidth = window.innerWidth - 32
 		const scaleFactor = windowWidth / imageDimensions.width
 
-		const lightbox = new PhotoSwipeLightbox(lightboxOptions)
-
 		lightbox.options.dataSource = [
 			{
 				src,
@@ -77,8 +81,41 @@
 				height: imageDimensions.height * scaleFactor
 			}
 		]
+
 		lightbox.loadAndOpen(0)
+
+		pushState('', {
+			pswp: true
+		})
 	}
+
+	$effect(() => {
+		const stopPropagation = (e: Event) => {
+			e.preventDefault()
+			e.stopPropagation()
+		}
+
+		// Tries to fix focus trap issues on mobile
+		lightbox.on('afterInit', () => {
+			document.querySelector('.pswp__container')?.addEventListener('touchstart', stopPropagation, {
+				passive: true
+			})
+		})
+
+		return () => {
+			document.querySelector('.pswp__container')?.removeEventListener('touchstart', stopPropagation)
+		}
+	})
+
+	$effect(() => {
+		const handleBack = (_e: PopStateEvent) => {
+			if (lightbox.pswp?.isOpen) {
+				lightbox.pswp.close()
+			}
+		}
+
+		window.addEventListener('popstate', handleBack)
+	})
 </script>
 
 <div
@@ -87,6 +124,7 @@
 		'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-all',
 		containerClasses
 	)}
+	style={`width: ${width}; height: ${height};` + style}
 	data-loaded={loaded}
 >
 	{#if shouldShowPlaceholder}
@@ -96,8 +134,9 @@
 				{alt}
 				src={placeholderSrc}
 				loading="eager"
+				decoding="async"
 				class={cn(
-					'no-drag z-10 scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded]:scale-100 data-[loaded]:opacity-0',
+					'no-drag z-10 h-auto w-full scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded]:scale-100 data-[loaded]:opacity-0',
 					imageClasses
 				)}
 				data-loaded={loaded}
@@ -118,8 +157,9 @@
 		onload={handleLoad}
 		onclick={handleClick}
 		data-loaded={loaded}
-		class={cn('animate-in fade-in no-drag z-0 transition-all', imageClasses)}
+		class={cn('animate-in fade-in no-drag z-0 h-auto w-full transition-all', imageClasses)}
 		class:absolute={placeholderSrc && shouldShowPlaceholder}
 		loading="lazy"
+		decoding="async"
 	/>
 </div>

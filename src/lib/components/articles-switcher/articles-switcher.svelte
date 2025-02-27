@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements'
 	import Button, { buttonVariants } from '../ui/button/button.svelte'
-	import Settings from 'lucide-svelte/icons/settings'
+	import Filter from 'lucide-svelte/icons/filter'
 	import * as Drawer from '$lib/components/ui/drawer'
 	import { cn } from '$lib/utils'
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
@@ -15,7 +15,6 @@
 		NEW_MODES,
 		TABBAR_MODES
 	} from '$lib/config/modes'
-	// import { MediaQuery } from 'svelte/reactivity'
 
 	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement> & {
 		articleParams: GetArticlesParamsData
@@ -23,7 +22,6 @@
 
 	const { class: containerClasses, articleParams, ...other }: ArticlesSwitcherProps = $props()
 
-	// const smUp = new MediaQuery('min-width: 640px')
 	const excludeKeys = (key: string): key is 'label' | 'tabbarLabel' | 'complexity' | 'smUp' =>
 		['label', 'tabbarLabel', 'smUp', 'complexity'].includes(key)
 	const isSelected = (mode: ModeItem, selectedMode: Partial<ModeItem> = articleParams) => {
@@ -42,11 +40,7 @@
 	}
 
 	const isSelectedInsideModes = (mode: ModeItem, modes: ModeItem[]) => {
-		return modes.some((e) => {
-			// TODO: rethink
-			// if (e.smUp && !smUp.current) return false
-			return isSelected(e, mode)
-		})
+		return modes.some((e) => isSelected(e, mode))
 	}
 
 	const getSelectedComplexityFromParams = () => {
@@ -94,7 +88,9 @@
 
 {#snippet TabContent(value: string, modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
 	<Tabs.Content {value} class="flex flex-col">
-		<small class="text-muted-foreground mb-3 text-base leading-none font-heading font-medium">Период</small>
+		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium"
+			>Период</small
+		>
 		<div class="mb-4 grid grid-cols-2 gap-2">
 			{#each modes as mode}
 				{@const selected = isSelected(mode, drawerSelectedMode)}
@@ -110,7 +106,9 @@
 				</Button>
 			{/each}
 		</div>
-		<small class="text-muted-foreground mb-3 text-base leading-none font-heading font-medium">Сложность</small>
+		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium"
+			>Сложность</small
+		>
 		<div class="xs:grid-cols-4 grid grid-cols-2 gap-2">
 			{#each ARTICLE_COMPLEXITY as item}
 				{@const selected = selectedComplexity.complexity === item.complexity}
@@ -131,10 +129,7 @@
 	<Button
 		variant={selected ? 'default' : 'secondary'}
 		onclick={handleClick.bind(null, mode)}
-		class={cn('rounded-xl text-base font-medium', {
-			// TODO: rethink, maybe not needed
-			// 'hidden sm:flex': mode.smUp
-		})}
+		class="rounded-xl text-base font-medium"
 	>
 		{mode.tabbarLabel}
 	</Button>
@@ -162,7 +157,7 @@
 				class: 'rounded-xl p-2 text-base font-medium [&_svg]:size-5'
 			})}
 		>
-			<Settings strokeWidth={2} />
+			<Filter strokeWidth={2} />
 		</Drawer.Trigger>
 
 		<Drawer.Portal>
@@ -172,7 +167,7 @@
 					class="flex flex-col gap-2 p-4 pb-0"
 				>
 					<div class="flex flex-col gap-3">
-						<small class="text-muted-foreground text-base leading-none font-heading font-medium">
+						<small class="text-muted-foreground font-heading text-base leading-none font-medium">
 							Сначала показывать
 						</small>
 						<Tabs.List>

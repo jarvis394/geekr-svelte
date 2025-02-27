@@ -40,7 +40,8 @@ export default async ({
 	hubAlias,
 	flow = 'all',
 	complexity,
-	perPage = 20
+	perPage = 20,
+	fetch
 }: GetArticlesProps) =>
 	await makeRequest<ArticlesResponse>({
 		path: 'articles',

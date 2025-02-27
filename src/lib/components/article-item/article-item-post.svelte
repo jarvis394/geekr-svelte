@@ -89,7 +89,7 @@
 					class: 'w-full rounded-none object-cover',
 					style: `height: ${ARTICLE_ITEM_IMAGE_HEIGHT}px`
 				}}
-				class="h-full w-full object-cover"
+				class="min-h-full min-w-full object-cover"
 				src={leadImage}
 				alt={titlePlaintext}
 			/>

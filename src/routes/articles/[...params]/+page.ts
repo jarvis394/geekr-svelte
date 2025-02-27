@@ -1,9 +1,9 @@
 import { error, redirect } from '@sveltejs/kit'
-import type { PageServerLoad } from './$types'
+import type { PageLoad } from './$types'
 import * as api from '$lib/api'
 import { parseArticlesParams, makeArticlesPageUrlFromParams } from '$lib/utils/articles'
 
-export const load: PageServerLoad = ({ params, url, fetch }) => {
+export const load: PageLoad = ({ params, url, fetch }) => {
 	const articlesParamsResult = parseArticlesParams(params.params.split('/'))
 	const urlFromParams =
 		articlesParamsResult.data &&
