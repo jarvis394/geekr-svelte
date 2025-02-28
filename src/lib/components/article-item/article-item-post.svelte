@@ -87,8 +87,10 @@
 				disableZoom
 				containerProps={{
 					class: 'w-full rounded-none object-cover',
-					style: `height: ${ARTICLE_ITEM_IMAGE_HEIGHT}px`
+					style: 'height: ' + ARTICLE_ITEM_IMAGE_HEIGHT + 'px'
 				}}
+				width={'100%'}
+				height={ARTICLE_ITEM_IMAGE_HEIGHT}
 				class="min-h-full min-w-full object-cover"
 				src={leadImage}
 				alt={titlePlaintext}
@@ -175,6 +177,10 @@
 		width: 100%;
 		top: 0;
 		height: 48px;
-		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.16), transparent);
+		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.03), transparent);
+	}
+
+	:global(.dark .ArticleItem__image::after) {
+		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.07), transparent);
 	}
 </style>

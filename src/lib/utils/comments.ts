@@ -1,58 +1,31 @@
+import type { APIResponseComments } from '$lib/types'
 import type { Comment } from '$lib/types/Comment'
 
-export const commentsContextKey = 'article-comments'
+export const flattenComments = (response: APIResponseComments) => {
+	const { comments, threads } = response
+	const result: Comment[] = []
 
-// interface CollapseBranchProps {
-// 	nodes: Comment[]
-// 	collapsedRoots: Record<string, boolean>
-// 	parentId: Comment['id']
-// }
+	threads.forEach((thread) => {
+		const stack = [thread]
 
-export interface GetArticleCommentsOptions {
-	sortByKarma: boolean
+		while (stack.length > 0) {
+			const commentId = stack.pop()
+			const comment = comments[commentId!]
+
+			if (comment) {
+				if (comment.level > 6) comment.level = 6
+				result.push(comment)
+
+				// DFS order
+				for (let i = comment.children.length - 1; i >= 0; i--) {
+					stack.push(comment.children[i])
+				}
+			}
+		}
+	})
+
+	return createBranches(result)
 }
-
-// export const parseComments = (
-// 	nodes: Record<string, Comment>,
-// 	options?: Partial<GetArticleCommentsOptions>
-// ) => {
-// 	const root: Comment[] = []
-// 	for (const id in nodes) {
-// 		const comment = nodes[id]
-// 		const parent = comment.parentId ? nodes[comment.parentId] : null
-// 		const commentChildren = comment.children as unknown as string[]
-// 		comment.children = []
-// 		comment.childrenIds = commentChildren
-// 		if (parent) {
-// 			parent.children.push(comment)
-// 		} else {
-// 			root.push(comment)
-// 		}
-// 	}
-// 	if (options?.sortByKarma) root.sort((a, b) => b.score - a.score)
-// 	return flatten(root)
-// }
-// export const flatten = (nodes: Comment[]) => {
-// 	const res: Comment[] = []
-// 	const stack: Comment[] = []
-
-// 	nodes.forEach((node) => {
-// 		stack.push(node)
-
-// 		while (stack.length) {
-// 			const item = stack.shift()
-
-// 			if (!item) break
-// 			if (item.children.length > 0) {
-// 				item.children.forEach((child) => stack.push(child))
-// 			} else {
-// 				res.push(item)
-// 			}
-// 		}
-// 	})
-
-// 	return res
-// }
 
 export const createBranches = (nodes: Comment[]) => {
 	const branches: Comment['branches'] = []
@@ -99,40 +72,4 @@ export const createBranches = (nodes: Comment[]) => {
 		}
 	}
 	return nodes
-}
-interface CollapseBranchProps {
-	nodes: Comment[]
-	collapsedRoots: Record<string, boolean>
-	parentId: Comment['id']
-}
-
-export const getCollapsedNodes = ({ nodes, collapsedRoots, parentId }: CollapseBranchProps) => {
-	const collapsedComments: Comment[] = []
-	const parentIndex = nodes.findIndex((e) => e.id === parentId)
-	const parentComment = nodes[parentIndex]
-	let isInCollapsed = false
-	let subCollapsedRoot: Comment | null = null
-
-	for (let i = parentIndex + 1; i < nodes.length - 1; i++) {
-		const current = nodes[i]
-		const next = nodes[i + 1]
-		if (isInCollapsed && next.level <= (subCollapsedRoot?.level || 0)) {
-			isInCollapsed = false
-		} else if (!isInCollapsed) {
-			collapsedComments.push(current)
-
-			// Thread has collapsed sub-thread
-			if (collapsedRoots[current.id]) {
-				isInCollapsed = true
-				subCollapsedRoot = current
-			}
-		}
-
-		if (next.level <= parentComment.level) break
-	}
-
-	return {
-		collapsedComments,
-		parentCommentId: parentComment.id
-	}
 }

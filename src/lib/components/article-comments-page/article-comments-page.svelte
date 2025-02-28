@@ -3,40 +3,19 @@
 	import { Header } from '../header'
 	import { WindowVirtualizer } from 'virtua/svelte'
 	import { ArticleComment } from '../article-comment'
-	import { createBranches } from '$lib/utils/comments'
+	import { flattenComments } from '$lib/utils/comments'
 	import { SvelteMap } from 'svelte/reactivity'
 	import { tick } from 'svelte'
 
 	type ArticleCommentsPageProps = { comments: APIResponseComments }
 	const { comments: propsComments }: ArticleCommentsPageProps = $props()
 
-	const flattenComments = (response: APIResponseComments) => {
-		const { comments, threads } = response
-		const result: Comment[] = []
-
-		threads.forEach((thread) => {
-			const stack = [thread]
-
-			while (stack.length > 0) {
-				const commentId = stack.pop()
-				const comment = comments[commentId!]
-
-				if (comment) {
-					result.push(comment)
-
-					// DFS order
-					for (let i = comment.children.length - 1; i >= 0; i--) {
-						stack.push(comment.children[i])
-					}
-				}
-			}
-		})
-
-		return createBranches(result)
-	}
-
+	/** Real comments data */
 	let comments = $state<Comment[]>(flattenComments(propsComments))
+	/** Items that are rendered in virtualized list */
+	let items = $state<Comment[]>(comments)
 	const collapsedRoots = new SvelteMap<string, { collapsedAmount: number }>()
+
 	let highlightedCommentIndex = $state(-1)
 	let branchHighlightStyles = $state('')
 	let virtualizer: WindowVirtualizer<Comment>
@@ -64,6 +43,10 @@
 		highlightedCommentIndex = index
 	}
 
+	const syncVirtualItems = () => {
+		items = comments.filter((e) => !e.isCollapsed)
+	}
+
 	const onBranchClick = (branch: CommentBranch) => {
 		let startIndex = -1
 		let collapsedAmount = 0
@@ -88,12 +71,14 @@
 			}
 		}
 
+		syncVirtualItems()
 		collapsedRoots.set(branch.parentId, {
 			collapsedAmount
 		})
 
+		const index = items.findIndex((e) => e.id === comments[startIndex].id)
 		resetBranchHighlight()
-		scrollToIndex(startIndex)
+		scrollToIndex(index)
 	}
 
 	const expandBranch = (comment: Comment) => {
@@ -130,26 +115,28 @@
 		}
 
 		collapsedRoots.delete(comment.id)
+		syncVirtualItems()
+		highlightedCommentIndex = -1
 	}
+
+	const getItemKey = (item: Comment) => item.id
 </script>
 
 <div class="ArticleComments">
 	{@html branchHighlightStyles}
 	<Header>Комментарии</Header>
-	<div class="animate-in fade-in">
-		<WindowVirtualizer bind:this={virtualizer} getKey={(item: Comment) => item.id} data={comments}>
+	<div class="animate-in fade-in translate-z-0 contain-content [&>div]:contain-content">
+		<WindowVirtualizer bind:this={virtualizer} getKey={getItemKey} data={items}>
 			{#snippet children(item: Comment, index)}
-				{#if !item.isCollapsed}
-					<ArticleComment
-						{expandBranch}
-						{onBranchClick}
-						{highlightBranch}
-						{resetBranchHighlight}
-						comment={item}
-						highlighted={highlightedCommentIndex === index}
-						collapsedRoot={collapsedRoots.get(item.id)}
-					/>
-				{/if}
+				<ArticleComment
+					{expandBranch}
+					{onBranchClick}
+					{highlightBranch}
+					{resetBranchHighlight}
+					comment={item}
+					highlighted={highlightedCommentIndex === index}
+					collapsedRoot={collapsedRoots.get(item.id)}
+				/>
 			{/snippet}
 		</WindowVirtualizer>
 	</div>

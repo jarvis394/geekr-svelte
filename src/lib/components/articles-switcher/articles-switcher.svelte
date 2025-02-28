@@ -88,9 +88,9 @@
 
 {#snippet TabContent(value: string, modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
 	<Tabs.Content {value} class="flex flex-col">
-		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium"
-			>Период</small
-		>
+		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium">
+			Период
+		</small>
 		<div class="mb-4 grid grid-cols-2 gap-2">
 			{#each modes as mode}
 				{@const selected = isSelected(mode, drawerSelectedMode)}
@@ -106,9 +106,9 @@
 				</Button>
 			{/each}
 		</div>
-		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium"
-			>Сложность</small
-		>
+		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium">
+			Сложность
+		</small>
 		<div class="xs:grid-cols-4 grid grid-cols-2 gap-2">
 			{#each ARTICLE_COMPLEXITY as item}
 				{@const selected = selectedComplexity.complexity === item.complexity}

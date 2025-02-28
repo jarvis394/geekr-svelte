@@ -21,8 +21,7 @@
 	const divRegexp = /<div[^>]+xmlns="http:\/\/www\.w3\.org\/1999\/xhtml">([\s\S]*)<\/div>$/g
 	const html = $derived(divRegexp.exec(propsHTML)?.[1] || propsHTML)
 	const iframeHeights = $state<Record<string, number | string>>({})
-
-	let imageIndex = 0
+	const hasIframe = $derived(html.search('<iframe'))
 
 	const processNode = (node: Element | Text) => {
 		if (!isTag(node)) return
@@ -79,6 +78,8 @@
 				iframeHeights[e.data.id] = e.data.height || 'auto'
 			}
 		}
+
+		if (!hasIframe) return
 
 		window.addEventListener('message', handler)
 		return () => {

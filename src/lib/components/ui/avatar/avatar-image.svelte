@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Avatar as AvatarPrimitive } from 'bits-ui'
+	import { type Avatar as AvatarPrimitive } from 'bits-ui'
 	import { cn } from '$lib/utils'
 
 	let {
@@ -12,6 +12,8 @@
 		hash?: string
 	} = $props()
 	const placeholderAvatarUrl = $derived.by(() => {
+		if (src) return null
+
 		let n = 0
 		hash?.split('').forEach((e) => (n += e.charCodeAt(0)))
 		const index = (n % 100) + 101

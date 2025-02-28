@@ -23,8 +23,8 @@
 		src,
 		placeholderSrc,
 		alt,
-		width = 'auto',
-		height = 'auto',
+		width = 'initial',
+		height = 'initial',
 		containerProps = {},
 		class: imageClasses,
 		disableZoom,
@@ -113,7 +113,10 @@
 	beforeNavigate((navigation) => {
 		if (lightbox.pswp?.isOpen) {
 			lightbox.pswp.close()
-			navigation.from && pushState(navigation.from?.url, { pswp: false })
+			if (navigation.from) {
+				pushState(navigation.from?.url, { pswp: false })
+			}
+
 			navigation.cancel()
 		}
 	})
@@ -126,7 +129,7 @@
 			'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-all',
 			containerClasses
 		)}
-		style={`width: ${width}; height: ${height};` + style}
+		{style}
 		data-loaded={loaded}
 		bind:this={element}
 	>
@@ -137,7 +140,7 @@
 					{alt}
 					src={placeholderSrc}
 					class={cn(
-						'no-drag z-10 h-auto w-full scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded="true"]:scale-100 data-[loaded="true"]:opacity-0',
+						'no-drag pointer-events-none z-10 h-auto w-full scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded="true"]:invisible data-[loaded="true"]:scale-100 data-[loaded="true"]:opacity-0',
 						imageClasses
 					)}
 					data-loaded={loaded}
@@ -147,7 +150,7 @@
 				<LoaderCircle
 					onanimationend={handleAnimationEnd}
 					data-loaded={loaded}
-					class={'animate-spin transition-all duration-250 data-[loaded="true"]:opacity-0'}
+					class={'text-muted-foreground pointer-events-none absolute animate-spin transition-all duration-500 data-[loaded="true"]:invisible data-[loaded="true"]:opacity-0'}
 				/>
 			{/if}
 		{/if}

@@ -220,7 +220,7 @@
 			filter: var(--formula-filter);
 			display: block !important;
 			width: fit-content !important;
-			@apply my-8 mx-auto;
+			@apply mx-auto my-8;
 		}
 
 		& .Image:has(img.formula.inline) {
