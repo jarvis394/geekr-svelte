@@ -54,6 +54,7 @@
 		"html-svelte-parser": "^1.0.0",
 		"number-to-words-ru": "^2.4.1",
 		"photoswipe": "^5.4.4",
+		"svelte-intersection-observer": "^1.0.0",
 		"sveltekit-view-transition": "^0.5.3",
 		"virtua": "^0.40.0",
 		"zod": "^3.24.1"

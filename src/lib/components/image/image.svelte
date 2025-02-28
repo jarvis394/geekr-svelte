@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { pushState } from '$app/navigation'
+	import { beforeNavigate, pushState, replaceState } from '$app/navigation'
 	import { cn } from '$lib/utils'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PreparedPhotoSwipeOptions } from 'photoswipe'
 	import PhotoSwipeLightbox from 'photoswipe/lightbox'
+	import IntersectionObserver from 'svelte-intersection-observer'
 	import type { HTMLImgAttributes, HTMLAttributes } from 'svelte/elements'
 
 	export type ImageProps = {
@@ -49,12 +50,14 @@
 		pswpModule: () => import('photoswipe')
 	}
 	const lightbox = new PhotoSwipeLightbox(lightboxOptions)
-	let shouldShowPlaceholder = $state(false)
-	let loaded = $state(true)
+	let shouldShowPlaceholder = $state(true)
+	let loaded = $state(false)
 	let imageDimensions = $state({
 		width: isNaN(Number(width)) ? 0 : Number(width),
 		height: isNaN(Number(height)) ? 0 : Number(height)
 	})
+	let element: HTMLElement | null = $state(null)
+	let intersecting: boolean = $state(false)
 
 	const handleLoad = (e: { currentTarget: EventTarget & Element }) => {
 		loaded = true
@@ -84,7 +87,7 @@
 
 		lightbox.loadAndOpen(0)
 
-		pushState('', {
+		replaceState('', {
 			pswp: true
 		})
 	}
@@ -107,59 +110,61 @@
 		}
 	})
 
-	$effect(() => {
-		const handleBack = (_e: PopStateEvent) => {
-			if (lightbox.pswp?.isOpen) {
-				lightbox.pswp.close()
-			}
+	beforeNavigate((navigation) => {
+		if (lightbox.pswp?.isOpen) {
+			lightbox.pswp.close()
+			navigation.from && pushState(navigation.from?.url, { pswp: false })
+			navigation.cancel()
 		}
-
-		window.addEventListener('popstate', handleBack)
 	})
 </script>
 
-<div
-	{...otherContainerProps}
-	class={cn(
-		'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-all',
-		containerClasses
-	)}
-	style={`width: ${width}; height: ${height};` + style}
-	data-loaded={loaded}
->
-	{#if shouldShowPlaceholder}
-		{#if placeholderSrc}
+<IntersectionObserver {element} once threshold={0} bind:intersecting>
+	<div
+		{...otherContainerProps}
+		class={cn(
+			'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-all',
+			containerClasses
+		)}
+		style={`width: ${width}; height: ${height};` + style}
+		data-loaded={loaded}
+		bind:this={element}
+	>
+		{#if shouldShowPlaceholder}
+			{#if placeholderSrc}
+				<img
+					{...other}
+					{alt}
+					src={placeholderSrc}
+					class={cn(
+						'no-drag z-10 h-auto w-full scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded="true"]:scale-100 data-[loaded="true"]:opacity-0',
+						imageClasses
+					)}
+					data-loaded={loaded}
+					onanimationend={handleAnimationEnd}
+				/>
+			{:else}
+				<LoaderCircle
+					onanimationend={handleAnimationEnd}
+					data-loaded={loaded}
+					class={'animate-spin transition-all duration-250 data-[loaded="true"]:opacity-0'}
+				/>
+			{/if}
+		{/if}
+		{#if intersecting}
 			<img
 				{...other}
+				{src}
 				{alt}
-				src={placeholderSrc}
-				loading="eager"
-				decoding="async"
+				onload={handleLoad}
+				onclick={handleClick}
+				data-loaded={loaded}
 				class={cn(
-					'no-drag z-10 h-auto w-full scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded]:scale-100 data-[loaded]:opacity-0',
+					'no-drag z-0 h-auto w-full opacity-0 transition-all duration-250 data-[loaded="true"]:opacity-100',
 					imageClasses
 				)}
-				data-loaded={loaded}
-				onanimationend={handleAnimationEnd}
-			/>
-		{:else}
-			<LoaderCircle
-				onanimationend={handleAnimationEnd}
-				data-loaded={loaded}
-				class="animate-spin transition-all duration-500 data-[loaded]:opacity-0"
+				class:absolute={placeholderSrc && shouldShowPlaceholder}
 			/>
 		{/if}
-	{/if}
-	<img
-		{...other}
-		{src}
-		{alt}
-		onload={handleLoad}
-		onclick={handleClick}
-		data-loaded={loaded}
-		class={cn('animate-in fade-in no-drag z-0 h-auto w-full transition-all', imageClasses)}
-		class:absolute={placeholderSrc && shouldShowPlaceholder}
-		loading="lazy"
-		decoding="async"
-	/>
-</div>
+	</div>
+</IntersectionObserver>

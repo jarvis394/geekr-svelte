@@ -22,6 +22,8 @@
 	const html = $derived(divRegexp.exec(propsHTML)?.[1] || propsHTML)
 	const iframeHeights = $state<Record<string, number | string>>({})
 
+	let imageIndex = 0
+
 	const processNode = (node: Element | Text) => {
 		if (!isTag(node)) return
 
@@ -55,16 +57,15 @@
 		}
 
 		if (node.name === 'img') {
-			const src = node.attribs['data-src']
-			const placeholderSrc = node.attribs.src
-			const hasPlaceholder = !!placeholderSrc && placeholderSrc !== src
+			const { 'data-src': dataSrc, src: possiblePlaceholderSrc, ...otherImageProps } = node.attribs
+			const hasPlaceholder = !!dataSrc && dataSrc !== possiblePlaceholderSrc
 
 			return {
 				component: Image,
 				props: {
-					...node.attribs,
-					src: src || placeholderSrc,
-					placeholderSrc: hasPlaceholder ? placeholderSrc : undefined
+					...otherImageProps,
+					src: dataSrc || possiblePlaceholderSrc,
+					placeholderSrc: hasPlaceholder ? possiblePlaceholderSrc : undefined
 				}
 			}
 		}

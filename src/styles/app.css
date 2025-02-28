@@ -218,7 +218,9 @@
 
 		& .Image:has(img.formula) {
 			filter: var(--formula-filter);
-			@apply my-8 w-full;
+			display: block !important;
+			width: fit-content !important;
+			@apply my-8 mx-auto;
 		}
 
 		& .Image:has(img.formula.inline) {
@@ -293,6 +295,10 @@
 		transform: translateX(100%);
 		border-left: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-right;
+	}
+
+	.pswp__img {
+		background-color: white;
 	}
 }
 
