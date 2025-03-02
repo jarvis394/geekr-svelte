@@ -49,7 +49,7 @@
 	const handleClick = () => {
 		if (disableZoom) return
 
-		const windowWidth = Math.min(window.innerWidth - 32, 672 - 32)
+		const windowWidth = window.innerWidth - 32
 		const scaleFactor = windowWidth / imageDimensions.width
 
 		openLightbox({
