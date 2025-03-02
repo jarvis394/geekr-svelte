@@ -3,7 +3,8 @@
 	import calendarPlugin from 'dayjs/plugin/calendar'
 	import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
-	import { scrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
+	import { useScrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
+	import { useLightbox } from '$lib/hooks/lightbox.svelte'
 	import { setupViewTransition } from 'sveltekit-view-transition'
 	import { onMount } from 'svelte'
 
@@ -40,7 +41,8 @@
 	})
 
 	dayjs.locale('ru')
-	scrollTrigger()
+	useScrollTrigger()
+	useLightbox()
 
 	classes(({ navigation }) => {
 		// Catches navigation inside the page and disables transition
@@ -48,11 +50,11 @@
 			return []
 		}
 
-		if (navigation.type === 'popstate') {
-			return ['leaving']
+		if (navigation.delta === -1) {
+			return ['view-transition', 'leaving']
 		}
 
-		return ['entering']
+		return ['view-transition', 'entering']
 	})
 
 	onMount(async () => {

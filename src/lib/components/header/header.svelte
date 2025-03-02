@@ -6,7 +6,6 @@
 	import { Button } from '../ui/button'
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
-	import { setupViewTransition } from 'sveltekit-view-transition'
 
 	export type HeaderProps = {
 		scrollThreshold?: number
@@ -16,7 +15,6 @@
 		withPositionBar?: boolean
 	} & HTMLAttributes<HTMLElement>
 
-	const { transition } = setupViewTransition()
 	const hiddenClasses = 'opacity-0 pointer-events-none'
 	const {
 		class: containerClasses,
@@ -30,7 +28,11 @@
 	const isShrunk = $derived(scrollTriggerState.trigger && withShrinking)
 
 	const handleBack = () => {
-		if (history.length > 1) {
+		// @ts-expect-error Chrome specific API
+		const canGoBackChrome = window.navigation.canGoBack
+		const canGoBack = window.history.length > 0 || canGoBackChrome
+
+		if (canGoBack) {
 			history.back()
 		} else {
 			goto('/articles', {
@@ -67,7 +69,6 @@
 
 <header
 	{...other}
-	use:transition={'header'}
 	class={cn(
 		'Header bg-background text-primary font-heading fixed top-0 z-50 flex h-12 w-full max-w-2xl flex-row items-center gap-1 overflow-hidden pr-2 pl-1 select-none',
 		containerClasses,
@@ -118,6 +119,7 @@
 	.Header {
 		will-change: transform;
 		transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+		view-transition-name: header;
 	}
 
 	.Header > p {

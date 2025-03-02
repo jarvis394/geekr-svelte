@@ -19,26 +19,37 @@
 		animation: none;
 	}
 
-	html.entering::view-transition-new(root) {
+	html.view-transition.entering::view-transition-new(root) {
 		animation:
 			zoom-in-enter 500ms cubic-bezier(0.2, 0, 0, 1),
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1);
 	}
-	html.entering::view-transition-old(root) {
+	html.view-transition.entering::view-transition-old(root) {
 		animation:
 			zoom-out-enter 500ms cubic-bezier(0.2, 0, 0, 1) forwards,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) forwards;
 	}
 
-	html.leaving::view-transition-new(root) {
+	html.view-transition.leaving::view-transition-new(root) {
 		animation:
 			zoom-in-leave 500ms cubic-bezier(0.2, 0, 0, 1),
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1);
 	}
-	html.leaving::view-transition-old(root) {
+	html.view-transition.leaving::view-transition-old(root) {
 		animation:
 			zoom-out-leave 500ms cubic-bezier(0.2, 0, 0, 1) forwards,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) forwards;
+	}
+
+	html.view-transition::view-transition-old(header) {
+		animation: fade-out 500ms cubic-bezier(0.2, 0, 0, 1);
+	}
+	html.view-transition::view-transition-new(header) {
+		animation: fade-in 500ms cubic-bezier(0.2, 0, 0, 1);
+	}
+
+	html.view-transition::view-transition-group(header) {
+		background-color: hsl(var(--background) / 1);
 	}
 
 	@keyframes zoom-in-enter {

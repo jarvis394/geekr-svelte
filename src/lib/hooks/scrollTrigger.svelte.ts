@@ -20,7 +20,7 @@ const defaultTarget = typeof window !== 'undefined' ? window : null
 
 export const state = $state({ trigger: false })
 
-export const scrollTrigger = (options: Partial<Options> = {}) => {
+export const useScrollTrigger = (options: Partial<Options> = {}) => {
 	const {
 		target = defaultTarget,
 		threshold = defaultThreshold,

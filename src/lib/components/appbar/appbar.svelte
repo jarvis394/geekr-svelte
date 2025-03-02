@@ -3,20 +3,16 @@
 	import { cn } from '$lib/utils'
 	import Logo from '../logo/logo.svelte'
 	import * as Avatar from '$lib/components/ui/avatar'
-	import { setupViewTransition } from 'sveltekit-view-transition'
 
 	export type AppBarProps = HTMLAttributes<HTMLElement>
-
-	const { transition } = setupViewTransition()
 
 	const { class: containerClasses, ...other }: AppBarProps = $props()
 </script>
 
 <header
 	{...other}
-	use:transition={'header'}
 	class={cn(
-		'bg-background fixed top-0 z-50 flex w-full max-w-2xl flex-row items-center px-4 py-2',
+		'AppBar bg-background fixed top-0 z-50 flex w-full max-w-2xl flex-row items-center px-4 py-2',
 		containerClasses
 	)}
 >
@@ -30,3 +26,9 @@
 	</div>
 </header>
 <div class="h-12"></div>
+
+<style>
+	.AppBar {
+		view-transition-name: header;
+	}
+</style>

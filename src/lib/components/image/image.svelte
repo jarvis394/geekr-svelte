@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { beforeNavigate, pushState, replaceState } from '$app/navigation'
+	import { openLightbox } from '$lib/hooks/lightbox.svelte'
 	import { cn } from '$lib/utils'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
-	import type { PreparedPhotoSwipeOptions } from 'photoswipe'
-	import PhotoSwipeLightbox from 'photoswipe/lightbox'
 	import IntersectionObserver from 'svelte-intersection-observer'
 	import type { HTMLImgAttributes, HTMLAttributes } from 'svelte/elements'
 
@@ -15,10 +13,6 @@
 		containerProps?: HTMLAttributes<HTMLDivElement>
 	} & HTMLImgAttributes
 
-	const closeSVG =
-		'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>'
-	const zoomSVG =
-		'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zoom-in"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg>'
 	const {
 		src,
 		placeholderSrc,
@@ -31,25 +25,6 @@
 		...other
 	}: ImageProps = $props()
 	const { class: containerClasses, style, ...otherContainerProps } = containerProps
-	const lightboxOptions: Partial<PreparedPhotoSwipeOptions> = {
-		clickToCloseNonZoomable: true,
-		showHideOpacity: true,
-		showAnimationDuration: 300,
-		hideAnimationDuration: 300,
-		bgOpacity: 0.8,
-		pinchToClose: true,
-		bgClickAction: 'close',
-		arrowNext: false,
-		arrowPrev: false,
-		wheelToZoom: true,
-		closeOnVerticalDrag: true,
-		counter: false,
-		closeSVG,
-		zoomSVG,
-		close: true,
-		pswpModule: () => import('photoswipe')
-	}
-	const lightbox = new PhotoSwipeLightbox(lightboxOptions)
 	let shouldShowPlaceholder = $state(true)
 	let loaded = $state(false)
 	let imageDimensions = $state({
@@ -74,52 +49,15 @@
 	const handleClick = () => {
 		if (disableZoom) return
 
-		const windowWidth = window.innerWidth - 32
+		const windowWidth = Math.min(window.innerWidth - 32, 672 - 32)
 		const scaleFactor = windowWidth / imageDimensions.width
 
-		lightbox.options.dataSource = [
-			{
-				src,
-				width: window.innerWidth - 32,
-				height: imageDimensions.height * scaleFactor
-			}
-		]
-
-		lightbox.loadAndOpen(0)
-
-		replaceState('', {
-			pswp: true
+		openLightbox({
+			src,
+			width: windowWidth,
+			height: imageDimensions.height * scaleFactor
 		})
 	}
-
-	$effect(() => {
-		const stopPropagation = (e: Event) => {
-			e.preventDefault()
-			e.stopPropagation()
-		}
-
-		// Tries to fix focus trap issues on mobile
-		lightbox.on('afterInit', () => {
-			document.querySelector('.pswp__container')?.addEventListener('touchstart', stopPropagation, {
-				passive: true
-			})
-		})
-
-		return () => {
-			document.querySelector('.pswp__container')?.removeEventListener('touchstart', stopPropagation)
-		}
-	})
-
-	beforeNavigate((navigation) => {
-		if (lightbox.pswp?.isOpen) {
-			lightbox.pswp.close()
-			if (navigation.from) {
-				pushState(navigation.from?.url, { pswp: false })
-			}
-
-			navigation.cancel()
-		}
-	})
 </script>
 
 <IntersectionObserver {element} once threshold={0} bind:intersecting>
