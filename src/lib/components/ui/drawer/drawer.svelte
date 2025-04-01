@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { WithChildren } from 'bits-ui'
 	import { Drawer as DrawerPrimitive } from 'vaul-svelte'
+	import './drawer.css'
 
 	let {
 		shouldScaleBackground = false,

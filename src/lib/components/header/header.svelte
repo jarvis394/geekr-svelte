@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements'
-	import { cn } from '$lib/utils'
+	import { cn, makeArticlesPageUrlFromParams } from '$lib/utils'
 	import { state as scrollTriggerState } from '$lib/hooks/scrollTrigger.svelte'
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left'
 	import { Button } from '../ui/button'
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
+	import getCachedMode from '$lib/utils/getCachedMode'
 
 	export type HeaderProps = {
 		scrollThreshold?: number
@@ -29,13 +30,13 @@
 
 	const handleBack = () => {
 		// @ts-expect-error Chrome specific API
-		const canGoBackChrome = window.navigation.canGoBack
+		const canGoBackChrome = window?.navigation?.canGoBack
 		const canGoBack = window.history.length > 0 || canGoBackChrome
 
 		if (canGoBack) {
 			history.back()
 		} else {
-			goto('/articles', {
+			goto('/articles' + makeArticlesPageUrlFromParams(getCachedMode()), {
 				replaceState: true
 			})
 		}

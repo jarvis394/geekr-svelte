@@ -300,6 +300,10 @@
 	.pswp__img {
 		background-color: white;
 	}
+
+	body:not(.hydrated) md-ripple {
+		display: none;
+	}
 }
 
 @custom-variant is-touch (@media (pointer: coarse));

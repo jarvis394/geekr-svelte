@@ -26,13 +26,3 @@
 		{@render children?.()}
 	</DrawerPrimitive.Content>
 </DrawerPrimitive.Portal>
-
-<style>
-	:global([data-vaul-drawer]:not([data-vaul-custom-container='true'])::after) {
-		border-left: 1px solid hsl(var(--border) / 1);
-		border-right: 1px solid hsl(var(--border) / 1);
-		right: -1px !important;
-		left: -1px !important;
-		width: calc(100% + 2px);
-	}
-</style>

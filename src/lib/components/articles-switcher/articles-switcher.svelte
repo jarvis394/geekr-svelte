@@ -61,12 +61,18 @@
 		selectedComplexity = getSelectedComplexityFromParams() || selectedComplexity
 	}
 
+	const saveModeOnClient = (mode: ModeItem) => {
+		// Remove first slash from mode and save it on client
+		localStorage.setItem('mode', makeArticlesPageUrlFromParams(mode).replace('/', ''))
+	}
+
 	const handleClick = (mode: ModeItem) => {
 		if (isSelected(mode)) return
 		selectedMode = mode
 		drawerSelectedMode = mode
 		// Reset selectedComplexity to "all"
 		selectedComplexity = ARTICLE_COMPLEXITY[0]
+		saveModeOnClient(mode)
 		goto('/articles' + makeArticlesPageUrlFromParams(mode))
 	}
 
@@ -82,6 +88,7 @@
 	const handleDrawerConfirm = () => {
 		if (!drawerSelectedMode) return
 		selectedMode = { ...drawerSelectedMode, complexity: selectedComplexity.complexity }
+		saveModeOnClient(drawerSelectedMode)
 		goto('/articles' + makeArticlesPageUrlFromParams(drawerSelectedMode))
 	}
 </script>

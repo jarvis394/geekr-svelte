@@ -59,6 +59,7 @@
 
 	onMount(async () => {
 		await import('@material/web/ripple/ripple.js')
+		document.body.classList.add('hydrated')
 	})
 </script>
 

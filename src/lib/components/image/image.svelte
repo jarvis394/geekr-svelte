@@ -86,7 +86,7 @@
 				/>
 			{:else}
 				<LoaderCircle
-					onanimationend={handleAnimationEnd}
+					onanimationiteration={handleAnimationEnd}
 					data-loaded={loaded}
 					class={'text-muted-foreground pointer-events-none absolute animate-spin transition-all duration-500 data-[loaded="true"]:invisible data-[loaded="true"]:opacity-0'}
 				/>
