@@ -24,6 +24,14 @@ const lightboxOptions: Partial<PreparedPhotoSwipeOptions> = {
 	closeSVG,
 	zoomSVG,
 	close: true,
+	showHideAnimationType: 'zoom',
+	padding: {
+		bottom: 16,
+		top: 16,
+		left: 16,
+		right: 16
+	},
+	preloadFirstSlide: true,
 	pswpModule: () => import('photoswipe')
 }
 export const lightbox = new PhotoSwipeLightbox(lightboxOptions)
@@ -32,16 +40,18 @@ type OpenLightboxProps = {
 	src: string
 	width: number
 	height: number
+	element?: HTMLElement
 }
 
 let shouldDisablePswpCloseHandler = $state(false)
 
-export const openLightbox = ({ src, width, height }: OpenLightboxProps) => {
+export const openLightbox = ({ src, width, height, element }: OpenLightboxProps) => {
 	lightbox.options.dataSource = [
 		{
 			src,
 			width,
-			height
+			height,
+			element
 		}
 	]
 

@@ -304,6 +304,39 @@
 	body:not(.hydrated) md-ripple {
 		display: none;
 	}
+
+	.shimmer {
+		position: relative;
+		mask-image: -webkit-radial-gradient(center, white, black);
+		overflow: hidden;
+		opacity: 0.75;
+		user-select: none;
+		pointer-events: none;
+		cursor: default;
+		transition: all 150ms ease;
+	}
+
+	.shimmer::after {
+		@apply via-primary/5 bg-gradient-to-r from-transparent to-transparent;
+		content: '';
+		position: absolute;
+		transform: translateX(-100%);
+		transition: all 150ms ease;
+		inset: 0px;
+		animation: 2s ease-in-out 0s infinite normal none running animation-shimmer;
+	}
+
+	@keyframes animation-shimmer {
+		0% {
+			transform: translateX(-100%);
+		}
+		75% {
+			transform: translateX(100%);
+		}
+		100% {
+			transform: translateX(100%);
+		}
+	}
 }
 
 @custom-variant is-touch (@media (pointer: coarse));

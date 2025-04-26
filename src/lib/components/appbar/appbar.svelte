@@ -25,7 +25,7 @@
 		</Avatar.Root>
 	</div>
 </header>
-<div class="h-12"></div>
+<div class="h-12 shrink-0"></div>
 
 <style>
 	.AppBar {

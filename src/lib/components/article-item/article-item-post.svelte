@@ -68,7 +68,7 @@
 <div
 	{...other}
 	class={cn(
-		'animate-in fade-in border-border relative flex flex-col border-b-[1px]',
+		'animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px]',
 		containerClasses
 	)}
 >
@@ -95,6 +95,12 @@
 				src={leadImage}
 				alt={titlePlaintext}
 			/>
+			<img
+				src={leadImage}
+				alt={titlePlaintext}
+				aria-hidden="true"
+				class="fade-in pointer-events-none absolute inset-0 -top-[12%] -z-10 h-full w-full scale-105 opacity-32 blur-2xl brightness-200 saturate-200 duration-500 select-none"
+			/>
 			<md-ripple></md-ripple>
 		</a>
 	{/if}
@@ -106,7 +112,7 @@
 			class="ring-default flex flex-col gap-1 p-3 pb-0"
 		>
 			<div
-				class="font-heading text-muted-foreground dark:text-hint flex flex-row flex-wrap gap-1.5 gap-y-0.5 text-sm font-medium"
+				class="font-heading text-muted-foreground dark:text-hint -z-20 flex flex-row flex-wrap gap-1.5 gap-y-0.5 text-sm font-medium"
 			>
 				{timestampText}<span>•</span>{viewsText}
 				{#if article.complexity}

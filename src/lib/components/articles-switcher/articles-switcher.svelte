@@ -145,7 +145,10 @@
 <Drawer.Root>
 	<div
 		{...other}
-		class={cn('flex flex-row items-center gap-1 overflow-x-auto p-2 pt-1', containerClasses)}
+		class={cn(
+			'z-20 flex shrink-0 flex-row items-center gap-1 overflow-x-auto p-2 pt-1',
+			containerClasses
+		)}
 		use:autoAnimate
 	>
 		{#each TABBAR_MODES as mode}

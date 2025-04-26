@@ -102,7 +102,7 @@
 		{@render children?.()}
 	</p>
 </header>
-<div class="h-12"></div>
+<div class="h-12 shrink-0"></div>
 
 <style>
 	.Header.Header--withPositionBar::before {

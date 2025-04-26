@@ -74,9 +74,11 @@
 			</div>
 		</div>
 	{:then articles}
-		{#each articles.publicationIds as id}
-			<ArticleItem article={articles.publicationRefs[id]} />
-		{/each}
+		<div class="Articles relative flex w-full flex-col gap-0">
+			{#each articles.publicationIds as id}
+				<ArticleItem article={articles.publicationRefs[id]} />
+			{/each}
+		</div>
 		<Pagination
 			onPageChange={handlePageChange}
 			count={articles.pagesCount}
@@ -84,3 +86,36 @@
 		/>
 	{/await}
 </div>
+
+<style>
+	.Articles::after {
+		content: '';
+		z-index: 10;
+		user-select: none;
+		pointer-events: none;
+		height: calc(100vh - 48px);
+		top: calc(48px);
+		position: fixed;
+		width: 100%;
+		animation: mask-out 500ms cubic-bezier(0.2, 0, 0, 1);
+		background-position-y: -50%;
+		background-size: 100% 300%;
+		background-repeat: no-repeat;
+		background-image: linear-gradient(
+			to bottom,
+			hsl(var(--background) / 0),
+			hsl(var(--background) / 1),
+			hsl(var(--background) / 1),
+			hsl(var(--background) / 0)
+		);
+	}
+
+	@keyframes mask-out {
+		from {
+			background-position-y: 0%;
+		}
+		to {
+			background-position-y: -50%;
+		}
+	}
+</style>
