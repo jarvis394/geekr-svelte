@@ -16,6 +16,7 @@
 	const MAX_PREVIEW_TEXT_LENGTH = 600
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 
+	let leadImageLoaded = $state(false)
 	const titlePlaintext = $derived(parsePreviewTextHtml(article.titleHtml))
 	const parsedPreviewText = $derived(
 		parsePreviewTextHtml(article.leadData.textHtml).slice(0, MAX_PREVIEW_TEXT_LENGTH)
@@ -94,13 +95,16 @@
 				class="min-h-full min-w-full object-cover"
 				src={leadImage}
 				alt={titlePlaintext}
+				bind:loaded={leadImageLoaded}
 			/>
-			<img
-				src={leadImage}
-				alt={titlePlaintext}
-				aria-hidden="true"
-				class="fade-in pointer-events-none absolute inset-0 -top-[12%] -z-10 h-full w-full scale-105 opacity-32 blur-2xl brightness-200 saturate-200 duration-500 select-none"
-			/>
+			{#if leadImageLoaded}
+				<img
+					src={leadImage}
+					alt={titlePlaintext}
+					aria-hidden="true"
+					class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full scale-105 blur-2xl saturate-125 contrast-125 brightness-125 duration-500 select-none"
+				/>
+			{/if}
 			<md-ripple></md-ripple>
 		</a>
 	{/if}
@@ -188,5 +192,19 @@
 
 	:global(.dark .ArticleItem__image::after) {
 		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.07), transparent);
+	}
+
+	.ArticleItem__imageBlur {
+		opacity: 0.24;
+		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 100ms fadeIn backwards;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 0.24;
+		}
 	}
 </style>

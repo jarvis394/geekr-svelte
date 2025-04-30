@@ -4,7 +4,11 @@
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PageProps } from './$types'
 	import { goto } from '$app/navigation'
-	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
+	import {
+		getArticlesQueryKey,
+		makeArticlesPageUrlFromParams,
+		type GetArticlesParamsData
+	} from '$lib/utils/articles'
 	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher.svelte'
 	import { AppBar } from '$lib/components/appbar'
 
@@ -12,6 +16,7 @@
 	const handlePageChange = (page: number) => {
 		goto('/articles' + makeArticlesPageUrlFromParams({ ...data.articleParams, page }))
 	}
+	const key = $derived(getArticlesQueryKey(data.articleParams))
 
 	const getPageTitle = (articleParams: GetArticlesParamsData) => {
 		const isModeTop = articleParams.mode === 'top'
@@ -74,11 +79,13 @@
 			</div>
 		</div>
 	{:then articles}
-		<div class="reveal relative flex w-full flex-col gap-0 after:top-[48px] after:h-[100vh-48px]">
-			{#each articles.publicationIds as id}
-				<ArticleItem article={articles.publicationRefs[id]} />
-			{/each}
-		</div>
+		{#key key}
+			<div class="reveal relative flex w-full flex-col gap-0 after:top-[48px] after:h-[100vh-48px]">
+				{#each articles.publicationIds as id}
+					<ArticleItem article={articles.publicationRefs[id]} />
+				{/each}
+			</div>
+		{/key}
 		<Pagination
 			onPageChange={handlePageChange}
 			count={articles.pagesCount}

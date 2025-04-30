@@ -10,9 +10,10 @@
 		disableZoom?: boolean
 		placeholderSrc?: string
 		containerProps?: HTMLAttributes<HTMLDivElement>
+		loaded?: boolean
 	} & HTMLImgAttributes
 
-	const {
+	let {
 		src,
 		placeholderSrc,
 		alt,
@@ -21,11 +22,11 @@
 		containerProps = {},
 		class: imageClasses,
 		disableZoom,
+		loaded = $bindable(false),
 		...other
 	}: ImageProps = $props()
 	const { class: containerClasses, style, ...otherContainerProps } = containerProps
 	let shouldShowPlaceholder = $state(true)
-	let loaded = $state(false)
 	let imageDimensions = $state({
 		width: isNaN(Number(width)) ? 0 : Number(width),
 		height: isNaN(Number(height)) ? 0 : Number(height)

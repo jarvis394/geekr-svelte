@@ -3,7 +3,7 @@
 	import TextFormatter from '../text-formatter/text-formatter.svelte'
 	import { ArticleLabels } from '../article-labels'
 	import type { HTMLAttributes } from 'svelte/elements'
-	import { cn, getArticleLink } from '$lib/utils'
+	import { cn, fadeAbsolute, getArticleLink } from '$lib/utils'
 	import { Link } from '../link'
 	import * as Avatar from '../ui/avatar'
 	import dayjs from 'dayjs'
@@ -23,15 +23,6 @@
 		hubs.sort((a, b) => Number(a.id) - Number(b.id))
 		return hubs
 	})
-
-	const fadeAbsolute = (
-		_node: HTMLElement,
-		params: { delay?: number; duration?: number; easing?: (t: number) => number }
-	) =>
-		({
-			...params,
-			css: (t) => `opacity: ${t}; position: absolute;`
-		}) satisfies TransitionConfig
 </script>
 
 <svelte:head>
