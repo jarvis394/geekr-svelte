@@ -115,5 +115,5 @@ export const getArticlesQueryKey = (articleParams: GetArticlesParamsData) => {
 		articleParams.rating,
 		articleParams.complexity,
 		articleParams.page
-	]
+	].join(':')
 }

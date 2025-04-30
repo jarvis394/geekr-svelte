@@ -152,7 +152,7 @@
 
 	.button-default {
 		--md-ripple-pressed-color: rgb(0, 0, 0);
-		@apply bg-primary text-primary-foreground not-is-touch:hover:bg-primary/90;
+		@apply bg-primary text-primary-foreground;
 		/* @apply is-touch:active:bg-primary/90 is-touch:active:duration-0; */
 	}
 
@@ -335,6 +335,36 @@
 		}
 		100% {
 			transform: translateX(100%);
+		}
+	}
+
+	.reveal::after {
+		content: '';
+		z-index: 10;
+		user-select: none;
+		pointer-events: none;
+		position: fixed;
+		height: 100%;
+		width: 100%;
+		animation: reveal 500ms cubic-bezier(0.2, 0, 0, 1);
+		background-position-y: -50%;
+		background-size: 100% 300%;
+		background-repeat: no-repeat;
+		background-image: linear-gradient(
+			to bottom,
+			hsl(var(--background) / 0),
+			hsl(var(--background) / 1),
+			hsl(var(--background) / 1),
+			hsl(var(--background) / 0)
+		);
+	}
+
+	@keyframes reveal {
+		from {
+			background-position-y: 0%;
+		}
+		to {
+			background-position-y: -50%;
 		}
 	}
 }

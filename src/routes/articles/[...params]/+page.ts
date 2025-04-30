@@ -1,7 +1,13 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
 import * as api from '$lib/api'
-import { parseArticlesParams, makeArticlesPageUrlFromParams } from '$lib/utils/articles'
+import {
+	parseArticlesParams,
+	makeArticlesPageUrlFromParams,
+	getArticlesQueryKey
+} from '$lib/utils/articles'
+import { getArticleQueryKey } from '$lib/utils/article'
+import { cache, cacheFetch } from '$lib/utils/cacheFetch'
 
 export const load: PageLoad = ({ params, url, fetch }) => {
 	const articlesParamsResult = parseArticlesParams(params.params.split('/'))
@@ -18,11 +24,20 @@ export const load: PageLoad = ({ params, url, fetch }) => {
 	}
 
 	const { complexity, mode, page, period, rating } = articlesParamsResult.data
-	const articles = api.articles.get({
-		mode: mode === 'new' ? rating : period,
-		page,
-		complexity,
-		fetch
+	const articles = cacheFetch(getArticlesQueryKey(articlesParamsResult.data), async () => {
+		const data = await api.articles.get({
+			mode: mode === 'new' ? rating : period,
+			page,
+			complexity,
+			fetch
+		})
+
+		data.publicationIds.forEach((id) => {
+			const article = data.publicationRefs[id]
+			cache.set(getArticleQueryKey(id), article)
+		})
+
+		return data
 	})
 
 	return {

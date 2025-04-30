@@ -89,7 +89,7 @@
 					class: 'w-full rounded-none object-cover',
 					style: 'height: ' + ARTICLE_ITEM_IMAGE_HEIGHT + 'px'
 				}}
-				width={'100%'}
+				width="100%"
 				height={ARTICLE_ITEM_IMAGE_HEIGHT}
 				class="min-h-full min-w-full object-cover"
 				src={leadImage}

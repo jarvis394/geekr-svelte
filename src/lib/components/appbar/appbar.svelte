@@ -21,7 +21,7 @@
 	</a>
 	<div class="flex grow justify-end">
 		<Avatar.Root class="border-foreground/4 h-8 w-8 rounded-md border">
-			<Avatar.Image hash={'jarvis394'} alt="User avatar" />
+			<Avatar.Image hash="jarvis394" alt="User avatar" />
 		</Avatar.Root>
 	</div>
 </header>

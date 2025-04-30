@@ -65,7 +65,7 @@
 	{#each comment.branches || [] as branch}
 		<button
 			class="ArticleComment__branch tap-highlight border-border hover:border-accent-foreground flex w-5 shrink-0 cursor-pointer flex-row border-l-1 hover:border-l-2"
-			aria-label={`Comment branch toggle`}
+			aria-label="Comment branch toggle"
 			onclick={handleBranchClick.bind(null, branch)}
 			onmouseenter={handleBranchHover.bind(null, branch)}
 			onmouseleave={handleBranchResetHighlight.bind(null, branch)}
@@ -99,17 +99,17 @@
 			<div class="mt-1.5 flex flex-row items-center justify-between">
 				<Button variant="ghost" size="sm">Ответить</Button>
 				<div class="flex items-center justify-center gap-1">
-					<Button variant="ghost" class="text-muted-foreground h-9 w-9"
-						><ChevronUp strokeWidth={3} /></Button
-					>
+					<Button variant="ghost" class="text-muted-foreground h-9 w-9">
+						<ChevronUp strokeWidth={3} />
+					</Button>
 					<ScoreBadge variant={scoreBadgeVariant}>{comment.score}</ScoreBadge>
-					<Button variant="ghost" class="text-muted-foreground h-9 w-9"
-						><ChevronDown strokeWidth={3} /></Button
-					>
+					<Button variant="ghost" class="text-muted-foreground h-9 w-9">
+						<ChevronDown strokeWidth={3} />
+					</Button>
 				</div>
 			</div>
 		{:else}
-			<TextFormatter html={'НЛО прилетело здесь'} />
+			<TextFormatter html="НЛО прилетело здесь" />
 		{/if}
 		{#if collapsedRoot}
 			<Button variant="ghost" size="lg" onclick={handleExpandBranch.bind(null, comment)}>

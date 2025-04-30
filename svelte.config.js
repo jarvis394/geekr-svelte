@@ -8,6 +8,9 @@ const isVercel = process.env.VERCEL === '1'
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
+		serviceWorker: {
+			register: process.env.MODE === 'production'
+		},
 		adapter: isVercel
 			? adapterVercel({
 					runtime: 'edge'
