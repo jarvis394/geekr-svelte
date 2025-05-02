@@ -20,7 +20,7 @@
 <div class="flex h-full w-full flex-col">
 	<Header>Комментарии</Header>
 	{#if comments}
-		<ArticleCommentsPage comments={comments} />
+		<ArticleCommentsPage {comments} />
 	{:else}
 		<div class="relative h-[50000px] w-full">
 			<div class="sticky top-12 flex w-full items-center justify-center py-16">

@@ -1,8 +1,11 @@
 @layer base {
-	:root {
+	:root,
+	html {
 		--transition-slide-offset: 40px;
 		--transition-zoom-in-scale: 1.05;
 		--transition-zoom-out-scale: 0.9;
+
+		view-transition-name: root !important;
 	}
 
 	@media (min-width: 672px) {
@@ -48,7 +51,7 @@
 		animation: fade-in 500ms cubic-bezier(0.2, 0, 0, 1);
 	}
 
-	html.view-transition::view-transition-group(header) {
+	html.view-transition::view-transition-image-pair(header) {
 		background-color: hsl(var(--background) / 1);
 	}
 

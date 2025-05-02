@@ -7,6 +7,7 @@
 	import { useLightbox } from '$lib/hooks/lightbox.svelte'
 	import { setupViewTransition } from 'sveltekit-view-transition'
 	import { onMount } from 'svelte'
+	import { classes } from '$lib/utils/transitions'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
@@ -17,7 +18,7 @@
 	import 'photoswipe/style.css'
 
 	let { children } = $props()
-	const { classes } = setupViewTransition()
+	const { on } = setupViewTransition()
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)
@@ -55,7 +56,7 @@
 		}
 
 		return ['view-transition', 'entering']
-	})
+	}, on)
 
 	onMount(async () => {
 		await import('@material/web/ripple/ripple.js')
