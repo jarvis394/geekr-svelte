@@ -102,7 +102,7 @@
 					src={leadImage}
 					alt={titlePlaintext}
 					aria-hidden="true"
-					class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full scale-105 blur-2xl saturate-125 contrast-125 brightness-125 duration-500 select-none"
+					class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full scale-105 blur-2xl brightness-250 contrast-100 saturate-125 duration-500 select-none"
 				/>
 			{/if}
 			<md-ripple></md-ripple>
@@ -196,7 +196,7 @@
 
 	.ArticleItem__imageBlur {
 		opacity: 0.24;
-		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 100ms fadeIn backwards;
+		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
 	}
 
 	@keyframes fadeIn {

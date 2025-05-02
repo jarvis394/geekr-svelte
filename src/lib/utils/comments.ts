@@ -1,5 +1,12 @@
-import type { APIResponseComments } from '$lib/types'
+import type { APIResponseComments, Article } from '$lib/types'
 import type { Comment } from '$lib/types/Comment'
+import * as api from '$lib/api'
+import { browser } from '$app/environment'
+import { cache } from './cacheFetch'
+
+export const getArticleCommentsQueryKey = (id: Article['id']) => {
+	return ['article', id, 'comments'].join(':')
+}
 
 export const flattenComments = (response: APIResponseComments) => {
 	const { comments, threads } = response
@@ -72,4 +79,29 @@ export const createBranches = (nodes: Comment[]) => {
 		}
 	}
 	return nodes
+}
+
+type ArticleCommentsLoaderProps = { id: string; fetch: typeof fetch }
+export const articleCommentsLoader = ({ id, fetch }: ArticleCommentsLoaderProps) => {
+	const fetchArticleComments = async (id: string) => {
+		const data = await api.article.getComments({
+			id,
+			fetch
+		})
+
+		// Should not set any data to cache on server as it will persist indefinetly
+		if (browser) cache.set(getArticleCommentsQueryKey(id), data)
+
+		return data
+	}
+
+	const comments = fetchArticleComments(id)
+	const cachedComments = browser
+		? (cache.get(getArticleCommentsQueryKey(id)) as APIResponseComments | undefined)
+		: undefined
+
+	return {
+		comments,
+		cachedComments
+	}
 }

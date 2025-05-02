@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { ArticlePage } from '$lib/components/article-page'
+	import { ArticlePage } from '$lib/pages/article'
 	import { Header } from '$lib/components/header'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 	import type { PageProps } from '../../../routes/articles/[id=article]/$types'
 
 	const { data }: PageProps = $props()
-
 	let article = $state(data.cachedArticle)
+
 	$effect(() => {
 		void data.article.then((value) => {
 			article = value

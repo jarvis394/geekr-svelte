@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { Article } from '$lib/types'
-	import TextFormatter from '../text-formatter/text-formatter.svelte'
-	import { ArticleLabels } from '../article-labels'
+	import TextFormatter from '$lib/components/text-formatter/text-formatter.svelte'
+	import { ArticleLabels } from '$lib/components/article-labels'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn, fadeAbsolute, getArticleLink } from '$lib/utils'
-	import { Link } from '../link'
-	import * as Avatar from '../ui/avatar'
+	import { Link } from '$lib/components/link'
+	import * as Avatar from '$lib/components/ui/avatar'
 	import dayjs from 'dayjs'
-	import { Button } from '../ui/button'
-	import { fade, type TransitionConfig } from 'svelte/transition'
+	import { Button } from '$lib/components/ui/button'
+	import { fade } from 'svelte/transition'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 
 	type ArticlePageProps = { article: Article } & HTMLAttributes<HTMLDivElement>
