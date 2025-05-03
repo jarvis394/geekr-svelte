@@ -6,6 +6,7 @@
 		variants: {
 			variant: {
 				neutral: 'text-primary dark:text-primary-foreground/85 bg-[#E9E9E9]',
+				'neutral-transparent': 'text-primary bg-accent',
 				negative: 'bg-destructive text-destructive-foreground',
 				positive: 'text-primary/80 dark:text-background/80 bg-[#64EA58]'
 			}

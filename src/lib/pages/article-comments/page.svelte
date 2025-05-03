@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { APIResponseComments, Comment, CommentBranch } from '$lib/types'
-	import { Header } from '$lib/components/header'
 	import { WindowVirtualizer } from 'virtua/svelte'
 	import { ArticleComment } from '$lib/components/article-comment'
 	import { flattenComments } from '$lib/utils/comments'

@@ -51,10 +51,6 @@
 		animation: fade-in 500ms cubic-bezier(0.2, 0, 0, 1);
 	}
 
-	html.view-transition::view-transition-image-pair(header) {
-		background-color: hsl(var(--background) / 1);
-	}
-
 	@keyframes zoom-in-enter {
 		from {
 			z-index: 1000;

@@ -63,7 +63,9 @@
 			scrollTriggerState.trigger = false
 			// passive: true enhances scrolling experience
 			window.addEventListener('scroll', scrollCallback, { passive: true })
-			return () => window.removeEventListener('scroll', scrollCallback)
+			return () => {
+				window.removeEventListener('scroll', scrollCallback)
+			}
 		}
 	})
 </script>

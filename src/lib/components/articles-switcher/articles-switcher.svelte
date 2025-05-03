@@ -24,7 +24,7 @@
 
 	const excludeKeys = (key: string): key is 'label' | 'tabbarLabel' | 'complexity' | 'smUp' =>
 		['label', 'tabbarLabel', 'smUp', 'complexity'].includes(key)
-	const isSelected = (mode: ModeItem, selectedMode: Partial<ModeItem> = articleParams) => {
+	const isSelected = (mode: ModeItem, selectedMode: Partial<ModeItem>) => {
 		for (const key in mode) {
 			const typedKey = key as keyof ModeItem
 			if (excludeKeys(typedKey)) continue
@@ -43,22 +43,26 @@
 		return modes.some((e) => isSelected(e, mode))
 	}
 
-	const getSelectedComplexityFromParams = () => {
-		return ARTICLE_COMPLEXITY.find((item) => item.complexity === articleParams.complexity)
+	const getSelectedModeFromParams = (params: GetArticlesParamsData) => {
+		const res = TOP_MODES.concat(NEW_MODES).find((mode) => isSelected(mode, params))
+		return res || TOP_MODES[0]
 	}
 
-	const initialSelectedMode = TOP_MODES.concat(NEW_MODES).find((mode) => isSelected(mode))
-	const initialSelectedComplexity = getSelectedComplexityFromParams()
-	let selectedMode = $state(initialSelectedMode || TOP_MODES[0])
-	let drawerSelectedMode = $state<ModeItem>(initialSelectedMode || TOP_MODES[0])
-	let selectedComplexity = $state<ModeItem>(initialSelectedComplexity || ARTICLE_COMPLEXITY[0])
+	const getSelectedComplexityFromParams = (params: GetArticlesParamsData) => {
+		const res = ARTICLE_COMPLEXITY.find((item) => item.complexity === params.complexity)
+		return res || ARTICLE_COMPLEXITY[0]
+	}
+
+	let selectedMode = $derived(getSelectedModeFromParams(articleParams))
+	let drawerSelectedMode = $derived(selectedMode)
+	let selectedComplexity = $derived(getSelectedComplexityFromParams(articleParams))
 	const shouldShowModeInTabbar = $derived(
 		selectedMode && !isSelectedInsideModes(selectedMode, TABBAR_MODES)
 	)
 
 	const resetDrawerSelectedMode = () => {
 		drawerSelectedMode = selectedMode
-		selectedComplexity = getSelectedComplexityFromParams() || selectedComplexity
+		selectedComplexity = getSelectedComplexityFromParams(articleParams) || selectedComplexity
 	}
 
 	const saveModeOnClient = (mode: ModeItem) => {
@@ -67,7 +71,7 @@
 	}
 
 	const handleClick = (mode: ModeItem) => {
-		if (isSelected(mode)) return
+		if (isSelected(mode, articleParams)) return
 		selectedMode = mode
 		drawerSelectedMode = mode
 		// Reset selectedComplexity to "all"
@@ -91,6 +95,11 @@
 		saveModeOnClient(drawerSelectedMode)
 		goto('/articles' + makeArticlesPageUrlFromParams(drawerSelectedMode))
 	}
+
+	$effect(() => {
+		saveModeOnClient(selectedMode)
+		console.log($state.snapshot(selectedMode))
+	})
 </script>
 
 {#snippet TabContent(value: string, modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
@@ -132,7 +141,7 @@
 {/snippet}
 
 {#snippet TabbarButton(mode: ModeItem)}
-	{@const selected = isSelected(mode)}
+	{@const selected = isSelected(mode, articleParams)}
 	<Button
 		variant={selected ? 'default' : 'secondary'}
 		onclick={handleClick.bind(null, mode)}

@@ -32,7 +32,7 @@
 	}: ArticleCommentProps = $props()
 	const isThread = $derived(comment.level === 0)
 	const scoreBadgeVariant = $derived.by<ScoreBadgeVariant>(() => {
-		if (comment.score === 0) return 'neutral'
+		if (comment.score === 0) return 'neutral-transparent'
 		return comment.score > 0 ? 'positive' : 'negative'
 	})
 
@@ -64,7 +64,7 @@
 >
 	{#each comment.branches || [] as branch}
 		<button
-			class="ArticleComment__branch tap-highlight border-border hover:border-accent-foreground flex w-5 shrink-0 cursor-pointer flex-row border-l-1 hover:border-l-2"
+			class="ArticleComment__branch focus-ring tap-highlight border-border hover:border-accent-foreground flex w-5 shrink-0 cursor-pointer flex-row border-l-1 hover:border-l-2"
 			aria-label="Comment branch toggle"
 			onclick={handleBranchClick.bind(null, branch)}
 			onmouseenter={handleBranchHover.bind(null, branch)}
@@ -79,7 +79,16 @@
 		})}
 	>
 		{#if comment.author}
-			<div class="ArticleComment__header mb-2 flex flex-row gap-2">
+			<header
+				tabindex="-1"
+				class={cn(
+					'ArticleComment__header focus:inset-ring-accent -m-1 mb-1 flex flex-row items-center gap-2 rounded-sm p-1 focus:inset-ring',
+					{
+						'bg-lime-100 focus:inset-ring focus:inset-ring-lime-600 dark:bg-lime-950':
+							comment.isPostAuthor
+					}
+				)}
+			>
 				<Avatar.Root class="h-6 w-6">
 					<Avatar.Image
 						hash={comment.author.alias}
@@ -88,14 +97,19 @@
 					/>
 					<Avatar.Fallback />
 				</Avatar.Root>
-				<h3 class="font-heading text-base font-medium">
-					{comment.author.alias}
-				</h3>
-				<p class="font-heading text-muted-foreground text-base font-medium">
-					{dayjs(comment.timePublished).format('DD.MM.YYYY [в] HH:mm')}
-				</p>
-			</div>
-			<TextFormatter class="*:first:mt-0 *:last:mb-0" html={comment.message} />
+				<div class="flex flex-col gap-0.5">
+					<h3 class="font-heading text-[13px] leading-none font-medium">
+						{comment.author.alias}
+					</h3>
+					<p class="font-heading text-muted-foreground text-[10px] leading-none">
+						{dayjs(comment.timePublished).fromNow()}
+					</p>
+				</div>
+			</header>
+			<TextFormatter
+				class="text-[16px] leading-[1.6rem] *:first:mt-0 *:last:mb-0"
+				html={comment.message}
+			/>
 			<div class="mt-1.5 flex flex-row items-center justify-between">
 				<Button variant="ghost" size="sm">Ответить</Button>
 				<div class="flex items-center justify-center gap-1">

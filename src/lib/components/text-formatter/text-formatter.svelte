@@ -7,6 +7,7 @@
 	import type { HTMLAttributes } from 'svelte/elements'
 	import formatLink from '$lib/utils/formatLink'
 	import Iframe from './iframe.svelte'
+	import { SyntaxHighlighter } from '../syntax-highlighter'
 
 	interface IframeResizeData {
 		type: string
@@ -39,6 +40,31 @@
 					src: node.attribs['data-src'] || node.attribs.src,
 					height: iframeHeights[node.attribs.id]?.toString() || 'auto',
 					id: node.attribs.id
+				}
+			}
+		}
+
+		if (node.name === 'pre') {
+			const firstChild = node.firstChild
+			const language = (firstChild?.type === 'tag' && firstChild?.attribs.class) || undefined
+
+			let code = null
+
+			if (
+				firstChild?.type === 'tag' &&
+				firstChild.firstChild &&
+				firstChild.firstChild.type === 'text'
+			) {
+				code = firstChild.firstChild.data
+			} else if (firstChild?.type === 'text') {
+				code = firstChild.data
+			}
+
+			return {
+				component: SyntaxHighlighter,
+				props: {
+					language,
+					code
 				}
 			}
 		}

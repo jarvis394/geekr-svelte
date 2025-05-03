@@ -121,6 +121,14 @@
 		-o-user-drag: none;
 	}
 
+	.focus-ring {
+		@apply ring-offset-background;
+		@apply focus-visible:ring-ring;
+		@apply focus-visible:ring-2;
+		@apply focus-visible:ring-offset-2;
+		@apply focus-visible:outline-none;
+	}
+
 	.button {
 		font-family: 'Google Sans';
 
@@ -230,6 +238,32 @@
 
 		& iframe {
 			@apply w-full border-none;
+		}
+
+		& code:not(pre > code) {
+			font-family: Menlo, Monaco, Consolas, 'Courier New', Courier, monospace;
+			@apply bg-primary/7 rounded-md px-[0.4em] py-[0.2em] font-normal break-words whitespace-break-spaces;
+		}
+		& code::after,
+		& code::before {
+			display: none;
+		}
+
+		& ul p,
+		ol p {
+			@apply m-0;
+		}
+
+		& ul li + li {
+			@apply m-0 mt-3;
+		}
+
+		& :is(dir, menu, ol, ul) ul {
+			list-style-type: circle;
+		}
+
+		& :is(dir, menu, ol, ul) :is(dir, menu, ol, ul) ul {
+			list-style-type: square;
 		}
 
 		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 max-w-2xl break-words;
