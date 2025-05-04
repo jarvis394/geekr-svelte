@@ -98,7 +98,6 @@
 
 	$effect(() => {
 		saveModeOnClient(selectedMode)
-		console.log($state.snapshot(selectedMode))
 	})
 </script>
 

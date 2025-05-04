@@ -1,4 +1,5 @@
 import type { PageLoad } from './$types'
-import { articleCommentsLoader } from '$lib/utils/comments'
+import { articleCommentsLoader } from '$lib/pages/article-comments'
 
-export const load: PageLoad = ({ params, fetch }) => articleCommentsLoader({ id: params.id, fetch })
+export const load: PageLoad = ({ params, fetch }) =>
+	articleCommentsLoader({ id: params.id, fetch, isCorporative: true })

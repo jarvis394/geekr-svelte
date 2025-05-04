@@ -8,8 +8,12 @@
 	let article = $state(data.cachedArticle)
 
 	$effect(() => {
-		void data.article.then((value) => {
-			article = value
+		void data.article.then((res) => {
+			if (JSON.stringify(res) === JSON.stringify(article)) {
+				return
+			}
+
+			article = res
 		})
 	})
 </script>

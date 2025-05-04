@@ -63,7 +63,7 @@
 	}
 </script>
 
-<IntersectionObserver {element} once threshold={0} bind:intersecting>
+<IntersectionObserver {element} once rootMargin="512px" bind:intersecting>
 	<div
 		{...otherContainerProps}
 		class={cn(
@@ -97,7 +97,7 @@
 				onclick={handleClick}
 				data-loaded={loaded}
 				class={cn(
-					'no-drag z-0 h-auto w-full opacity-0 transition-all duration-250 data-[loaded="true"]:opacity-100',
+					'no-drag z-0 h-auto w-full opacity-0 transition-all duration-200 data-[loaded="true"]:opacity-100',
 					imageClasses
 				)}
 				class:absolute={placeholderSrc && shouldShowPlaceholder}

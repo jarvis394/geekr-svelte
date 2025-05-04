@@ -181,6 +181,11 @@
 </div>
 
 <style>
+	.ArticleItem__image {
+		content-visibility: auto;
+		contain-intrinsic-size: 1px 212px;
+	}
+
 	.ArticleItem__image::after {
 		content: '';
 		position: absolute;
@@ -195,6 +200,8 @@
 	}
 
 	.ArticleItem__imageBlur {
+		content-visibility: auto;
+		contain-intrinsic-size: 1px 212px;
 		opacity: 0.24;
 		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
 	}

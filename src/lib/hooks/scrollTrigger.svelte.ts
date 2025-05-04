@@ -11,6 +11,7 @@ interface Options {
 	triggerValue: boolean
 	trigger: boolean
 	enabled: boolean
+	defaultValue: boolean
 	scrollThreshold: number
 }
 
@@ -25,6 +26,7 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 		target = defaultTarget,
 		threshold = defaultThreshold,
 		scrollThreshold = defaultScrollThreshold,
+		defaultValue,
 		enabled = true
 	} = options
 	const initalScrollTop =
@@ -33,7 +35,7 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 	let position = initalScrollTop
 	let previousScroll = initalScrollTop
 	let direction: Direction = 'down'
-	state.trigger = initialTriggerValue
+	state.trigger = defaultValue !== undefined ? defaultValue : initialTriggerValue
 
 	const handleScroll = () => {
 		if (!target) return

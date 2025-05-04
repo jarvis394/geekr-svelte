@@ -16,6 +16,9 @@
 	const timestampText = $derived(dayjs(article.timePublished).calendar().toLowerCase())
 	const isLoaded = $derived(article.textHtml)
 	const articleLink = $derived(getArticleLink(article))
+	const textFormatterClasses = $derived(
+		article.editorVersion === '1.0' ? 'article--version-1 mt-6' : ''
+	)
 	// Have to sort hubs to prevent mismatch between
 	// preview article hubs and full article hubs
 	const sortedHubs = $derived.by(() => {
@@ -64,17 +67,14 @@
 		<div class="relative">
 			{#if isLoaded}
 				<div in:fade={{ duration: 200 }}>
-					<TextFormatter
-						class={article.editorVersion === '1.0' ? 'article--version-1 mt-6' : ''}
-						html={article.textHtml}
-					/>
+					<TextFormatter class={textFormatterClasses} html={article.textHtml} />
 				</div>
 			{:else}
 				<div
 					class="flex h-full w-full flex-col items-center gap-2 pb-4"
 					out:fadeAbsolute={{ duration: 100 }}
 				>
-					<TextFormatter html={article.leadData.textHtml} />
+					<TextFormatter class={textFormatterClasses} html={article.leadData.textHtml} />
 					<LoaderCircle class="animate-spin opacity-12" />
 				</div>
 			{/if}

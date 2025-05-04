@@ -87,48 +87,7 @@
 	}
 }
 
-@layer base {
-	:root {
-		--md-ripple-hover-opacity: 0;
-	}
-
-	* {
-		@apply border-border box-border;
-	}
-
-	body {
-		@apply bg-background text-foreground;
-	}
-
-	.font-heading {
-		font-family: 'Google Sans';
-	}
-
-	.ring-default {
-		transition: box-shadow 150ms ease;
-
-		@apply ring-offset-background;
-		@apply focus-visible:ring-ring;
-		@apply focus-visible:ring-2;
-		@apply focus-visible:ring-offset-2;
-		@apply focus-visible:outline-none;
-	}
-
-	.no-drag {
-		-webkit-user-drag: none;
-		-khtml-user-drag: none;
-		-moz-user-drag: none;
-		-o-user-drag: none;
-	}
-
-	.focus-ring {
-		@apply ring-offset-background;
-		@apply focus-visible:ring-ring;
-		@apply focus-visible:ring-2;
-		@apply focus-visible:ring-offset-2;
-		@apply focus-visible:outline-none;
-	}
-
+@layer components {
 	.button {
 		font-family: 'Google Sans';
 
@@ -174,6 +133,57 @@
 		/* @apply is-touch:active:bg-accent-foreground/12 is-touch:active:duration-0; */
 	}
 
+	.link:not(:has(.Image)) {
+		@apply decoration-accent-foreground/24 decoration-2 underline-offset-2 hover:decoration-transparent hover:underline-offset-3 active:decoration-transparent active:underline-offset-3;
+		@apply text-accent-foreground relative rounded-xs box-decoration-clone ring-2 ring-transparent transition-all active:transition-none;
+		@apply not-is-touch:hover:bg-border not-is-touch:hover:ring-4 not-is-touch:hover:ring-border;
+		@apply not-is-touch:active:bg-border not-is-touch:active:ring-4 not-is-touch:active:ring-border not-is-touch:active:brightness-85 dark:not-is-touch:active:brightness-150;
+		@apply is-touch:active:bg-border is-touch:active:ring-4 is-touch:active:ring-border;
+	}
+}
+
+@layer base {
+	:root {
+		--md-ripple-hover-opacity: 0;
+	}
+
+	* {
+		@apply border-border box-border;
+	}
+
+	body {
+		@apply bg-background text-foreground;
+	}
+
+	.font-heading {
+		font-family: 'Google Sans';
+	}
+
+	.ring-default {
+		transition: box-shadow 150ms ease;
+
+		@apply ring-offset-background;
+		@apply focus-visible:ring-ring;
+		@apply focus-visible:ring-2;
+		@apply focus-visible:ring-offset-2;
+		@apply focus-visible:outline-none;
+	}
+
+	.no-drag {
+		-webkit-user-drag: none;
+		-khtml-user-drag: none;
+		-moz-user-drag: none;
+		-o-user-drag: none;
+	}
+
+	.focus-ring {
+		@apply ring-offset-background;
+		@apply focus-visible:ring-ring;
+		@apply focus-visible:ring-2;
+		@apply focus-visible:ring-offset-2;
+		@apply focus-visible:outline-none;
+	}
+
 	.article {
 		& img {
 			@apply h-auto max-w-full rounded-sm align-middle;
@@ -181,16 +191,31 @@
 
 		& div.table,
 		& div.scrollable-table {
-			@apply my-4 overflow-auto break-normal;
+			@apply ring-border m-0 -mx-4 overflow-auto break-normal ring min-[42rem]:mx-0 min-[42rem]:rounded-xl;
 		}
 
+		@apply prose-tr:border-b-border! prose-th:border-b prose-th:border-hint/40;
+
 		& table {
-			@apply w-full border-collapse;
+			@apply ring-border bg-hint/3 m-0 w-full border-collapse overflow-hidden ring;
+		}
+
+		& table th {
+			@apply bg-hint/12;
 		}
 
 		& table td,
 		& table th {
-			@apply border-hint min-w-[100px] border px-3 pt-1.5 pb-2 align-top;
+			@apply min-w-[100px] px-3.5 py-2.5 align-top;
+		}
+
+		& table th > p,
+		table td > p {
+			@apply m-0;
+		}
+
+		& hr {
+			@apply border-border -mx-4;
 		}
 
 		& h1,
@@ -266,6 +291,7 @@
 			list-style-type: square;
 		}
 
+		@apply prose-blockquote:mt-3! prose-blockquote:mb-3!;
 		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 max-w-2xl break-words;
 	}
 
@@ -295,14 +321,6 @@
 
 	.tap-highlight:active {
 		@apply opacity-85 duration-0;
-	}
-
-	.link:not(:has(.Image)) {
-		@apply decoration-accent-foreground/24 decoration-2 underline-offset-2 hover:decoration-transparent hover:underline-offset-3 active:decoration-transparent active:underline-offset-3;
-		@apply text-accent-foreground relative rounded-xs box-decoration-clone ring-2 ring-transparent transition-all active:transition-none;
-		@apply not-is-touch:hover:bg-border not-is-touch:hover:ring-4 not-is-touch:hover:ring-border;
-		@apply not-is-touch:active:bg-border not-is-touch:active:ring-4 not-is-touch:active:ring-border not-is-touch:active:brightness-85 dark:not-is-touch:active:brightness-150;
-		@apply is-touch:active:bg-border is-touch:active:ring-4 is-touch:active:ring-border;
 	}
 
 	body::after,

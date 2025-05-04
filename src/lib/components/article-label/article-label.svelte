@@ -20,8 +20,8 @@
 	})
 	const scoreBadgeColor = $derived.by<BadgeColor>(() => {
 		if (!score) return 'white'
-		if (score > 0) return 'valid'
-		else if (score < 0) return 'destructive'
+		if (score > 0) return 'scorePositive'
+		else if (score < 0) return 'scoreNegative'
 		else return 'white'
 	})
 </script>

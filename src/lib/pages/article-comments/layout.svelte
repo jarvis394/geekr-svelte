@@ -8,8 +8,12 @@
 	let comments = $state(data.cachedComments)
 
 	$effect(() => {
-		void data.comments.then((value) => {
-			comments = value
+		void data.comments.then((res) => {
+			if (JSON.stringify(res) === JSON.stringify(comments)) {
+				return
+			}
+
+			comments = res
 		})
 	})
 </script>

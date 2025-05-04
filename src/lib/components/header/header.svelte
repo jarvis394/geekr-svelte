@@ -31,7 +31,7 @@
 	const handleBack = () => {
 		// @ts-expect-error Chrome specific API
 		const canGoBackChrome = window?.navigation?.canGoBack
-		const canGoBack = window.history.length > 0 || canGoBackChrome
+		const canGoBack = canGoBackChrome !== undefined ? canGoBackChrome : window.history.length > 0
 
 		if (canGoBack) {
 			history.back()
@@ -88,6 +88,7 @@
 		<ArrowLeft />
 	</Button>
 	<p
+		style="view-transition-name: header-title;"
 		class={[
 			'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
 			isShrunk && hiddenClasses
@@ -96,6 +97,7 @@
 		{@render children?.()}
 	</p>
 	<p
+		style="view-transition-name: header-title-shrink;"
 		class={[
 			'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
 			!isShrunk && hiddenClasses

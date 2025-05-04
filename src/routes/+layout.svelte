@@ -5,9 +5,8 @@
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
 	import { useScrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
 	import { useLightbox } from '$lib/hooks/lightbox.svelte'
-	import { setupViewTransition } from 'sveltekit-view-transition'
 	import { onMount } from 'svelte'
-	import { classes } from '$lib/utils/transitions'
+	import { classes, setupViewTransition } from '$lib/utils/transitions'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
@@ -18,7 +17,16 @@
 	import 'photoswipe/style.css'
 
 	let { children } = $props()
-	const { on } = setupViewTransition()
+	const { on } = setupViewTransition({
+		shouldStartViewTransition(navigation) {
+			// Catches navigation inside the page and disables transition
+			if (navigation.from?.route.id === navigation.to?.route.id) {
+				return false
+			}
+
+			return true
+		}
+	})
 
 	dayjs.extend(relativeTimePlugin)
 	dayjs.extend(calendarPlugin)

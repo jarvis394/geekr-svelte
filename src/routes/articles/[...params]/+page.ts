@@ -8,6 +8,8 @@ import {
 } from '$lib/utils/articles'
 import { getArticleQueryKey } from '$lib/utils/article'
 import { cache, cacheFetch } from '$lib/utils/cacheFetch'
+import { browser } from '$app/environment'
+import type { Article } from '$lib/types'
 
 export const load: PageLoad = ({ params, url, fetch }) => {
 	const articlesParamsResult = parseArticlesParams(params.params.split('/'))
@@ -32,10 +34,15 @@ export const load: PageLoad = ({ params, url, fetch }) => {
 			fetch
 		})
 
-		data.publicationIds.forEach((id) => {
-			const article = data.publicationRefs[id]
-			cache.set(getArticleQueryKey(id), article)
-		})
+		if (browser) {
+			data.publicationIds.forEach((id) => {
+				const article = data.publicationRefs[id]
+				cache.set(getArticleQueryKey(id), {
+					...article,
+					textHtml: '<p>' + article.leadData.textHtml + '</p>'
+				} satisfies Article)
+			})
+		}
 
 		return data
 	})

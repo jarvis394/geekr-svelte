@@ -70,7 +70,6 @@
 		{...restProps}
 	>
 		{@render children?.()}
-		<md-ripple></md-ripple>
 	</a>
 {:else}
 	<button
@@ -80,6 +79,5 @@
 		{...restProps}
 	>
 		{@render children?.()}
-		<md-ripple></md-ripple>
 	</button>
 {/if}

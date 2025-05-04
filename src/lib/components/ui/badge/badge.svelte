@@ -18,6 +18,8 @@
 				orange: 'bg-orange-500 text-orange-50',
 				destructive: 'bg-destructive text-destructive-foreground',
 				valid: 'text-primary/80 dark:text-background/80 bg-[#64EA58]',
+				scorePositive: 'text-primary bg-[#64EA58] dark:bg-[#002210] dark:text-[#0CFF7B]',
+				scoreNegative: 'bg-destructive text-destructive-foreground',
 				darkGreen: 'bg-emerald-950 text-emerald-100',
 				darkBlue: 'bg-blue-950 text-blue-100',
 				darkRed: 'bg-red-950 text-red-100'

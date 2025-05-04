@@ -1,4 +1,5 @@
 import type { PageLoad } from './$types'
-import { articleLoader } from '$lib/utils/article'
+import { articleLoader } from '$lib/pages/article'
 
-export const load: PageLoad = ({ params, fetch }) => articleLoader({ id: params.id, fetch })
+export const load: PageLoad = ({ params, fetch }) =>
+	articleLoader({ id: params.id, fetch, isCorporative: true })
