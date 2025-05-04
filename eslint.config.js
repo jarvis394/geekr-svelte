@@ -37,7 +37,8 @@ export default ts.config(
 		},
 		rules: {
 			'svelte/no-at-html-tags': 'off',
-			'svelte/require-each-key': 'off'
+			'svelte/require-each-key': 'off',
+			'@typescript-eslint/no-unused-expressions': 'off'
 		}
 	}
 )

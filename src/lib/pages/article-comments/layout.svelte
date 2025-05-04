@@ -22,7 +22,7 @@
 	<title>Статья / geekr.</title>
 </svelte:head>
 <div class="flex h-full w-full flex-col">
-	<Header>Комментарии</Header>
+	<Header title="Комментарии" />
 	{#if comments}
 		<ArticleCommentsPage {comments} />
 	{:else}

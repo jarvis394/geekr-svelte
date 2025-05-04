@@ -11,8 +11,16 @@
 	import { fade } from 'svelte/transition'
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
 
-	type ArticlePageProps = { article: Article } & HTMLAttributes<HTMLDivElement>
-	const { article, class: containerClasses, ...other }: ArticlePageProps = $props()
+	type ArticlePageProps = {
+		article: Article
+		scrollElement?: HTMLDivElement
+	} & HTMLAttributes<HTMLDivElement>
+	let {
+		article,
+		class: containerClasses,
+		scrollElement = $bindable(),
+		...other
+	}: ArticlePageProps = $props()
 	const timestampText = $derived(dayjs(article.timePublished).calendar().toLowerCase())
 	const isLoaded = $derived(article.textHtml)
 	const articleLink = $derived(getArticleLink(article))
@@ -32,7 +40,7 @@
 	<title>{article.titleHtml} / geekr.</title>
 </svelte:head>
 <div {...other} class={cn('animate-in fade-in flex flex-col gap-4 p-4', containerClasses)}>
-	<div class="flex flex-col">
+	<div class="flex flex-col" bind:this={scrollElement}>
 		<div class="flex flex-col gap-3">
 			<div class="flex flex-row gap-2">
 				<Avatar.Root class="h-6 w-6">

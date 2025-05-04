@@ -19,8 +19,12 @@ const defaultThreshold = 200
 const defaultScrollThreshold = 200
 const defaultTarget = typeof window !== 'undefined' ? window : null
 
-export const state = $state({ trigger: false })
-
+/**
+ * Triggers on scroll direction change but only after `scrollThreshold` pixels
+ *
+ * @example const scrollTrigger = useScrollTrigger()
+ * const isShrunk = $derived(scrollTrigger.trigger)
+ */
 export const useScrollTrigger = (options: Partial<Options> = {}) => {
 	const {
 		target = defaultTarget,
@@ -35,7 +39,7 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 	let position = initalScrollTop
 	let previousScroll = initalScrollTop
 	let direction: Direction = 'down'
-	state.trigger = defaultValue !== undefined ? defaultValue : initialTriggerValue
+	const state = $state({ trigger: defaultValue !== undefined ? defaultValue : initialTriggerValue })
 
 	const handleScroll = () => {
 		if (!target) return
@@ -47,6 +51,7 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 		// Set the trigger to show if the scroll position is lower than a threshold
 		if (currentScroll < scrollThreshold) {
 			state.trigger = State.SHOW
+			previousScroll = currentScroll
 			return
 		}
 
@@ -88,4 +93,6 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 			target?.removeEventListener('scroll', handleScroll)
 		}
 	})
+
+	return state
 }

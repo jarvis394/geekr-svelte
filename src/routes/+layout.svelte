@@ -3,7 +3,6 @@
 	import calendarPlugin from 'dayjs/plugin/calendar'
 	import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 	import updateLocalePlugin from 'dayjs/plugin/updateLocale'
-	import { useScrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
 	import { useLightbox } from '$lib/hooks/lightbox.svelte'
 	import { onMount } from 'svelte'
 	import { classes, setupViewTransition } from '$lib/utils/transitions'
@@ -50,7 +49,6 @@
 	})
 
 	dayjs.locale('ru')
-	useScrollTrigger()
 	useLightbox()
 
 	classes(({ navigation }) => {
@@ -76,6 +74,7 @@
 	<title>geekr.</title>
 </svelte:head>
 <main
+	id="main"
 	class="main selection:text-primary relative mx-auto flex min-h-full w-full max-w-2xl flex-col overscroll-x-none selection:bg-blue-200 dark:selection:bg-sky-900"
 >
 	{@render children()}

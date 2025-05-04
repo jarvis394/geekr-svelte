@@ -22,7 +22,7 @@
 	<title>Статья / geekr.</title>
 </svelte:head>
 <div class="flex h-full w-full flex-col">
-	<Header withPositionBar withShrinking>{article?.titleHtml}</Header>
+	<Header withPositionBar withShrinking title={article?.titleHtml} />
 	{#if article}
 		<ArticlePage {article} />
 	{:else}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn, makeArticlesPageUrlFromParams } from '$lib/utils'
-	import { state as scrollTriggerState } from '$lib/hooks/scrollTrigger.svelte'
+	import { useScrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left'
 	import { Button } from '../ui/button'
 	import { goto } from '$app/navigation'
@@ -9,8 +9,9 @@
 	import getCachedMode from '$lib/utils/getCachedMode'
 
 	export type HeaderProps = {
+		title?: string
 		scrollThreshold?: number
-		scrollElement?: HTMLElement
+		scrollElement?: HTMLElement | null
 		divider?: boolean
 		withShrinking?: boolean
 		withPositionBar?: boolean
@@ -18,15 +19,17 @@
 
 	const hiddenClasses = 'opacity-0 pointer-events-none'
 	const {
+		title,
 		class: containerClasses,
-		scrollElement,
+		scrollElement = typeof document !== 'undefined' ? document.getElementById('main') : undefined,
 		withPositionBar,
 		withShrinking,
 		children,
 		style,
 		...other
 	}: HeaderProps = $props()
-	const isShrunk = $derived(scrollTriggerState.trigger && withShrinking)
+	const scrollTrigger = useScrollTrigger()
+	const isShrunk = $derived(scrollTrigger.trigger && withShrinking)
 
 	const handleBack = () => {
 		// @ts-expect-error Chrome specific API
@@ -44,9 +47,8 @@
 
 	const getScrollProgress = () => {
 		const docElement = typeof document !== 'undefined' ? document.documentElement : null
-		const element = scrollElement || docElement
-		const progress =
-			element && element.scrollTop / (element.scrollHeight - element.clientHeight - 200)
+		const element = docElement
+		const progress = element && element.scrollTop / (element.scrollHeight - element.clientHeight)
 		return element ? Math.min(progress || 0, 1) : 0
 	}
 
@@ -60,11 +62,19 @@
 	onMount(() => {
 		if (withPositionBar) {
 			// Reset scroll trigger state, as it might be `false` when navigating from previous page
-			scrollTriggerState.trigger = false
+			scrollTrigger.trigger = false
 			// passive: true enhances scrolling experience
-			window.addEventListener('scroll', scrollCallback, { passive: true })
+			window?.addEventListener('scroll', scrollCallback, { passive: true })
+
+			const resizeObserver = new ResizeObserver(() => {
+				scrollCallback()
+			})
+
+			scrollElement && resizeObserver.observe(scrollElement)
+
 			return () => {
-				window.removeEventListener('scroll', scrollCallback)
+				window?.removeEventListener('scroll', scrollCallback)
+				scrollElement && resizeObserver.unobserve(scrollElement)
 			}
 		}
 	})
@@ -77,6 +87,8 @@
 		containerClasses,
 		{ 'bg-sidebar h-8': isShrunk, 'Header--withPositionBar': withPositionBar }
 	)}
+	data-shrunk={isShrunk}
+	data-progressed={scrollProgress > 0}
 	style={[style, `--progress: ${scrollProgress * 100}%`].join(';')}
 >
 	<Button
@@ -87,24 +99,27 @@
 	>
 		<ArrowLeft />
 	</Button>
-	<p
-		style="view-transition-name: header-title;"
-		class={[
-			'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
-			isShrunk && hiddenClasses
-		]}
-	>
-		{@render children?.()}
-	</p>
-	<p
-		style="view-transition-name: header-title-shrink;"
-		class={[
-			'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
-			!isShrunk && hiddenClasses
-		]}
-	>
-		{@render children?.()}
-	</p>
+	{#if title}
+		<p
+			style="view-transition-name: header-title;"
+			class={[
+				'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
+				isShrunk && hiddenClasses
+			]}
+		>
+			{title}
+		</p>
+		<p
+			style="view-transition-name: header-title-shrink;"
+			class={[
+				'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
+				!isShrunk && hiddenClasses
+			]}
+		>
+			{title}
+		</p>
+	{/if}
+	{@render children?.()}
 </header>
 <div class="h-12 shrink-0"></div>
 
@@ -117,8 +132,13 @@
 		height: 100%;
 		width: var(--progress);
 		z-index: -1;
-		opacity: 0.12;
+		opacity: 0;
 		background-color: currentColor;
+		transition: opacity 500ms ease;
+	}
+
+	.Header[data-progressed='true'].Header--withPositionBar::before {
+		opacity: 0.12;
 	}
 
 	.Header {
