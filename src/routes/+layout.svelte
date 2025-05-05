@@ -6,6 +6,8 @@
 	import { useLightbox } from '$lib/hooks/lightbox.svelte'
 	import { onMount } from 'svelte'
 	import { classes, setupViewTransition } from '$lib/utils/transitions'
+	import { Drawer } from '$lib/components/drawer'
+	import { Sidebar } from '$lib/components/sidebar'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
@@ -75,9 +77,13 @@
 </svelte:head>
 <main
 	id="main"
-	class="main selection:text-primary relative mx-auto flex min-h-full w-full max-w-2xl flex-col overscroll-x-none selection:bg-blue-200 dark:selection:bg-sky-900"
+	class="main selection:text-primary relative mx-auto flex min-h-full w-full flex-row justify-center overscroll-x-none selection:bg-blue-200 dark:selection:bg-sky-900"
 >
-	{@render children()}
+	<Drawer />
+	<div class="bordered max-w-article relative h-full w-full shrink">
+		{@render children()}
+	</div>
+	<Sidebar />
 </main>
 
 <style>

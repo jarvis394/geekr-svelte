@@ -10,7 +10,7 @@
 				default: 'button-default',
 				destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 				outline:
-					'is-touch:active:bg-accent is-touch:active:border-transparent bg-background hover:bg-accent/50 hover:text-accent-foreground border',
+					'is-touch:active:bg-accent is-touch:active:inset-ring-transparent bg-background hover:bg-accent/50 hover:text-accent-foreground inset-ring-border inset-ring',
 				secondary: 'button-secondary',
 				ghost: 'button-ghost',
 				link: 'text-primary underline-offset-4 hover:underline'

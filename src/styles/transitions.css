@@ -4,6 +4,9 @@
 		--transition-slide-offset: 40px;
 		--transition-zoom-in-scale: 1.05;
 		--transition-zoom-out-scale: 0.9;
+		--vt-transform-origin-x: 50%;
+		--vt-transform-origin-y: 50%;
+		--vt-transform-origin: var(--vt-transform-origin-x) var(--vt-transform-origin-y);
 
 		view-transition-name: root !important;
 	}
@@ -23,41 +26,39 @@
 	}
 
 	html.view-transition.entering::view-transition-new(root) {
+		transform-origin: var(--vt-transform-origin);
 		animation:
 			zoom-in-enter 500ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 	html.view-transition.entering::view-transition-old(root) {
+		transform-origin: var(--vt-transform-origin);
 		animation:
 			zoom-out-enter 500ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 
 	html.view-transition.leaving::view-transition-new(root) {
+		transform-origin: var(--vt-transform-origin);
 		animation:
 			zoom-in-leave 500ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 	html.view-transition.leaving::view-transition-old(root) {
+		transform-origin: var(--vt-transform-origin);
 		animation:
 			zoom-out-leave 500ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 
-	/* html.view-transition::view-transition-old(header) {
-		animation: fade-out 300ms cubic-bezier(0.2, 0, 0, 1) both;
-	}
-	html.view-transition::view-transition-new(header) {
-		animation: fade-in 500ms cubic-bezier(0.2, 0, 0, 1) 100ms both;
-	}
-	html.view-transition::view-transition-old(header-title) {
-		animation: fade-out 300ms cubic-bezier(0.2, 0, 0, 1) both;
-	}
-	html.view-transition::view-transition-new(header-title) {
-		animation: fade-in 500ms cubic-bezier(0.2, 0, 0, 1) 100ms both;
-	} */
-	html.view-transition::view-transition-group(header) {
-		background: linear-gradient(to bottom, hsl(var(--background) / 1), transparent);
+	@media (min-width: 1024px) {
+		:root {
+			--real-sidebar-width: min(
+				(100% - var(--article-width) - var(--drawer-collapsed-width)),
+				var(--sidebar-width)
+			);
+			--vt-transform-origin-x: calc(50% - (var(--real-sidebar-width) - var(--drawer-width)) / 2);
+		}
 	}
 
 	@keyframes zoom-in-enter {

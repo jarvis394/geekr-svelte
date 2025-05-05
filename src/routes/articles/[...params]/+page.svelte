@@ -5,7 +5,7 @@
 	import type { PageProps } from './$types'
 	import { goto } from '$app/navigation'
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
-	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher.svelte'
+	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher-row.svelte'
 	import { AppBar } from '$lib/components/appbar'
 
 	const { data }: PageProps = $props()

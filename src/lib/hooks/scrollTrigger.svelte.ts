@@ -37,7 +37,7 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 		(target && ('scrollY' in target ? target?.scrollY : target?.scrollTop)) || 0
 	const initialTriggerValue = initalScrollTop > threshold
 	let position = initalScrollTop
-	let previousScroll = initalScrollTop
+	let previousScroll: number | null = null
 	let direction: Direction = 'down'
 	const state = $state({ trigger: defaultValue !== undefined ? defaultValue : initialTriggerValue })
 
@@ -50,6 +50,13 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 
 		// Set the trigger to show if the scroll position is lower than a threshold
 		if (currentScroll < scrollThreshold) {
+			state.trigger = State.SHOW
+			previousScroll = currentScroll
+			return
+		}
+
+		// Try to have the trigger always be State.SHOW by default
+		if (previousScroll === null) {
 			state.trigger = State.SHOW
 			previousScroll = currentScroll
 			return
@@ -91,6 +98,7 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 
 		return () => {
 			target?.removeEventListener('scroll', handleScroll)
+			previousScroll = null
 		}
 	})
 

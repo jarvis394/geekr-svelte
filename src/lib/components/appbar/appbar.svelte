@@ -12,7 +12,7 @@
 <header
 	{...other}
 	class={cn(
-		'AppBar bg-background fixed top-0 z-50 flex w-full max-w-2xl flex-row items-center px-4 py-2',
+		'AppBar bg-background/90 max-w-article fixed top-0 z-50 flex w-full flex-row items-center px-4 py-2 backdrop-blur-2xl',
 		containerClasses
 	)}
 >

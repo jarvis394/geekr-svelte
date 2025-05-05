@@ -93,6 +93,7 @@
 				{...other}
 				{src}
 				{alt}
+				loading="eager"
 				onload={handleLoad}
 				onclick={handleClick}
 				data-loaded={loaded}

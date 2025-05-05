@@ -145,6 +145,16 @@
 @layer base {
 	:root {
 		--md-ripple-hover-opacity: 0;
+		--drawer-width: 264px;
+		--drawer-collapsed-width: 72px;
+		--sidebar-width: 348px;
+		--article-width: var(--container-2xl);
+	}
+
+	@media (max-width: 1280px) {
+		:root {
+			--drawer-width: var(--drawer-collapsed-width);
+		}
 	}
 
 	* {
@@ -157,6 +167,10 @@
 
 	.font-heading {
 		font-family: 'Google Sans';
+	}
+
+	.max-w-article {
+		@apply max-w-[var(--article-width)];
 	}
 
 	.ring-default {
@@ -177,14 +191,24 @@
 	}
 
 	.focus-ring {
-		@apply ring-offset-background;
+		@apply focus-visible:ring-offset-background;
 		@apply focus-visible:ring-ring;
 		@apply focus-visible:ring-2;
 		@apply focus-visible:ring-offset-2;
 		@apply focus-visible:outline-none;
 	}
 
+	.focus-ring-within {
+		@apply focus-within:ring-offset-background;
+		@apply focus-within:ring-ring;
+		@apply focus-within:ring-2;
+		@apply focus-within:ring-offset-2;
+		@apply focus-within:outline-none;
+	}
+
 	.article {
+		max-width: none !important;
+
 		& img {
 			@apply h-auto max-w-full rounded-sm align-middle;
 		}
@@ -292,7 +316,7 @@
 		}
 
 		@apply prose-blockquote:mt-3! prose-blockquote:mb-3!;
-		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 max-w-2xl break-words;
+		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 break-words;
 	}
 
 	.article.article--version-1 {
@@ -323,28 +347,19 @@
 		@apply opacity-85 duration-0;
 	}
 
-	body::after,
-	body::before {
-		content: '';
-		z-index: 10;
-		top: 0;
-		height: 100%;
-		position: fixed;
-		pointer-events: none;
-		width: 100%;
-		background: hsl(var(--background) / 1);
+	.bordered::after,
+	.bordered::before {
+		@apply bg-background pointer-events-none fixed top-0 z-10 h-full w-full content-[''];
 	}
 
-	body::before {
-		left: calc(50% - var(--container-2xl) / 2 - var(--scrollbar-width, 0px) / 2);
+	.bordered::before {
 		transform: translateX(-100%);
 		border-right: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-left;
 	}
 
-	body::after {
-		right: calc(50% - var(--container-2xl) / 2 + var(--scrollbar-width, 0px) / 2);
-		transform: translateX(100%);
+	.bordered::after {
+		transform: translateX(var(--article-width));
 		border-left: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-right;
 	}
