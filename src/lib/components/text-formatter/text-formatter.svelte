@@ -60,6 +60,8 @@
 				code = firstChild.data
 			}
 
+			console.log(language, code)
+
 			return {
 				component: SyntaxHighlighter,
 				props: {

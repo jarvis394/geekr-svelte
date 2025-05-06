@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte'
 	import { StyleModule } from 'style-mod'
 	import type { HighlightStyle } from '@codemirror/language'
+	import escape from 'escape-html'
 
 	export type HighlighterProps = {
 		code: string
@@ -12,7 +13,7 @@
 	}
 
 	const { language, code, theme = oneDarkHighlightStyle }: HighlighterProps = $props()
-	let highlighedCode = $state(code)
+	let highlighedCode = $state(escape(code))
 
 	onMount(() => {
 		if (theme.module) {

@@ -320,6 +320,10 @@
 	}
 
 	.article.article--version-1 {
+		& p {
+			@apply my-0;
+		}
+
 		& h1 + p,
 		h2 + p,
 		h3 + p,

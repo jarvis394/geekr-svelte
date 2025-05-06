@@ -2,6 +2,7 @@ import { Parser } from '@lezer/common'
 import { Language, LanguageDescription } from '@codemirror/language'
 import { type Highlighter, highlightCode as lezerHighlightCode } from '@lezer/highlight'
 import { languages } from '@codemirror/language-data'
+import escape from 'escape-html'
 
 export async function getCodeParser(
 	languageName: string,
@@ -34,10 +35,11 @@ export async function highlightCode(
 		const tree = parser.parse(input)
 		const res: string[] = []
 		const emitText = (text: string, classes: string) => {
+			console.log({ text, e: escape(text), classes })
 			if (classes) {
-				res.push(`<span class="${classes}">${text}</span>`)
+				res.push(`<span class="${classes}">${escape(text)}</span>`)
 			} else {
-				res.push(text)
+				res.push(escape(text))
 			}
 		}
 		const emitBreak = () => {
