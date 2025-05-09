@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ArticleCommentsPage } from '$lib/pages/article-comments'
 	import { Header } from '$lib/components/header'
-	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
+	import LoaderCircle from '@lucide/svelte/icons/loader-circle'
 	import type { PageProps } from '../../../routes/articles/[id=article]/comments/$types'
 
 	const { data }: PageProps = $props()

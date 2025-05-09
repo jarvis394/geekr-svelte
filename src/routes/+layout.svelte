@@ -54,8 +54,18 @@
 	useLightbox()
 
 	classes(({ navigation }) => {
+		const articlesNavigaion = ['/flows/[...params]', '/articles/[...params]']
+
 		// Catches navigation inside the page and disables transition
 		if (navigation.from?.route.id === navigation.to?.route.id) {
+			return []
+		}
+
+		// Catches navigation between /articles and /flows (they are the same route)
+		if (
+			articlesNavigaion.some((e) => e === navigation.from?.route.id) &&
+			articlesNavigaion.some((e) => e === navigation.to?.route.id)
+		) {
 			return []
 		}
 

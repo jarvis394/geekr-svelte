@@ -1,34 +1,7 @@
-<script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements'
-	import { cn } from '$lib/utils'
-	import Logo from '../logo/logo.svelte'
-	import * as Avatar from '$lib/components/ui/avatar'
-
-	export type AppBarProps = HTMLAttributes<HTMLElement>
-
-	const { class: containerClasses, ...other }: AppBarProps = $props()
+<script>
+	import AppbarDefault from './appbar-default.svelte'
+	import AppbarFlows from './appbar-flows.svelte'
 </script>
 
-<header
-	{...other}
-	class={cn(
-		'AppBar bg-background/90 max-w-article fixed top-0 z-50 flex w-full flex-row items-center px-4 py-2 backdrop-blur-2xl',
-		containerClasses
-	)}
->
-	<a href="/" class="ring-default tap-hightlight flex h-[32px] items-center rounded-sm">
-		<Logo withTitle class="h-[26px]" />
-	</a>
-	<div class="flex grow justify-end">
-		<Avatar.Root class="border-foreground/4 h-8 w-8 rounded-md border">
-			<Avatar.Image hash="jarvis394" alt="User avatar" />
-		</Avatar.Root>
-	</div>
-</header>
-<div class="h-12 shrink-0"></div>
-
-<style>
-	.AppBar {
-		view-transition-name: header;
-	}
-</style>
+<AppbarDefault spacerProps={{ class: 'min-lg:hidden' }} class="min-lg:hidden" />
+<AppbarFlows spacerProps={{ class: 'max-lg:hidden' }} class="max-lg:hidden" />

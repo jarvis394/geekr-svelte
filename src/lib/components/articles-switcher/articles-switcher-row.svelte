@@ -1,22 +1,14 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements'
 	import Button, { buttonVariants } from '../ui/button/button.svelte'
-	import Filter from 'lucide-svelte/icons/filter'
+	import Filter from '@lucide/svelte/icons/filter'
 	import * as Drawer from '$lib/components/ui/drawer'
 	import { cn } from '$lib/utils'
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
 	import { goto } from '$app/navigation'
-	import * as Tabs from '../ui/tabs'
 	import autoAnimate from '@formkit/auto-animate'
+	import { type ModeItem, ARTICLE_COMPLEXITY, TABBAR_MODES } from '$lib/config/modes'
 	import {
-		type ModeItem,
-		ARTICLE_COMPLEXITY,
-		TOP_MODES,
-		NEW_MODES,
-		TABBAR_MODES
-	} from '$lib/config/modes'
-	import {
-		getSelectedComplexityFromParams,
 		getSelectedModeFromParams,
 		isSelected,
 		isSelectedInsideModes,
@@ -42,17 +34,22 @@
 
 	const handleClick = (mode: ModeItem) => {
 		if (isSelected(mode, articleParams)) return
-		// Reset selectedComplexity to "all" as well
-		drawerSelectedMode = { ...mode, complexity: ARTICLE_COMPLEXITY[0].complexity }
+		mode = {
+			...mode, // Do not reset articles flow that user selected
+			flow: articleParams.flow,
+			// Reset selectedComplexity to "all" as well
+			complexity: ARTICLE_COMPLEXITY[0].complexity
+		}
+		drawerSelectedMode = mode
 		saveModeOnClient(mode)
-		goto('/articles' + makeArticlesPageUrlFromParams(mode))
+		goto(makeArticlesPageUrlFromParams(mode))
 	}
 
 	const handleDrawerConfirm = () => {
 		if (!drawerSelectedMode) return
 		selectedMode = drawerSelectedMode
 		saveModeOnClient(drawerSelectedMode)
-		goto('/articles' + makeArticlesPageUrlFromParams(drawerSelectedMode))
+		goto(makeArticlesPageUrlFromParams(drawerSelectedMode))
 	}
 
 	$effect(() => {

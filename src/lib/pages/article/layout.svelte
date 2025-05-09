@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ArticlePage } from '$lib/pages/article'
 	import { Header } from '$lib/components/header'
-	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
+	import LoaderCircle from '@lucide/svelte/icons/loader-circle'
 	import type { PageProps } from '../../../routes/articles/[id=article]/$types'
 
 	const { data }: PageProps = $props()

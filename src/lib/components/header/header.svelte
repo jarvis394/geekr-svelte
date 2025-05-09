@@ -2,7 +2,7 @@
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn, makeArticlesPageUrlFromParams } from '$lib/utils'
 	import { useScrollTrigger } from '$lib/hooks/scrollTrigger.svelte'
-	import ArrowLeft from 'lucide-svelte/icons/arrow-left'
+	import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 	import { Button } from '../ui/button'
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
@@ -39,7 +39,7 @@
 		if (canGoBack) {
 			history.back()
 		} else {
-			goto('/articles' + makeArticlesPageUrlFromParams(getCachedMode()), {
+			goto(makeArticlesPageUrlFromParams(getCachedMode()), {
 				replaceState: true
 			})
 		}

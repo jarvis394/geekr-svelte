@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HTMLInputAttributes, MouseEventHandler } from 'svelte/elements'
+	import type { HTMLInputAttributes } from 'svelte/elements'
 	import type { WithElementRef } from 'bits-ui'
 	import { cn } from '$lib/utils'
 	import type { Snippet } from 'svelte'
@@ -19,10 +19,6 @@
 		after,
 		...restProps
 	}: Props = $props()
-
-	const handleClick: MouseEventHandler<HTMLDivElement> = () => {
-		ref?.focus()
-	}
 </script>
 
 <label

@@ -9,7 +9,7 @@
 	import dayjs from 'dayjs'
 	import { Button } from '$lib/components/ui/button'
 	import { fade } from 'svelte/transition'
-	import LoaderCircle from 'lucide-svelte/icons/loader-circle'
+	import LoaderCircle from '@lucide/svelte/icons/loader-circle'
 
 	type ArticlePageProps = {
 		article: Article

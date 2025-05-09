@@ -7,8 +7,8 @@
 	import { Button } from '../ui/button'
 	import dayjs from 'dayjs'
 	import ScoreBadge, { type ScoreBadgeVariant } from './score-badge.svelte'
-	import ChevronUp from 'lucide-svelte/icons/chevron-up'
-	import ChevronDown from 'lucide-svelte/icons/chevron-down'
+	import ChevronUp from '@lucide/svelte/icons/chevron-up'
+	import ChevronDown from '@lucide/svelte/icons/chevron-down'
 
 	type ArticleCommentProps = {
 		comment: Comment

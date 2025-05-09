@@ -35,7 +35,6 @@ export async function highlightCode(
 		const tree = parser.parse(input)
 		const res: string[] = []
 		const emitText = (text: string, classes: string) => {
-			console.log({ text, e: escape(text), classes })
 			if (classes) {
 				res.push(`<span class="${classes}">${escape(text)}</span>`)
 			} else {

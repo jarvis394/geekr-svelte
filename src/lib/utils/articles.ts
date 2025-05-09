@@ -3,11 +3,13 @@ import {
 	type ArticlesPeriod,
 	type ArticlesComplexity,
 	type ArticlesRating,
+	type ArticlesFlow,
 	articlesModeSchema,
 	articlesRatingSchema,
 	articlesPeriodSchema,
 	articlesComplexitySchema,
-	articlesPageSchema
+	articlesPageSchema,
+	articlesFlowSchema
 } from '$lib/types'
 import type { ZodSchema } from 'zod'
 
@@ -17,6 +19,7 @@ export type GetArticlesParamsData = {
 	complexity: ArticlesComplexity
 	rating: ArticlesRating
 	page: number
+	flow: ArticlesFlow
 }
 
 export type GetArticlesParamsResult =
@@ -35,9 +38,12 @@ export const parseArticlesParams = (params: string[]): GetArticlesParamsResult =
 		rating: 'all',
 		period: 'daily',
 		complexity: 'all',
+		flow: 'all',
 		page: 1
 	}
+	/** NOTE: article params are checked by the order in this map */
 	const checkMap: Record<keyof GetArticlesParamsData, ZodSchema> = {
+		flow: articlesFlowSchema,
 		mode: articlesModeSchema,
 		rating: articlesRatingSchema,
 		period: articlesPeriodSchema,
@@ -51,6 +57,8 @@ export const parseArticlesParams = (params: string[]): GetArticlesParamsResult =
 
 		// Skip page param
 		if (param === 'p') continue
+		// ...and flow param
+		if (param === 'flows') continue
 
 		for (const item in checkMap) {
 			const typedItem = item as keyof GetArticlesParamsData
@@ -87,6 +95,13 @@ export const makeArticlesPageUrlFromParams = (
 ): string => {
 	const urlParts: string[] = []
 
+	if (articlesParams.flow && articlesParams.flow !== 'all') {
+		urlParts.push('flows')
+		urlParts.push(articlesParams.flow)
+	} else {
+		urlParts.push('articles')
+	}
+
 	if (articlesParams.mode === 'top') {
 		urlParts.push('top')
 		urlParts.push(articlesParams.period || 'daily')
@@ -110,6 +125,7 @@ export const makeArticlesPageUrlFromParams = (
 export const getArticlesQueryKey = (articleParams: GetArticlesParamsData) => {
 	return [
 		'articles',
+		articleParams.flow,
 		articleParams.mode,
 		articleParams.period,
 		articleParams.rating,

@@ -120,17 +120,17 @@
 	.button-default {
 		--md-ripple-pressed-color: rgb(0, 0, 0);
 		@apply bg-primary text-primary-foreground;
-		/* @apply is-touch:active:bg-primary/90 is-touch:active:duration-0; */
+		@apply is-touch:active:bg-primary/90 is-touch:active:duration-0;
 	}
 
 	.button-secondary {
 		@apply bg-secondary text-secondary-foreground not-is-touch:hover:bg-secondary/80;
-		/* @apply is-touch:active:bg-secondary/80 is-touch:active:duration-0; */
+		@apply is-touch:active:bg-secondary/80 is-touch:active:duration-0;
 	}
 
 	.button-ghost {
 		@apply not-is-touch:hover:bg-accent-foreground/12 not-is-touch:hover:text-accent-foreground;
-		/* @apply is-touch:active:bg-accent-foreground/12 is-touch:active:duration-0; */
+		@apply is-touch:active:bg-accent-foreground/12 is-touch:active:duration-0;
 	}
 
 	.link:not(:has(.Image)) {
@@ -162,7 +162,7 @@
 	}
 
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-background text-foreground overscroll-x-none;
 	}
 
 	.font-heading {

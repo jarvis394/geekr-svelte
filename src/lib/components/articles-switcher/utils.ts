@@ -28,9 +28,9 @@ export const getSelectedComplexityFromParams = (params: GetArticlesParamsData) =
 }
 
 export const getSelectedModeFromParams = (params: GetArticlesParamsData): ModeItem => {
-	const complexity = getSelectedComplexityFromParams(params)
+	const { flow, complexity } = params
 	const res = TOP_MODES.concat(NEW_MODES).find((mode) => isSelected(mode, params))
-	return { ...(res || TOP_MODES[0]), complexity: complexity.complexity }
+	return { ...(res || TOP_MODES[0]), complexity, flow }
 }
 
 export const saveModeOnClient = (mode: ModeItem) => {

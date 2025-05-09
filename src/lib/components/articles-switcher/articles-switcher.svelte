@@ -25,12 +25,12 @@
 	}: ArticlesSwitcherProps = $props()
 
 	const getButtonVariant = $derived<(selected: boolean) => ButtonVariant>((selected) => {
-		if (selected) return variant === 'desktop' ? 'secondary' : 'default'
+		if (selected) return 'default'
 		return variant === 'desktop' ? 'outline' : 'secondary'
 	})
 
 	const handleModeClick = (mode: ModeItem) => {
-		selectedMode = mode
+		selectedMode = { ...selectedMode, ...mode }
 
 		if (mode.complexity) {
 			selectedMode.complexity = mode.complexity
@@ -38,7 +38,7 @@
 
 		if (applyOnClick) {
 			saveModeOnClient(selectedMode)
-			goto('/articles' + makeArticlesPageUrlFromParams(selectedMode))
+			goto(makeArticlesPageUrlFromParams(selectedMode))
 		}
 	}
 
@@ -78,7 +78,12 @@
 		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium">
 			Сложность
 		</small>
-		<div class="xs:grid-cols-4 grid grid-cols-2 gap-2">
+		<div
+			class={cn('grid grid-cols-2 gap-2', {
+				'grid-cols-2': variant === 'desktop',
+				'xs:grid-cols-4': variant === 'default'
+			})}
+		>
 			{#each ARTICLE_COMPLEXITY as item}
 				{@const selected = selectedMode.complexity === item.complexity}
 				<Button

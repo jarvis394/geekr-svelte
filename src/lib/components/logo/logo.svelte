@@ -11,7 +11,7 @@
 
 <svg
 	{...other}
-	viewBox={`0 0 ${withTitle ? 90 : 26} 26`}
+	viewBox={`0 0 ${withTitle ? 90 : 24} 26`}
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"
 >

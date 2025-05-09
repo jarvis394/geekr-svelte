@@ -7,7 +7,7 @@
 	import { Button } from '../ui/button'
 	import type { ArticleItemProps } from './article-item.svelte'
 	import Image from '../image/image.svelte'
-	import MessageSquare from 'lucide-svelte/icons/message-square'
+	import MessageSquare from '@lucide/svelte/icons/message-square'
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
 	import ArticleLabels from '../article-labels/article-labels.svelte'
 	import { cn, getArticleLeadImage } from '$lib/utils'
@@ -79,11 +79,7 @@
 		class="z-10 p-2 pb-0 data-[float='false']:p-3 data-[float='false']:pb-0 data-[float='true']:absolute"
 	/>
 	{#if leadImage}
-		<a
-			href={articleLink}
-			title={titlePlaintext}
-			class="ArticleItem__image ring-default relative flex"
-		>
+		<a href={articleLink} title={titlePlaintext} class="ring-default relative flex">
 			<Image
 				disableZoom
 				containerProps={{
@@ -181,11 +177,6 @@
 </div>
 
 <style>
-	.ArticleItem__image {
-		content-visibility: auto;
-		contain-intrinsic-size: 1px 212px;
-	}
-
 	.ArticleItem__image::after {
 		content: '';
 		position: absolute;
@@ -200,8 +191,6 @@
 	}
 
 	.ArticleItem__imageBlur {
-		content-visibility: auto;
-		contain-intrinsic-size: 1px 212px;
 		opacity: 0.24;
 		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
 	}

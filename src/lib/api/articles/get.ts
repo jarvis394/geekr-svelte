@@ -1,9 +1,9 @@
 import type {
 	ArticlesComplexity,
+	ArticlesFlow,
 	ArticlesPeriod,
 	ArticlesRating,
-	ArticlesResponse,
-	FlowAlias
+	ArticlesResponse
 } from '$lib/types'
 import makeRequest from '../makeRequest'
 
@@ -29,7 +29,7 @@ interface GetArticlesProps {
 	page: number
 	complexity?: ArticlesComplexity
 	hubAlias?: string
-	flow?: FlowAlias
+	flow?: ArticlesFlow
 	perPage?: number
 	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
 }

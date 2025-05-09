@@ -5,12 +5,3 @@ export interface Flow {
 	url: string
 	path: string
 }
-
-export type FlowAlias =
-	| 'all'
-	| 'develop'
-	| 'design'
-	| 'admin'
-	| 'management'
-	| 'marketing'
-	| 'popsci'
