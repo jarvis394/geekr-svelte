@@ -7,6 +7,9 @@
 	import { type ModeItem, ARTICLE_COMPLEXITY, TOP_MODES, NEW_MODES } from '$lib/config/modes'
 	import { getSelectedModeFromParams, isSelected, saveModeOnClient } from './utils'
 	import type { TabsRootProps } from 'bits-ui'
+	import { FLOWS } from '$lib/config/flows'
+	import type { ArticlesFlow } from '$lib/types'
+	import * as Drawer from '$lib/components/ui/drawer'
 
 	export type ArticlesSwitcherProps = TabsRootProps & {
 		articleParams: GetArticlesParamsData
@@ -23,6 +26,7 @@
 		variant = 'default',
 		...other
 	}: ArticlesSwitcherProps = $props()
+	const selectedFlow = $derived(articleParams?.flow || 'all')
 
 	const getButtonVariant = $derived<(selected: boolean) => ButtonVariant>((selected) => {
 		if (selected) return 'default'
@@ -40,6 +44,10 @@
 			saveModeOnClient(selectedMode)
 			goto(makeArticlesPageUrlFromParams(selectedMode))
 		}
+	}
+
+	const handleFlowClick = (flow: ArticlesFlow) => {
+		goto(makeArticlesPageUrlFromParams({ ...articleParams, flow }))
 	}
 
 	$effect(() => {
@@ -98,6 +106,28 @@
 	</Tabs.Content>
 {/snippet}
 
+{#if variant === 'default'}
+	<div class="bg-accent/50 flex flex-col gap-1 rounded-lg">
+		<h3 class="text-small font-heading text-muted-foreground/63 pt-4 pl-4 font-medium">Поток</h3>
+		<div class="flex flex-row gap-0 overflow-auto px-2 pb-2">
+			{#each FLOWS as flow}
+				<Drawer.Close>
+					<Button
+						size="lg"
+						variant="ghost"
+						onclick={handleFlowClick.bind(null, flow.alias)}
+						class={cn('rounded-md px-2', {
+							'text-primary': selectedFlow === flow.alias,
+							'text-muted-foreground': selectedFlow !== flow.alias
+						})}
+					>
+						{flow.title}
+					</Button>
+				</Drawer.Close>
+			{/each}
+		</div>
+	</div>
+{/if}
 <Tabs.Root
 	{...other}
 	value={selectedMode?.mode}

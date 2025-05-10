@@ -7,8 +7,10 @@
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
 	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher-row.svelte'
 	import { AppBar } from '$lib/components/appbar'
+	import { FLOWS_MAP } from '$lib/config/flows'
 
 	const { data }: PageProps = $props()
+	const selectedFlow = $derived(data.articleParams?.flow || 'all')
 
 	const handlePageChange = (page: number) => {
 		goto(makeArticlesPageUrlFromParams({ ...data.articleParams, page }))
@@ -67,6 +69,13 @@
 </svelte:head>
 <div class="flex w-full flex-col gap-0">
 	<AppBar />
+	{#if selectedFlow !== 'all'}
+		<div
+			class="font-heading text-muted-foreground bg-accent mb-1 flex items-center justify-center px-4 py-1.5 text-base font-medium select-none min-lg:hidden"
+		>
+			Выбранный хаб — {FLOWS_MAP[selectedFlow].title}
+		</div>
+	{/if}
 	<ArticlesSwitcher class="min-lg:hidden" articleParams={data.articleParams} />
 	{#await data.articles}
 		<div class="relative h-[10000px] w-full">

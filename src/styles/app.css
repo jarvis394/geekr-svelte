@@ -320,7 +320,8 @@
 	}
 
 	.article.article--version-1 {
-		& p {
+		& p,
+		& hr {
 			@apply my-0;
 		}
 

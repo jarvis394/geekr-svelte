@@ -13,7 +13,7 @@
 
 	@media (min-width: 672px) {
 		:root {
-			--transition-slide-offset: 40px;
+			--transition-slide-offset: 16px;
 			--transition-zoom-in-scale: 1.02;
 			--transition-zoom-out-scale: 0.95;
 		}
