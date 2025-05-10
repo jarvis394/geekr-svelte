@@ -351,18 +351,18 @@
 		@apply opacity-85 duration-0;
 	}
 
-	.bordered::after,
-	.bordered::before {
+	.container-bordered::after,
+	.container-bordered::before {
 		@apply bg-background pointer-events-none fixed top-0 z-10 h-full w-full content-[''];
 	}
 
-	.bordered::before {
+	.container-bordered::before {
 		transform: translateX(-100%);
 		border-right: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-left;
 	}
 
-	.bordered::after {
+	.container-bordered::after {
 		transform: translateX(var(--article-width));
 		border-left: 1px solid hsl(var(--border) / 1);
 		view-transition-name: border-right;

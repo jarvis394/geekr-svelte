@@ -61,8 +61,9 @@
 		const emptyHandler = () => {}
 		window.addEventListener('testPassive', emptyHandler, opts)
 		window.removeEventListener('testPassive', emptyHandler, opts)
-	} catch (e) {
-		console.warn('Passive listeners not supported:', e)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	} catch (_e) {
+		// noop
 	}
 
 	type UnsubList = (() => void)[]
