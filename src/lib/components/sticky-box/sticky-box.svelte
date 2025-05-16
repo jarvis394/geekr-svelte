@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils'
+	import { onMount } from 'svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
 
 	const getScrollParent = (node: HTMLElement) => {
@@ -378,7 +379,7 @@
 	}: StickyBoxProps = $props()
 	let node = $state<HTMLElement | null>(null)
 
-	$effect(() => {
+	onMount(() => {
 		if (!node || !stickyProp) return
 		const unsubs: UnsubList = []
 		setup(node, unsubs, { offsetBottom, offsetTop, bottom })

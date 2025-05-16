@@ -20,7 +20,7 @@
 	>
 		<Logo withTitle class="mt-0.5 h-[26px]" />
 	</a>
-	<UserAvatarButton />
+	<UserAvatarButton buttonProps={{ class: 'p-2' }} />
 </div>
 
 <style>

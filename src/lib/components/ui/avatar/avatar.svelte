@@ -5,12 +5,15 @@
 	let {
 		ref = $bindable(null),
 		class: className,
+		children,
 		...restProps
 	}: AvatarPrimitive.RootProps = $props()
 </script>
 
-<AvatarPrimitive.Root
-	bind:ref
+<div
+	bind:this={ref}
 	class={cn('bg-muted relative flex size-10 shrink-0 overflow-hidden rounded-sm', className)}
 	{...restProps}
-/>
+>
+	{@render children?.()}
+</div>

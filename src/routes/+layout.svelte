@@ -91,7 +91,7 @@
 </svelte:head>
 <main
 	id="main"
-	class="main selection:text-primary relative mx-auto flex min-h-full w-full flex-row justify-center overscroll-x-none selection:bg-blue-200 dark:selection:bg-sky-900"
+	class="main relative mx-auto flex min-h-full w-full flex-row justify-center overscroll-x-none"
 >
 	<Drawer />
 	<div class="container-bordered max-w-article relative h-full w-full shrink">

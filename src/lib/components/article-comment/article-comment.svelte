@@ -95,7 +95,6 @@
 						src={comment.author.avatarUrl}
 						alt={'@' + comment.author.alias}
 					/>
-					<Avatar.Fallback />
 				</Avatar.Root>
 				<div class="flex flex-col gap-0.5">
 					<h3 class="font-heading text-[13px] leading-none font-medium">

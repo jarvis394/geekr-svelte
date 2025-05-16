@@ -14,7 +14,7 @@
 	{...buttonProps}
 	variant={buttonProps?.variant || 'ghost'}
 	class={cn(
-		'min-xl:bg-foreground/7 size-12 justify-start gap-2 rounded-full px-2 min-xl:w-full min-xl:rounded-xl',
+		'min-xl:bg-foreground/7 size-12 justify-start gap-2 rounded-full p-0 min-xl:px-2 min-xl:w-full min-xl:rounded-xl',
 		buttonProps?.class
 	)}
 >

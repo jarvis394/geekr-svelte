@@ -153,7 +153,6 @@
 						src={article.author.avatarUrl}
 						alt={'@' + article.author.alias}
 					/>
-					<Avatar.Fallback />
 				</Avatar.Root>
 				<h3 class="font-heading text-[15px] font-medium">{article.author.alias}</h3>
 			</Button>
@@ -177,6 +176,10 @@
 </div>
 
 <style>
+	.ArticleItem__image {
+		transform: translateZ(0);
+	}
+
 	.ArticleItem__image::after {
 		content: '';
 		position: absolute;
@@ -192,6 +195,7 @@
 
 	.ArticleItem__imageBlur {
 		opacity: 0.24;
+		transform: translateZ(0);
 		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
 	}
 
