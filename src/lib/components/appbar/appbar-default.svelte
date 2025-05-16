@@ -18,7 +18,11 @@
 		containerClasses
 	)}
 >
-	<a href="/" class="ring-default tap-hightlight flex h-[32px] items-center rounded-sm">
+	<a
+		href="/"
+		data-sveltekit-replacestate
+		class="ring-default tap-hightlight flex h-[32px] items-center rounded-sm"
+	>
 		<Logo withTitle class="h-[26px]" />
 	</a>
 	<div class="flex grow justify-end">

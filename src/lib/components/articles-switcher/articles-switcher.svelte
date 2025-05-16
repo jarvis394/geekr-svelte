@@ -107,9 +107,13 @@
 {/snippet}
 
 {#if variant === 'default'}
-	<div class="bg-accent/50 flex flex-col gap-1 rounded-lg">
-		<h3 class="text-small font-heading text-muted-foreground/63 pt-4 pl-4 font-medium">Поток</h3>
-		<div class="flex flex-row gap-0 overflow-auto px-2 pb-2">
+	<div class="bg-accent/50 relative flex flex-col gap-1 overflow-auto rounded-lg">
+		<h3
+			class="text-small font-heading text-muted-foreground/63 sticky left-0 pt-4 pl-4 font-medium"
+		>
+			Поток
+		</h3>
+		<div class="flex flex-row gap-0 px-2 pb-2">
 			{#each FLOWS as flow}
 				<Drawer.Close>
 					<Button

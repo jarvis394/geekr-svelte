@@ -8,12 +8,14 @@
 >
 	<a
 		href="/"
+		data-sveltekit-replacestate
 		class="ring-default button button-ghost flex size-12 w-full items-center justify-center rounded-full p-0! min-xl:hidden"
 	>
 		<Logo class="size-[26px]" />
 	</a>
 	<a
 		href="/"
+		data-sveltekit-replacestate
 		class="ring-default tap-hightlight flex h-12 items-center justify-start rounded-md p-0! max-xl:hidden"
 	>
 		<Logo withTitle class="mt-0.5 h-[26px]" />

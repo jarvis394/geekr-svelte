@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { OnNavigate } from '@sveltejs/kit'
 	import dayjs from 'dayjs'
 	import calendarPlugin from 'dayjs/plugin/calendar'
 	import relativeTimePlugin from 'dayjs/plugin/relativeTime'
@@ -17,16 +18,28 @@
 	import '../styles/transitions.css'
 	import 'photoswipe/style.css'
 
+	const shouldStartViewTransition = (navigation: OnNavigate) => {
+		const articlesNavigaion = ['/flows/[...params]', '/articles/[...params]']
+
+		// Catches navigation inside the page and disables transition
+		if (navigation.from?.route.id === navigation.to?.route.id) {
+			return false
+		}
+
+		// Catches navigation between /articles and /flows (they are the same route)
+		if (
+			articlesNavigaion.some((e) => e === navigation.from?.route.id) &&
+			articlesNavigaion.some((e) => e === navigation.to?.route.id)
+		) {
+			return false
+		}
+
+		return true
+	}
+
 	let { children } = $props()
 	const { on } = setupViewTransition({
-		shouldStartViewTransition(navigation) {
-			// Catches navigation inside the page and disables transition
-			if (navigation.from?.route.id === navigation.to?.route.id) {
-				return false
-			}
-
-			return true
-		}
+		shouldStartViewTransition
 	})
 
 	dayjs.extend(relativeTimePlugin)
@@ -54,18 +67,9 @@
 	useLightbox()
 
 	classes(({ navigation }) => {
-		const articlesNavigaion = ['/flows/[...params]', '/articles/[...params]']
+		const shouldStartTransition = shouldStartViewTransition(navigation)
 
-		// Catches navigation inside the page and disables transition
-		if (navigation.from?.route.id === navigation.to?.route.id) {
-			return []
-		}
-
-		// Catches navigation between /articles and /flows (they are the same route)
-		if (
-			articlesNavigaion.some((e) => e === navigation.from?.route.id) &&
-			articlesNavigaion.some((e) => e === navigation.to?.route.id)
-		) {
+		if (!shouldStartTransition) {
 			return []
 		}
 

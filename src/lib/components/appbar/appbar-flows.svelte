@@ -31,7 +31,7 @@
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger
 			style="view-transition-name: header-flows-button;"
-			class="button button-ghost gap-2 px-4 py-1.5 text-lg font-medium"
+			class="button button-ghost gap-2 px-3.25 py-1.5 pb-1.75 text-lg font-medium"
 		>
 			{FLOWS_MAP[selectedFlow].title}
 			<ChevronDown strokeWidth={2.5} class="text-muted-foreground size-5" />

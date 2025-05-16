@@ -13,9 +13,13 @@
 <Button
 	{...buttonProps}
 	variant={buttonProps?.variant || 'ghost'}
-	class={cn('size-12 rounded-full', buttonProps?.class)}
+	class={cn(
+		'min-xl:bg-foreground/7 size-12 justify-start gap-2 rounded-full px-2 min-xl:w-full min-xl:rounded-xl',
+		buttonProps?.class
+	)}
 >
 	<Avatar.Root class={cn('border-foreground/4 h-8 w-8 rounded-full border', containerClasses)}>
 		<Avatar.Image hash="jarvis394" alt="User avatar" />
 	</Avatar.Root>
+	<p class="font-heading mb-0.25 text-base max-xl:hidden">Владислав Екушев</p>
 </Button>
