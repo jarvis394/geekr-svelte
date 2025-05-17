@@ -16,7 +16,7 @@
 	<a
 		href="/"
 		data-sveltekit-replacestate
-		class="ring-default tap-hightlight flex h-12 items-center justify-start rounded-md p-0! max-xl:hidden"
+		class="ring-default tap-hightlight px-2 flex h-12 items-center justify-start rounded-md max-xl:hidden"
 	>
 		<Logo withTitle class="mt-0.5 h-[26px]" />
 	</a>

@@ -101,7 +101,6 @@
 	</Button>
 	{#if title}
 		<p
-			style="view-transition-name: header-title;"
 			class={[
 				'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
 				isShrunk && hiddenClasses
@@ -110,7 +109,6 @@
 			{title}
 		</p>
 		<p
-			style="view-transition-name: header-title-shrink;"
 			class={[
 				'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
 				!isShrunk && hiddenClasses
@@ -144,7 +142,6 @@
 	.Header {
 		will-change: transform;
 		transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
-		view-transition-name: header;
 	}
 
 	.Header > p {

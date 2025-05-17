@@ -14,7 +14,7 @@
 <header
 	{...other}
 	class={cn(
-		'AppBar bg-background/90 max-w-article fixed top-0 z-50 flex w-full flex-row items-center px-4 py-2 backdrop-blur-2xl',
+		'bg-background/90 max-w-article fixed top-0 z-50 flex w-full flex-row items-center px-4 py-2 backdrop-blur-2xl',
 		containerClasses
 	)}
 >
@@ -30,9 +30,3 @@
 	</div>
 </header>
 <div {...spacerProps} class={cn('h-12 shrink-0', spacerProps?.class)}></div>
-
-<style>
-	.AppBar {
-		view-transition-name: header;
-	}
-</style>
