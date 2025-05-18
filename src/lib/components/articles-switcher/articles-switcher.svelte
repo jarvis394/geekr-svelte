@@ -9,13 +9,13 @@
 	import type { TabsRootProps } from 'bits-ui'
 	import { FLOWS } from '$lib/config/flows'
 	import type { ArticlesFlow } from '$lib/types'
-	import * as Drawer from '$lib/components/ui/drawer'
 
 	export type ArticlesSwitcherProps = TabsRootProps & {
 		articleParams: GetArticlesParamsData
 		applyOnClick?: boolean
 		variant?: 'default' | 'desktop'
 		selectedMode?: ModeItem
+		onClose?: () => void
 	}
 
 	let {
@@ -24,6 +24,7 @@
 		applyOnClick,
 		selectedMode = $bindable(getSelectedModeFromParams(articleParams)),
 		variant = 'default',
+		onClose,
 		...other
 	}: ArticlesSwitcherProps = $props()
 	const selectedFlow = $derived(articleParams?.flow || 'all')
@@ -41,12 +42,14 @@
 		}
 
 		if (applyOnClick) {
+			onClose?.()
 			saveModeOnClient(selectedMode)
 			goto(makeArticlesPageUrlFromParams(selectedMode))
 		}
 	}
 
 	const handleFlowClick = (flow: ArticlesFlow) => {
+		onClose?.()
 		goto(makeArticlesPageUrlFromParams({ ...articleParams, flow }))
 	}
 
@@ -115,19 +118,17 @@
 		</h3>
 		<div class="flex flex-row gap-0 px-2 pb-2">
 			{#each FLOWS as flow}
-				<Drawer.Close>
-					<Button
-						size="lg"
-						variant="ghost"
-						onclick={handleFlowClick.bind(null, flow.alias)}
-						class={cn('rounded-md px-2', {
-							'text-primary': selectedFlow === flow.alias,
-							'text-muted-foreground': selectedFlow !== flow.alias
-						})}
-					>
-						{flow.title}
-					</Button>
-				</Drawer.Close>
+				<Button
+					size="lg"
+					variant="ghost"
+					onclick={handleFlowClick.bind(null, flow.alias)}
+					class={cn('rounded-md px-2', {
+						'text-primary': selectedFlow === flow.alias,
+						'text-muted-foreground': selectedFlow !== flow.alias
+					})}
+				>
+					{flow.title}
+				</Button>
 			{/each}
 		</div>
 	</div>

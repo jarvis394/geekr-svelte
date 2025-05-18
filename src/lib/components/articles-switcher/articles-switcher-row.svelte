@@ -15,6 +15,7 @@
 		saveModeOnClient
 	} from './utils'
 	import ArticlesSwitcher from './articles-switcher.svelte'
+	import { FLOWS_MAP } from '$lib/config/flows'
 
 	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement> & {
 		articleParams: GetArticlesParamsData
@@ -22,14 +23,20 @@
 
 	const { class: containerClasses, articleParams, ...other }: ArticlesSwitcherProps = $props()
 
+	let open = $state(false)
 	let selectedMode = $derived(getSelectedModeFromParams(articleParams))
 	let drawerSelectedMode = $derived(selectedMode)
+	const selectedFlow = $derived(articleParams?.flow || 'all')
 	const shouldShowModeInTabbar = $derived(
 		selectedMode && !isSelectedInsideModes(selectedMode, TABBAR_MODES)
 	)
 
 	const resetDrawerSelectedMode = () => {
 		drawerSelectedMode = selectedMode
+	}
+
+	const handleOpenChange = (newValue: boolean) => {
+		open = newValue
 	}
 
 	const handleClick = (mode: ModeItem) => {
@@ -68,7 +75,20 @@
 	</Button>
 {/snippet}
 
-<Drawer.Root>
+<Drawer.Root {open} onOpenChange={handleOpenChange}>
+	{#if selectedFlow !== 'all'}
+		<Button
+			onclick={handleOpenChange.bind(null, true)}
+			variant="secondary"
+			class={cn(
+				'font-heading bg-accent text-muted-foreground mb-1 flex h-9 scale-100 items-center justify-center rounded-none px-4 py-0 text-base font-medium select-none',
+				containerClasses
+			)}
+		>
+			Выбранный хаб — {FLOWS_MAP[selectedFlow].title}
+			<md-ripple></md-ripple>
+		</Button>
+	{/if}
 	<div
 		{...other}
 		class={cn(
@@ -95,23 +115,27 @@
 		>
 			<Filter strokeWidth={2} />
 		</Drawer.Trigger>
-
-		<Drawer.Portal>
-			<Drawer.Content>
-				<ArticlesSwitcher {articleParams} bind:selectedMode={drawerSelectedMode} />
-				<Drawer.Footer>
-					<Drawer.Close
-						onclick={handleDrawerConfirm}
-						class={buttonVariants({
-							variant: 'default',
-							size: 'lg'
-						})}
-					>
-						Применить
-						<md-ripple></md-ripple>
-					</Drawer.Close>
-				</Drawer.Footer>
-			</Drawer.Content>
-		</Drawer.Portal>
 	</div>
+
+	<Drawer.Portal>
+		<Drawer.Content>
+			<ArticlesSwitcher
+				onClose={handleOpenChange.bind(null, false)}
+				{articleParams}
+				bind:selectedMode={drawerSelectedMode}
+			/>
+			<Drawer.Footer>
+				<Drawer.Close
+					onclick={handleDrawerConfirm}
+					class={buttonVariants({
+						variant: 'default',
+						size: 'lg'
+					})}
+				>
+					Применить
+					<md-ripple></md-ripple>
+				</Drawer.Close>
+			</Drawer.Footer>
+		</Drawer.Content>
+	</Drawer.Portal>
 </Drawer.Root>

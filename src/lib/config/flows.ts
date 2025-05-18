@@ -1,6 +1,6 @@
 import type { ArticlesFlow } from '$lib/types'
 
-interface Flow {
+export interface Flow {
 	title: string
 	alias: ArticlesFlow
 }
