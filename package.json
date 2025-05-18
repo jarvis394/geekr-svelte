@@ -54,7 +54,7 @@
 		"@formkit/auto-animate": "^0.8.2",
 		"@lezer/common": "^1.2.3",
 		"@lezer/highlight": "^1.2.1",
-		"@lucide/svelte": "^0.509.0",
+		"@lucide/svelte": "^0.511.0",
 		"@material/web": "^2.3.0",
 		"dayjs": "^1.11.13",
 		"escape-html": "^1.0.3",
@@ -63,8 +63,10 @@
 		"photoswipe": "^5.4.4",
 		"style-mod": "^4.1.2",
 		"svelte-intersection-observer": "^1.0.0",
-		"sveltekit-view-transition": "^0.5.3",
 		"virtua": "^0.41.0",
 		"zod": "^3.24.1"
-	}
+	},
+	"trustedDependencies": [
+		"@tailwindcss/oxide"
+	]
 }

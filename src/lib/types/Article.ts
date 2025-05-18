@@ -29,6 +29,7 @@ export interface Article {
 	id: string | number
 	author: ProfileExtended
 	commentsEnabled: boolean
+	/** Values here are different than ones from `ArticlesComplexity` */
 	complexity: 'low' | 'medium' | 'high' | null
 	format: 'review' | 'opinion' | 'analytics' | 'retrospective' | 'tutorial' | null
 	editorVersion: '1.0' | '2.0'

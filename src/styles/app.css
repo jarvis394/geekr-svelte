@@ -315,14 +315,23 @@
 			list-style-type: square;
 		}
 
+		& :first-child {
+			@apply mt-0;
+		}
+
+		& :last-child {
+			@apply mb-0;
+		}
+
 		@apply prose-blockquote:mt-3! prose-blockquote:mb-3!;
 		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 break-words;
 	}
 
 	.article.article--version-1 {
 		& p,
-		& hr {
-			@apply my-0;
+		& hr,
+		& ul {
+			@apply my-0!;
 		}
 
 		& h1 + p,

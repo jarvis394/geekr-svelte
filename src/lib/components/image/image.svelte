@@ -69,6 +69,7 @@
 		class={cn(
 			'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-all',
 			containerClasses,
+			{ 'cursor-default': disableZoom },
 			{ 'shimmer min-h-6': shouldShowPlaceholder && !placeholderSrc }
 		)}
 		{style}

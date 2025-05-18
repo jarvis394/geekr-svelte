@@ -11,6 +11,7 @@
 	import formatWordByNumber from '$lib/utils/formatWordByNumber'
 	import ArticleLabels from '../article-labels/article-labels.svelte'
 	import { cn, getArticleLeadImage } from '$lib/utils'
+	import { ComplexityGauge } from '../complexity-gauge'
 
 	const ARTICLE_ITEM_IMAGE_HEIGHT = 212
 	const MAX_PREVIEW_TEXT_LENGTH = 600
@@ -34,49 +35,22 @@
 		])
 	)
 	const leadImage = $derived(getArticleLeadImage(article))
-	const complexityLabel = $derived.by(() => {
-		if (article.complexity === 'low') {
-			return 'Лёгкий'
-		} else if (article.complexity === 'medium') {
-			return 'Средний'
-		} else if (article.complexity === 'high') {
-			return 'Сложный'
-		}
-		return ''
-	})
-	const complexityColor = $derived.by(() => {
-		if (article.complexity === 'low') {
-			return 'text-emerald-600 dark:text-emerald-400'
-		} else if (article.complexity === 'medium') {
-			return 'text-blue-600 dark:text-blue-400'
-		} else if (article.complexity === 'high') {
-			return 'text-red-600 dark:text-red-400'
-		}
-		return ''
-	})
-	const gaugePointerPath = $derived.by(() => {
-		if (article.complexity === 'low') {
-			return '-4-4'
-		} else if (article.complexity === 'medium') {
-			return '0-5'
-		} else if (article.complexity === 'high') {
-			return '4-4'
-		}
-		return '0-5'
-	})
 </script>
 
 <div
 	{...other}
 	class={cn(
-		'animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px]',
+		'animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px] pt-3 min-lg:first:pt-0',
+		{ 'pt-0': leadImage },
 		containerClasses
 	)}
 >
 	<ArticleLabels
 		{article}
-		data-float={!!leadImage}
-		class="z-10 p-2 pb-0 data-[float='false']:p-3 data-[float='false']:pb-0 data-[float='true']:absolute"
+		class={cn('pointer-events-none z-10 p-2', {
+			'absolute pt-2': leadImage,
+			'p-3 py-0': !leadImage
+		})}
 	/>
 	{#if leadImage}
 		<a href={articleLink} title={titlePlaintext} class="ring-default relative flex">
@@ -88,7 +62,7 @@
 				}}
 				width="100%"
 				height={ARTICLE_ITEM_IMAGE_HEIGHT}
-				class="min-h-full min-w-full object-cover"
+				class="min-h-full min-w-full cursor-pointer object-cover"
 				src={leadImage}
 				alt={titlePlaintext}
 				bind:loaded={leadImageLoaded}
@@ -117,24 +91,7 @@
 				{timestampText}<span>•</span>{viewsText}
 				{#if article.complexity}
 					<span>•</span>
-					<div class={cn('flex items-center gap-1', complexityColor)}>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="16"
-							height="16"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="lucide lucide-gauge mb-[1px]"
-						>
-							<path d={`m12 14 ${gaugePointerPath}`} />
-							<path d="M3.34 19a10 10 0 1 1 17.32 0" />
-						</svg>
-						{complexityLabel}
-					</div>
+					<ComplexityGauge complexity={article.complexity} />
 				{/if}
 			</div>
 			<h2 class="font-heading text-primary text-xl font-bold">

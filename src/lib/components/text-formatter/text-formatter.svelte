@@ -15,8 +15,16 @@
 		height: number
 	}
 
-	type TextFormatterProps = { html: string } & HTMLAttributes<HTMLDivElement>
-	const { html: propsHTML, class: containerClasses, ...other }: TextFormatterProps = $props()
+	type TextFormatterProps = {
+		html: string
+		disableImageZoom?: boolean
+	} & HTMLAttributes<HTMLDivElement>
+	const {
+		html: propsHTML,
+		disableImageZoom,
+		class: containerClasses,
+		...other
+	}: TextFormatterProps = $props()
 
 	// Removes unnecessary <div> placed by Habr editor
 	const divRegexp = /<div[^>]+xmlns="http:\/\/www\.w3\.org\/1999\/xhtml">([\s\S]*)<\/div>$/g
@@ -90,7 +98,8 @@
 				props: {
 					...otherImageProps,
 					src: dataSrc || possiblePlaceholderSrc,
-					placeholderSrc: hasPlaceholder ? possiblePlaceholderSrc : undefined
+					placeholderSrc: hasPlaceholder ? possiblePlaceholderSrc : undefined,
+					disableZoom: disableImageZoom
 				}
 			}
 		}
