@@ -58,7 +58,7 @@
 			<h1 class="font-heading text-2xl font-bold">
 				{@html article.titleHtml}
 			</h1>
-			<ArticleLabels {article} />
+			<ArticleLabels scoreVariant="colored" {article} />
 			<div class="flex flex-wrap gap-1.5">
 				{#each sortedHubs as hub}
 					<span class="Article__hub text-muted-foreground text-sm">

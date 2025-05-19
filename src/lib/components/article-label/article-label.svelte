@@ -7,21 +7,23 @@
 		| {
 				data: ArticleLabel
 				score?: never
+				variant?: never
 		  }
 		| {
 				data?: never
 				score: number
+				variant?: 'dimmed' | 'colored'
 		  }
 
-	const { data, score }: ArticleLabelProps = $props()
+	const { data, score, variant }: ArticleLabelProps = $props()
 	const formattedScore = $derived.by(() => {
 		if (!score) return 0
 		return score > 0 ? '+' + score : score.toString()
 	})
 	const scoreBadgeColor = $derived.by<BadgeColor>(() => {
 		if (!score) return 'white'
-		if (score > 0) return 'scorePositive'
-		else if (score < 0) return 'scoreNegative'
+		if (score > 0) return variant === 'dimmed' ? 'scorePositive' : 'valid'
+		else if (score < 0) return variant === 'dimmed' ? 'scoreNegative' : 'destructive'
 		else return 'white'
 	})
 </script>

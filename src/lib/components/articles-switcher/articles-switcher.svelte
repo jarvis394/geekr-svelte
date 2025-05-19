@@ -9,6 +9,8 @@
 	import type { TabsRootProps } from 'bits-ui'
 	import { FLOWS } from '$lib/config/flows'
 	import type { ArticlesFlow } from '$lib/types'
+	import { Slider } from '../ui/slider'
+	import { ComplexityGauge } from '../complexity-gauge'
 
 	export type ArticlesSwitcherProps = TabsRootProps & {
 		articleParams: GetArticlesParamsData
@@ -27,6 +29,9 @@
 		onClose,
 		...other
 	}: ArticlesSwitcherProps = $props()
+	let selectedComplexity = $state(
+		ARTICLE_COMPLEXITY.findIndex((e) => e.complexity === selectedMode.complexity)
+	)
 	const selectedFlow = $derived(articleParams?.flow || 'all')
 
 	const getButtonVariant = $derived<(selected: boolean) => ButtonVariant>((selected) => {
@@ -62,7 +67,7 @@
 	<Tabs.Content {value} class="mt-1 flex flex-col">
 		<small class="text-muted-foreground font-heading mb-2 text-base font-medium"> Период </small>
 		<div
-			class={cn('mb-3 gap-2', {
+			class={cn('gap-2', {
 				'flex flex-wrap': variant === 'desktop',
 				'grid grid-cols-2': variant === 'default'
 			})}
@@ -81,24 +86,6 @@
 					})}
 				>
 					{mode.label}
-				</Button>
-			{/each}
-		</div>
-		<small class="text-muted-foreground font-heading mb-2 text-base font-medium"> Сложность </small>
-		<div
-			class={cn('grid grid-cols-2 gap-2', {
-				'grid-cols-2': variant === 'desktop',
-				'xs:grid-cols-4': variant === 'default'
-			})}
-		>
-			{#each ARTICLE_COMPLEXITY as item}
-				{@const selected = selectedMode.complexity === item.complexity}
-				<Button
-					size="lg"
-					variant={getButtonVariant(selected)}
-					onclick={handleModeClick.bind(null, item)}
-				>
-					{item.label}
 				</Button>
 			{/each}
 		</div>
@@ -145,4 +132,19 @@
 	</div>
 	{@render TabContent('top', TOP_MODES, true)}
 	{@render TabContent('new', NEW_MODES)}
+
+	<small class="text-muted-foreground font-heading text-base font-medium"> Сложность </small>
+	{@const selectedComplexityItem = ARTICLE_COMPLEXITY[selectedComplexity]}
+	<Slider
+		type="single"
+		min={0}
+		max={ARTICLE_COMPLEXITY.length - 1}
+		onValueCommit={handleModeClick.bind(null, selectedComplexityItem)}
+		bind:value={selectedComplexity}
+	/>
+	<ComplexityGauge
+		class="font-heading bg-accent/50 flex w-full shrink-0 items-center justify-center rounded-lg px-4 py-2 font-medium select-none"
+		complexityLabel={selectedComplexityItem.label}
+		complexity={selectedComplexityItem.complexity}
+	/>
 </Tabs.Root>

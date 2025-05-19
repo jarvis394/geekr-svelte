@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state'
-	import type { Component } from 'svelte'
 	import StickyBox from '../sticky-box/sticky-box.svelte'
 	import ArticlesSidebar from './articles/articles-sidebar.svelte'
 	import ArticleSidebar from './article/article-sidebar.svelte'
@@ -9,23 +8,17 @@
 	const currentRoute = $derived(page.route.id)
 </script>
 
-{#snippet sidebar(SidebarComponent: Component, alias: string, boxClass?: string)}
-	<StickyBox
-		style={`view-transition-name: sidebar-${alias};`}
-		class={cn('top-0 z-50 flex h-fit w-full flex-col gap-2 px-3 py-2', boxClass)}
-	>
-		<SidebarComponent />
-	</StickyBox>
-{/snippet}
-
-<div class="w-[var(--sidebar-width)] shrink max-lg:hidden">
-	{#if currentRoute === '/articles/[...params]'}
-		{@render sidebar(ArticlesSidebar, 'articles', 'pt-1')}
-	{:else if currentRoute === '/flows/[...params]'}
-		{@render sidebar(ArticlesSidebar, 'articles', 'pt-1')}
+<StickyBox
+	style={`view-transition-name: sidebar-articles;`}
+	class={cn(
+		'top-0 z-50 flex h-fit w-[var(--sidebar-width)] shrink flex-col gap-2 px-3 py-2 pt-1 max-lg:hidden'
+	)}
+>
+	{#if currentRoute === '/articles/[...params]' || currentRoute === '/flows/[...params]'}
+		<ArticlesSidebar />
 	{:else if currentRoute === '/articles/[id=article]'}
-		{@render sidebar(ArticleSidebar, 'article')}
+		<ArticleSidebar />
 	{:else if currentRoute === '/companies/[alias]/articles/[id]'}
-		{@render sidebar(ArticleSidebar, 'company-article')}
+		<ArticleSidebar />
 	{/if}
-</div>
+</StickyBox>

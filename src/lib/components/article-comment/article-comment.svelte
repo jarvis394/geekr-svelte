@@ -6,9 +6,9 @@
 	import * as Avatar from '../ui/avatar'
 	import { Button } from '../ui/button'
 	import dayjs from 'dayjs'
-	import ScoreBadge, { type ScoreBadgeVariant } from './score-badge.svelte'
 	import ChevronUp from '@lucide/svelte/icons/chevron-up'
 	import ChevronDown from '@lucide/svelte/icons/chevron-down'
+	import { ScoreBadge } from '../score-badge'
 
 	type ArticleCommentProps = {
 		comment: Comment
@@ -31,10 +31,6 @@
 		...other
 	}: ArticleCommentProps = $props()
 	const isThread = $derived(comment.level === 0)
-	const scoreBadgeVariant = $derived.by<ScoreBadgeVariant>(() => {
-		if (comment.score === 0) return 'neutral-transparent'
-		return comment.score > 0 ? 'positive' : 'negative'
-	})
 
 	const handleBranchClick = (branch: CommentBranch) => {
 		onBranchClick?.(branch)
@@ -115,7 +111,7 @@
 					<Button variant="ghost" class="text-muted-foreground h-9 w-9">
 						<ChevronUp strokeWidth={3} />
 					</Button>
-					<ScoreBadge variant={scoreBadgeVariant}>{comment.score}</ScoreBadge>
+					<ScoreBadge variant="dimmed" score={comment.score} />
 					<Button variant="ghost" class="text-muted-foreground h-9 w-9">
 						<ChevronDown strokeWidth={3} />
 					</Button>

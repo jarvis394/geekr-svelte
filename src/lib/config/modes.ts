@@ -1,3 +1,4 @@
+import type { ArticlesComplexity } from '$lib/types'
 import type { GetArticlesParamsData } from '$lib/utils'
 
 export type ModeItem = Partial<GetArticlesParamsData> & {
@@ -77,7 +78,11 @@ export const NEW_MODES: ModeItem[] = [
 		tabbarLabel: 'Новые +100'
 	}
 ]
-export const ARTICLE_COMPLEXITY: ModeItem[] = [
+export const ARTICLE_COMPLEXITY: Array<
+	Omit<ModeItem, 'complexity'> & {
+		complexity: ArticlesComplexity
+	}
+> = [
 	{
 		label: 'Любая',
 		tabbarLabel: '',

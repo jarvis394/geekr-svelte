@@ -18,7 +18,7 @@
 	</small>
 
 	<div class="relative w-full">
-		{#if query.isLoading}
+		{#if query.isPending}
 			<div class="w-full" out:fadeAbsolute={{ duration: 200 }}>
 				{#each Array(5).fill(null)}
 					<ArticleItemPostSmallSkeleton />

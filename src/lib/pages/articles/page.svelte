@@ -75,7 +75,7 @@
 			</div>
 		</div>
 	{:then articles}
-		<div class="reveal relative flex w-full flex-col gap-0 after:top-[48px] after:h-[100vh-48px]">
+		<div class="relative flex w-full flex-col gap-0 after:top-[48px] after:h-[100vh-48px]">
 			{#each articles.publicationIds as id}
 				<ArticleItem article={articles.publicationRefs[id]} />
 			{/each}
