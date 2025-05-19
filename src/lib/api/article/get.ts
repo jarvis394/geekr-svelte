@@ -1,10 +1,9 @@
 import type { Article } from '$lib/types'
-import makeRequest from '../makeRequest'
+import makeRequest, { type FetchProp } from '../makeRequest'
 
-interface GetArticleProps {
+type GetArticleProps = {
 	id: number | string
-	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
-}
+} & FetchProp
 
 export default async ({ id, fetch }: GetArticleProps) =>
 	await makeRequest<Article>({

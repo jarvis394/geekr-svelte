@@ -7,8 +7,10 @@
 	import { useLightbox } from '$lib/hooks/lightbox.svelte'
 	import { onMount } from 'svelte'
 	import { classes, setupViewTransition } from '$lib/utils/transitions'
+	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query'
 	import { Drawer } from '$lib/components/drawer'
 	import { Sidebar } from '$lib/components/sidebar'
+	import { browser } from '$app/environment'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
@@ -40,6 +42,14 @@
 	let { children } = $props()
 	const { on } = setupViewTransition({
 		shouldStartViewTransition
+	})
+
+	const client = new QueryClient({
+		defaultOptions: {
+			queries: {
+				enabled: browser
+			}
+		}
 	})
 
 	dayjs.extend(relativeTimePlugin)
@@ -89,16 +99,18 @@
 <svelte:head>
 	<title>geekr.</title>
 </svelte:head>
-<main
-	id="main"
-	class="main relative mx-auto flex min-h-full w-full flex-row justify-center overscroll-x-none"
->
-	<Drawer />
-	<div class="container-bordered max-w-article relative h-full w-full shrink">
-		{@render children()}
-	</div>
-	<Sidebar />
-</main>
+<QueryClientProvider {client}>
+	<main
+		id="main"
+		class="main relative mx-auto flex min-h-full w-full flex-row justify-center overscroll-x-none"
+	>
+		<Drawer />
+		<div class="container-bordered max-w-article relative h-full w-full shrink">
+			{@render children()}
+		</div>
+		<Sidebar />
+	</main>
+</QueryClientProvider>
 
 <style>
 	.main {

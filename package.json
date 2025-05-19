@@ -56,6 +56,7 @@
 		"@lezer/highlight": "^1.2.1",
 		"@lucide/svelte": "^0.511.0",
 		"@material/web": "^2.3.0",
+		"@tanstack/svelte-query": "https://pkg.pr.new/@tanstack/svelte-query@746b9c5d83e901deb3a5ca7012a4b4e2b617c5e3",
 		"dayjs": "^1.11.13",
 		"escape-html": "^1.0.3",
 		"html-svelte-parser": "^1.0.0",

@@ -5,7 +5,7 @@ import type {
 	ArticlesRating,
 	ArticlesResponse
 } from '$lib/types'
-import makeRequest from '../makeRequest'
+import makeRequest, { type FetchProp } from '../makeRequest'
 
 export const modeParams: Record<
 	ArticlesPeriod | ArticlesRating,
@@ -24,15 +24,14 @@ export const modeParams: Record<
 	alltime: { sort: 'date', period: 'alltime' }
 }
 
-interface GetArticlesProps {
+type GetArticlesProps = {
 	mode: ArticlesPeriod | ArticlesRating
 	page: number
 	complexity?: ArticlesComplexity
 	hubAlias?: string
 	flow?: ArticlesFlow
 	perPage?: number
-	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
-}
+} & FetchProp
 
 export default async ({
 	mode,

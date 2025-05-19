@@ -7,6 +7,11 @@ export interface ArticlesResponse {
 	publicationIds: string[]
 }
 
+export interface MostReadingArticlesResponse {
+	articleRefs: Record<string, Article>
+	articleIds: string[]
+}
+
 export const articlesModeSchema = z.enum(['new', 'top']).optional().default('new')
 export const articlesPeriodSchema = z
 	.enum(['daily', 'weekly', 'monthly', 'yearly', 'alltime'])

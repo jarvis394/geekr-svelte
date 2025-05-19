@@ -1,6 +1,11 @@
 import { API_URL } from '$lib/config/constants'
 
-interface MakeRequestProps {
+export type FetchProp = {
+	/** Fetch function */
+	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
+}
+
+export type MakeRequestProps = {
 	/** API response language */
 	language?: 'ru' | 'en'
 
@@ -15,10 +20,7 @@ interface MakeRequestProps {
 
 	/** API version */
 	version?: 1 | 2
-
-	/** Fetch function */
-	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
-}
+} & FetchProp
 
 export default async <T = never>({
 	language = 'ru',

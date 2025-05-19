@@ -24,9 +24,7 @@
 	const timestampText = $derived(dayjs(article.timePublished).calendar().toLowerCase())
 	const isLoaded = $derived(article.textHtml)
 	const articleLink = $derived(getArticleLink(article))
-	const textFormatterClasses = $derived(
-		article.editorVersion === '1.0' ? 'article--version-1 mt-6' : ''
-	)
+	const textFormatterClasses = $derived(article.editorVersion === '1.0' ? 'article--version-1' : '')
 	// Have to sort hubs to prevent mismatch between
 	// preview article hubs and full article hubs
 	const sortedHubs = $derived.by(() => {
@@ -49,7 +47,6 @@
 						src={article.author.avatarUrl}
 						alt={'@' + article.author.alias}
 					/>
-					<Avatar.Fallback />
 				</Avatar.Root>
 				<h3 class="font-heading text-base font-medium">
 					{article.author.alias}
@@ -72,7 +69,7 @@
 				{/each}
 			</div>
 		</div>
-		<div class="relative">
+		<div class="relative mt-6">
 			{#if isLoaded}
 				<div in:fade={{ duration: 200 }}>
 					<TextFormatter class={textFormatterClasses} html={article.textHtml} />

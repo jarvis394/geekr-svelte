@@ -389,12 +389,6 @@
 	})
 </script>
 
-<div class={cn('sidebar', containerClasses)} bind:this={node} {...other}>
+<div class={cn(containerClasses)} bind:this={node} {...other}>
 	{@render children?.()}
 </div>
-
-<style>
-	.sidebar {
-		view-transition-name: sidebar;
-	}
-</style>

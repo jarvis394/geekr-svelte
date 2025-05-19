@@ -59,12 +59,10 @@
 </script>
 
 {#snippet TabContent(value: string, modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
-	<Tabs.Content {value} class="flex flex-col">
-		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium">
-			Период
-		</small>
+	<Tabs.Content {value} class="mt-1 flex flex-col">
+		<small class="text-muted-foreground font-heading mb-2 text-base font-medium"> Период </small>
 		<div
-			class={cn('mb-4 gap-2', {
+			class={cn('mb-3 gap-2', {
 				'flex flex-wrap': variant === 'desktop',
 				'grid grid-cols-2': variant === 'default'
 			})}
@@ -86,9 +84,7 @@
 				</Button>
 			{/each}
 		</div>
-		<small class="text-muted-foreground font-heading mb-3 text-base leading-none font-medium">
-			Сложность
-		</small>
+		<small class="text-muted-foreground font-heading mb-2 text-base font-medium"> Сложность </small>
 		<div
 			class={cn('grid grid-cols-2 gap-2', {
 				'grid-cols-2': variant === 'desktop',
@@ -138,8 +134,8 @@
 	value={selectedMode?.mode}
 	class={cn('flex flex-col gap-2 p-4 pb-0', containerClasses)}
 >
-	<div class="flex flex-col gap-3">
-		<small class="text-muted-foreground font-heading text-base leading-none font-medium">
+	<div class="flex flex-col gap-2">
+		<small class="text-muted-foreground font-heading text-base font-medium">
 			Сначала показывать
 		</small>
 		<Tabs.List>
