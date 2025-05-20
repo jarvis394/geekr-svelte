@@ -9,7 +9,7 @@
 	<a
 		href="/"
 		data-sveltekit-replacestate
-		class="ring-default button button-ghost flex size-12 w-full items-center justify-center rounded-full p-0! min-xl:hidden"
+		class="ring-default button button-ghost flex size-12 w-full items-center justify-center rounded-full p-0! xl:hidden"
 	>
 		<Logo class="size-[26px]" />
 	</a>

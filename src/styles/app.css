@@ -151,7 +151,7 @@
 		--article-width: var(--container-2xl);
 	}
 
-	@media (max-width: 1280px) {
+	@media (width < 80rem) {
 		:root {
 			--drawer-width: var(--drawer-collapsed-width);
 		}
