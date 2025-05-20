@@ -9,7 +9,7 @@
 </script>
 
 <StickyBox
-	style={`view-transition-name: sidebar-articles;`}
+	style="view-transition-name: sidebar-articles;"
 	class={cn(
 		'top-0 z-50 flex h-fit w-[var(--sidebar-width)] shrink flex-col gap-2 px-3 py-2 pt-1 max-lg:hidden'
 	)}

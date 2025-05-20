@@ -149,11 +149,18 @@
 		--drawer-collapsed-width: 72px;
 		--sidebar-width: 348px;
 		--article-width: var(--container-2xl);
+		--article-collapsed-width: 612px;
 	}
 
 	@media (width < 80rem) {
 		:root {
 			--drawer-width: var(--drawer-collapsed-width);
+		}
+	}
+
+	@media (width < 1110px) {
+		:root {
+			--article-width: var(--article-collapsed-width);
 		}
 	}
 

@@ -1,16 +1,23 @@
 <script lang="ts">
-	import Button, { type ButtonVariant } from '../ui/button/button.svelte'
-	import { cn } from '$lib/utils'
+	import { Button, buttonVariants, type ButtonVariant } from '../ui/button'
+	import { cn, fadeAbsolute } from '$lib/utils'
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
 	import { goto } from '$app/navigation'
 	import * as Tabs from '../ui/tabs'
 	import { type ModeItem, ARTICLE_COMPLEXITY, TOP_MODES, NEW_MODES } from '$lib/config/modes'
-	import { getSelectedModeFromParams, isSelected, saveModeOnClient } from './utils'
+	import {
+		getSelectedComplexityFromParams,
+		getSelectedModeFromParams,
+		isSelected,
+		saveModeOnClient
+	} from './utils'
 	import type { TabsRootProps } from 'bits-ui'
 	import { FLOWS } from '$lib/config/flows'
 	import type { ArticlesFlow } from '$lib/types'
-	import { Slider } from '../ui/slider'
 	import { ComplexityGauge } from '../complexity-gauge'
+	import { X } from '@lucide/svelte'
+	import { fade } from 'svelte/transition'
+	import { Animate } from '../animate'
 
 	export type ArticlesSwitcherProps = TabsRootProps & {
 		articleParams: GetArticlesParamsData
@@ -29,10 +36,8 @@
 		onClose,
 		...other
 	}: ArticlesSwitcherProps = $props()
-	let selectedComplexity = $state(
-		ARTICLE_COMPLEXITY.findIndex((e) => e.complexity === selectedMode.complexity)
-	)
 	const selectedFlow = $derived(articleParams?.flow || 'all')
+	let selectedComplexity = $derived(getSelectedComplexityFromParams(articleParams))
 
 	const getButtonVariant = $derived<(selected: boolean) => ButtonVariant>((selected) => {
 		if (selected) return 'default'
@@ -41,9 +46,10 @@
 
 	const handleModeClick = (mode: ModeItem) => {
 		selectedMode = { ...selectedMode, ...mode }
-
-		if (mode.complexity) {
+		const newSelectedComplexity = ARTICLE_COMPLEXITY.find((e) => e.complexity === mode.complexity)
+		if (mode.complexity && newSelectedComplexity) {
 			selectedMode.complexity = mode.complexity
+			selectedComplexity = newSelectedComplexity
 		}
 
 		if (applyOnClick) {
@@ -133,18 +139,37 @@
 	{@render TabContent('top', TOP_MODES, true)}
 	{@render TabContent('new', NEW_MODES)}
 
-	<small class="text-muted-foreground font-heading text-base font-medium"> Сложность </small>
-	{@const selectedComplexityItem = ARTICLE_COMPLEXITY[selectedComplexity]}
-	<Slider
-		type="single"
-		min={0}
-		max={ARTICLE_COMPLEXITY.length - 1}
-		onValueCommit={handleModeClick.bind(null, selectedComplexityItem)}
-		bind:value={selectedComplexity}
-	/>
-	<ComplexityGauge
-		class="font-heading bg-accent/50 flex w-full shrink-0 items-center justify-center rounded-lg px-4 py-2 font-medium select-none"
-		complexityLabel={selectedComplexityItem.label}
-		complexity={selectedComplexityItem.complexity}
-	/>
+	<small class="text-muted-foreground font-heading text-base font-medium">Сложность</small>
+	<div class="flex grow gap-0.5">
+		<Button
+			size="lg"
+			class="text-muted-foreground rounded-r-md px-6 lg:size-11 lg:px-2"
+			variant="outline"
+			onclick={handleModeClick.bind(null, ARTICLE_COMPLEXITY[0])}
+		>
+			<X class="size-4" strokeWidth={3} />
+		</Button>
+		{#each ARTICLE_COMPLEXITY.slice(1) as item}
+			{@const selected = selectedComplexity.complexity === item.complexity}
+			<Button
+				size="lg"
+				onclick={handleModeClick.bind(null, item)}
+				class={cn('text-primary h-11! gap-0! overflow-hidden max-lg:grow', {
+					[buttonVariants({ variant: 'secondary' })]: selected,
+					[buttonVariants({ variant: 'outline' })]: !selected,
+					'px-2 not-first-of-type:rounded-l-md not-last-of-type:rounded-r-md': !selected,
+					'shrink-0 grow': !selected && item.complexity !== 'all'
+				})}
+			>
+				<ComplexityGauge class="[&>svg]:size-5" complexity={item.complexity} />
+				<Animate class="h-6!">
+					{#if selected}
+						<span in:fade={{ duration: 200 }} out:fadeAbsolute={{ duration: 200 }} class="ml-2">
+							{item.label}
+						</span>
+					{/if}
+				</Animate>
+			</Button>
+		{/each}
+	</div>
 </Tabs.Root>

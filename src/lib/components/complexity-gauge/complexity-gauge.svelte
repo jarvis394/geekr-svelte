@@ -29,11 +29,13 @@
 		complexity: Article['complexity'] | ArticlesComplexity
 		complexityLabel?: string
 		complexityColor?: string
+		withLabel?: boolean
 	}
 	const {
 		complexity,
 		complexityLabel: propsComplexityLabel,
 		complexityColor: propsComplexityColor,
+		withLabel = false,
 		class: containerClasses,
 		...other
 	}: ComplexityGaugeProps = $props()
@@ -51,7 +53,17 @@
 	})
 </script>
 
-<span {...other} class={cn('flex items-center transition-all', complexityColor, containerClasses)}>
+<span
+	{...other}
+	class={cn(
+		'flex items-center gap-1 transition-all',
+		{
+			'gap-0': complexity === 'all'
+		},
+		complexityColor,
+		containerClasses
+	)}
+>
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width="16"
@@ -62,12 +74,12 @@
 		stroke-width="2.5"
 		stroke-linecap="round"
 		stroke-linejoin="round"
-		class={cn('lucide lucide-gauge mr-1 mb-[1px] transition-all', {
-			'mr-0 w-0': complexity === 'all'
+		class={cn('lucide lucide-gauge mb-[1px] transition-all', {
+			'w-0': complexity === 'all'
 		})}
 	>
 		<path class="transition-all" d={`m12 14 ${gaugePointerPath}`} />
 		<path d="M3.34 19a10 10 0 1 1 17.32 0" />
 	</svg>
-	{complexityLabel}
+	{#if withLabel}{complexityLabel}{/if}
 </span>

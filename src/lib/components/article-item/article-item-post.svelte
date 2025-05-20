@@ -91,7 +91,7 @@
 				{timestampText}<span>•</span>{viewsText}
 				{#if article.complexity}
 					<span>•</span>
-					<ComplexityGauge complexity={article.complexity} />
+					<ComplexityGauge withLabel complexity={article.complexity} />
 				{/if}
 			</div>
 			<h2 class="font-heading text-primary text-xl font-bold">
