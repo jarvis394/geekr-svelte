@@ -38,6 +38,7 @@
 	</div>
 	{#if leadImage}
 		<Image
+			disableZoom
 			src={leadImage}
 			class="h-16 w-20 object-cover"
 			containerProps={{ class: 'h-16 w-20 rounded-md shrink-0 z-10' }}
