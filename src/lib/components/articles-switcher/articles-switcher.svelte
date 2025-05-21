@@ -154,10 +154,11 @@
 			<Button
 				size="lg"
 				onclick={handleModeClick.bind(null, item)}
-				class={cn('text-primary h-11! gap-0! overflow-hidden grow shrink-0', {
-					[buttonVariants({ variant: 'secondary' })]: selected,
+				class={cn('text-primary h-11! gap-0! overflow-hidden', {
+					[buttonVariants({ variant: 'secondary' }) + ' grow']: selected,
 					[buttonVariants({ variant: 'outline' })]: !selected,
-					'px-2 not-first-of-type:rounded-l-md not-last-of-type:rounded-r-md': !selected,
+					'shrink-0 grow px-3 not-first-of-type:rounded-l-md not-last-of-type:rounded-r-md':
+						!selected
 				})}
 			>
 				<ComplexityGauge class="[&>svg]:size-5" complexity={item.complexity} />
