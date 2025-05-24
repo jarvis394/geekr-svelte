@@ -31,6 +31,8 @@ type GetArticlesProps = {
 	hubAlias?: string
 	flow?: ArticlesFlow
 	perPage?: number
+	news?: boolean
+	posts?: boolean
 } & FetchProp
 
 export default async ({
@@ -40,6 +42,8 @@ export default async ({
 	flow = 'all',
 	complexity,
 	perPage = 20,
+	news,
+	posts,
 	fetch
 }: GetArticlesProps) =>
 	await makeRequest<ArticlesResponse>({
@@ -52,7 +56,9 @@ export default async ({
 			hub: hubAlias || '',
 			flow: flow === 'all' ? '' : flow,
 			perPage: perPage.toString(),
-			...(complexity && complexity !== 'all' && { complexity })
+			...(complexity && complexity !== 'all' && { complexity }),
+			...(news && { news: 'true' }),
+			...(posts && { posts: 'true' })
 		},
 		fetch
 	})

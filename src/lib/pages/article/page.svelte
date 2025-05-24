@@ -79,7 +79,7 @@
 					class="flex h-full w-full flex-col items-center gap-2 pb-4"
 					out:fadeAbsolute={{ duration: 100 }}
 				>
-					<TextFormatter class={textFormatterClasses} html={article.leadData.textHtml} />
+					<TextFormatter class={textFormatterClasses} html={article.leadData?.textHtml || ''} />
 					<LoaderCircle class="animate-spin opacity-12" />
 				</div>
 			{/if}

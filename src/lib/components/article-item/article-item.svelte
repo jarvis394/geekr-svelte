@@ -1,11 +1,14 @@
 <script lang="ts">
 	import type { Article } from '$lib/types'
 	import type { HTMLAttributes } from 'svelte/elements'
-	import ArticleItemPost from './article-item-post.svelte'
-	import ArticleItemPostExpanded from './article-item-post-expanded.svelte'
+	import ArticleItemArticle from './article-item-article.svelte'
+	import ArticleItemArticleExpanded from './article-item-article-expanded.svelte'
 	import ArticleItemVoice from './article-item-voice.svelte'
+	import ArticleItemPost from './article-item-post.svelte'
 
-	export type ArticleItemProps = { article: Article } & HTMLAttributes<HTMLDivElement>
+	export type ArticleItemProps = {
+		article: Article
+	} & HTMLAttributes<HTMLDivElement>
 	const { article, ...other }: ArticleItemProps = $props()
 
 	// TODO: get value from user settings
@@ -14,8 +17,10 @@
 
 {#if article.publicationType === 'voice'}
 	<ArticleItemVoice {article} {...other} />
-{:else if expandArticleItems}
-	<ArticleItemPostExpanded {article} {...other} />
-{:else}
+{:else if article.publicationType === 'post'}
 	<ArticleItemPost {article} {...other} />
+{:else if expandArticleItems}
+	<ArticleItemArticleExpanded {article} {...other} />
+{:else}
+	<ArticleItemArticle {article} {...other} />
 {/if}

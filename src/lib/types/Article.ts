@@ -39,7 +39,7 @@ export interface Article {
 	isInBlacklist: boolean
 	isEditorial: boolean
 	lang: 'ru' | 'en'
-	leadData: {
+	leadData?: {
 		buttonTextHtml: string
 		imageUrl: string | null
 		textHtml: string

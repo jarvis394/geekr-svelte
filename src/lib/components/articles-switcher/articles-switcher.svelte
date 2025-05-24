@@ -20,7 +20,8 @@
 	import { Animate } from '../animate'
 
 	export type ArticlesSwitcherProps = TabsRootProps & {
-		articleParams: GetArticlesParamsData
+		articlesParams: GetArticlesParamsData
+		articlesMode?: 'articles' | 'news' | 'posts'
 		applyOnClick?: boolean
 		variant?: 'default' | 'desktop'
 		selectedMode?: ModeItem
@@ -29,15 +30,17 @@
 
 	let {
 		class: containerClasses,
-		articleParams,
+		articlesParams,
 		applyOnClick,
-		selectedMode = $bindable(getSelectedModeFromParams(articleParams)),
+		selectedMode = $bindable(getSelectedModeFromParams(articlesParams)),
+		articlesMode = 'articles',
 		variant = 'default',
 		onClose,
 		...other
 	}: ArticlesSwitcherProps = $props()
-	const selectedFlow = $derived(articleParams?.flow || 'all')
-	let selectedComplexity = $derived(getSelectedComplexityFromParams(articleParams))
+	const selectedFlow = $derived(articlesParams?.flow || 'all')
+	let selectedComplexity = $derived(getSelectedComplexityFromParams(articlesParams))
+	const shouldShowComplexitySelector = $derived(articlesMode === 'articles')
 
 	const getButtonVariant = $derived<(selected: boolean) => ButtonVariant>((selected) => {
 		if (selected) return 'default'
@@ -54,18 +57,18 @@
 
 		if (applyOnClick) {
 			onClose?.()
-			saveModeOnClient(selectedMode)
-			goto(makeArticlesPageUrlFromParams(selectedMode))
+			saveModeOnClient(selectedMode, articlesMode)
+			goto(makeArticlesPageUrlFromParams(selectedMode, articlesMode))
 		}
 	}
 
 	const handleFlowClick = (flow: ArticlesFlow) => {
 		onClose?.()
-		goto(makeArticlesPageUrlFromParams({ ...articleParams, flow }))
+		goto(makeArticlesPageUrlFromParams({ ...articlesParams, flow }, articlesMode))
 	}
 
 	$effect(() => {
-		selectedMode = getSelectedModeFromParams(articleParams)
+		selectedMode = getSelectedModeFromParams(articlesParams)
 	})
 </script>
 
@@ -139,37 +142,39 @@
 	{@render TabContent('top', TOP_MODES, true)}
 	{@render TabContent('new', NEW_MODES)}
 
-	<small class="text-muted-foreground font-heading text-base font-medium">Сложность</small>
-	<div class="flex grow gap-0.5">
-		<Button
-			size="lg"
-			class="text-muted-foreground rounded-r-md px-6 lg:size-11 lg:px-2"
-			variant="outline"
-			onclick={handleModeClick.bind(null, ARTICLE_COMPLEXITY[0])}
-		>
-			<X class="size-4" strokeWidth={3} />
-		</Button>
-		{#each ARTICLE_COMPLEXITY.slice(1) as item}
-			{@const selected = selectedComplexity.complexity === item.complexity}
+	{#if shouldShowComplexitySelector}
+		<small class="text-muted-foreground font-heading text-base font-medium">Сложность</small>
+		<div class="flex grow gap-0.5">
 			<Button
 				size="lg"
-				onclick={handleModeClick.bind(null, item)}
-				class={cn('text-primary h-11! gap-0! overflow-hidden', {
-					[buttonVariants({ variant: 'secondary' }) + ' grow']: selected,
-					[buttonVariants({ variant: 'outline' })]: !selected,
-					'shrink-0 grow px-3 not-first-of-type:rounded-l-md not-last-of-type:rounded-r-md':
-						!selected
-				})}
+				class="text-muted-foreground rounded-r-md px-6 lg:size-11 lg:px-2"
+				variant="outline"
+				onclick={handleModeClick.bind(null, ARTICLE_COMPLEXITY[0])}
 			>
-				<ComplexityGauge class="[&>svg]:size-5" complexity={item.complexity} />
-				<Animate class="h-6!">
-					{#if selected}
-						<span in:fade={{ duration: 200 }} out:fadeAbsolute={{ duration: 200 }} class="ml-2">
-							{item.label}
-						</span>
-					{/if}
-				</Animate>
+				<X class="size-4" strokeWidth={3} />
 			</Button>
-		{/each}
-	</div>
+			{#each ARTICLE_COMPLEXITY.slice(1) as item}
+				{@const selected = selectedComplexity.complexity === item.complexity}
+				<Button
+					size="lg"
+					onclick={handleModeClick.bind(null, item)}
+					class={cn('text-primary h-11! gap-0! overflow-hidden', {
+						[buttonVariants({ variant: 'secondary' }) + ' grow']: selected,
+						[buttonVariants({ variant: 'outline' })]: !selected,
+						'shrink-0 grow px-3 not-first-of-type:rounded-l-md not-last-of-type:rounded-r-md':
+							!selected
+					})}
+				>
+					<ComplexityGauge class="[&>svg]:size-5" complexity={item.complexity} />
+					<Animate class="h-6!">
+						{#if selected}
+							<span in:fade={{ duration: 200 }} out:fadeAbsolute={{ duration: 200 }} class="ml-2">
+								{item.label}
+							</span>
+						{/if}
+					</Animate>
+				</Button>
+			{/each}
+		</div>
+	{/if}
 </Tabs.Root>

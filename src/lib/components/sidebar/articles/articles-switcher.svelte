@@ -3,11 +3,16 @@
 	import type { GetArticlesParamsData } from '$lib/utils'
 	import { page } from '$app/state'
 
-	const articleParams = $derived(page.data?.articleParams) as GetArticlesParamsData | undefined
+	const articlesParams = $derived(page.data?.articleParams) as GetArticlesParamsData | undefined
+	const articlesMode = $derived(page.data?.articlesMode) as
+		| 'articles'
+		| 'posts'
+		| 'news'
+		| undefined
 </script>
 
-{#if articleParams}
+{#if articlesParams}
 	<div class="inset-ring-border rounded-2xl pb-4 inset-ring">
-		<ArticlesSwitcher {articleParams} applyOnClick variant="desktop" />
+		<ArticlesSwitcher {articlesParams} {articlesMode} applyOnClick variant="desktop" />
 	</div>
 {/if}

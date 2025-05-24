@@ -14,13 +14,19 @@ type ArticlesLoaderProps = {
 	params: { params: string }
 	url: URL
 	fetch: typeof fetch
-	isCorporative?: boolean
+	articlesMode?: 'articles' | 'news' | 'posts'
 }
 
-export const articlesLoader = ({ params, url, fetch }: ArticlesLoaderProps) => {
+export const articlesLoader = ({
+	params,
+	url,
+	fetch,
+	articlesMode = 'articles'
+}: ArticlesLoaderProps) => {
 	const articlesParamsResult = parseArticlesParams(params.params.split('/'))
 	const urlFromParams =
-		articlesParamsResult.data && makeArticlesPageUrlFromParams(articlesParamsResult.data)
+		articlesParamsResult.data &&
+		makeArticlesPageUrlFromParams(articlesParamsResult.data, articlesMode)
 
 	if (!articlesParamsResult.success) {
 		throw error(404, 'Not Found')
@@ -31,31 +37,38 @@ export const articlesLoader = ({ params, url, fetch }: ArticlesLoaderProps) => {
 	}
 
 	const { complexity, mode, page, period, flow, rating } = articlesParamsResult.data
-	const articles = cacheFetch(getArticlesQueryKey(articlesParamsResult.data), async () => {
-		const data = await api.articles.get({
-			mode: mode === 'new' ? rating : period,
-			page,
-			complexity,
-			flow,
-			fetch
-		})
-
-		if (browser) {
-			data.publicationIds.forEach((id) => {
-				const article = data.publicationRefs[id]
-				cache.set(getArticleQueryKey(id), {
-					...article,
-					textHtml: '<p>' + article.leadData.textHtml + '</p>'
-				} satisfies Article)
+	const articles = cacheFetch(
+		getArticlesQueryKey(articlesParamsResult.data, articlesMode),
+		async () => {
+			const apiMethod = articlesMode === 'posts' ? 'posts' : 'articles'
+			const data = await api[apiMethod].get({
+				mode: mode === 'new' ? rating : period,
+				page,
+				complexity,
+				flow,
+				fetch,
+				news: articlesMode === 'news',
+				posts: articlesMode === 'posts'
 			})
-		}
 
-		return data
-	})
+			if (browser && articlesMode !== 'posts') {
+				data.publicationIds.forEach((id) => {
+					const article = data.publicationRefs[id]
+					cache.set(getArticleQueryKey(id), {
+						...article,
+						textHtml: '<p>' + article.leadData?.textHtml + '</p>'
+					} satisfies Article)
+				})
+			}
+
+			return data
+		}
+	)
 
 	return {
 		articleParams: articlesParamsResult.data,
 		articles,
+		articlesMode,
 		cache: cache.has(getArticlesQueryKey(articlesParamsResult.data))
 	}
 }

@@ -11,6 +11,6 @@
 		<Badge color="white">Записка от Habr</Badge>
 	</div>
 	<div class="p-3 pt-2">
-		<TextFormatter html={article.leadData.textHtml} />
+		<TextFormatter html={article.leadData?.textHtml || ''} />
 	</div>
 </div>

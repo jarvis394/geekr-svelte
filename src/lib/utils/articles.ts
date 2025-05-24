@@ -94,7 +94,8 @@ export const parseArticlesParams = (params: string[]): GetArticlesParamsResult =
 }
 
 export const makeArticlesPageUrlFromParams = (
-	articlesParams: Partial<GetArticlesParamsData>
+	articlesParams: Partial<GetArticlesParamsData>,
+	mode: 'articles' | 'news' | 'posts' = 'articles'
 ): string => {
 	const urlParts: string[] = []
 
@@ -102,7 +103,7 @@ export const makeArticlesPageUrlFromParams = (
 		urlParts.push('flows')
 		urlParts.push(articlesParams.flow)
 	} else {
-		urlParts.push('articles')
+		urlParts.push(mode)
 	}
 
 	if (articlesParams.mode === 'top') {
@@ -125,9 +126,12 @@ export const makeArticlesPageUrlFromParams = (
 	return res ? '/' + res : ''
 }
 
-export const getArticlesQueryKey = (articleParams: GetArticlesParamsData) => {
+export const getArticlesQueryKey = (
+	articleParams: GetArticlesParamsData,
+	articlesMode: 'articles' | 'news' | 'posts' = 'articles'
+) => {
 	return [
-		'articles',
+		articlesMode,
 		articleParams.flow,
 		articleParams.mode,
 		articleParams.period,

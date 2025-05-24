@@ -69,7 +69,11 @@
 </svelte:head>
 <div class="flex w-full flex-col gap-0">
 	<AppBar />
-	<ArticlesSwitcher class="min-lg:hidden" articleParams={data.articleParams} />
+	<ArticlesSwitcher
+		class="min-lg:hidden"
+		articlesParams={data.articleParams}
+		articlesMode={data.articlesMode}
+	/>
 	{#await data.articles}
 		<div class="relative">
 			<div

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query'
-	import { ArticleItemPostSmall } from '$lib/components/article-item'
+	import { ArticleItemArticleSmall } from '$lib/components/article-item'
 	import { ArticleItemPostSmallSkeleton } from '$lib/components/skeletons'
 	import * as api from '$lib/api'
 	import { fade } from 'svelte/transition'
@@ -28,7 +28,7 @@
 		{#if query.isSuccess}
 			<div in:fade={{ duration: 200 }}>
 				{#each query.data.articleIds.slice(0, 5) as id}
-					<ArticleItemPostSmall article={query.data.articleRefs[id]} />
+					<ArticleItemArticleSmall article={query.data.articleRefs[id]} />
 				{/each}
 			</div>
 		{/if}

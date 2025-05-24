@@ -18,15 +18,21 @@
 	import { FLOWS_MAP } from '$lib/config/flows'
 
 	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement> & {
-		articleParams: GetArticlesParamsData
+		articlesParams: GetArticlesParamsData
+		articlesMode: 'articles' | 'news' | 'posts'
 	}
 
-	const { class: containerClasses, articleParams, ...other }: ArticlesSwitcherProps = $props()
+	const {
+		class: containerClasses,
+		articlesMode,
+		articlesParams,
+		...other
+	}: ArticlesSwitcherProps = $props()
 
 	let open = $state(false)
-	let selectedMode = $derived(getSelectedModeFromParams(articleParams))
+	let selectedMode = $derived(getSelectedModeFromParams(articlesParams))
 	let drawerSelectedMode = $derived(selectedMode)
-	const selectedFlow = $derived(articleParams?.flow || 'all')
+	const selectedFlow = $derived(articlesParams?.flow || 'all')
 	const shouldShowModeInTabbar = $derived(
 		selectedMode && !isSelectedInsideModes(selectedMode, TABBAR_MODES)
 	)
@@ -40,32 +46,32 @@
 	}
 
 	const handleClick = (mode: ModeItem) => {
-		if (isSelected(mode, articleParams)) return
+		if (isSelected(mode, articlesParams)) return
 		mode = {
 			...mode, // Do not reset articles flow that user selected
-			flow: articleParams.flow,
+			flow: articlesParams.flow,
 			// Reset selectedComplexity to "all" as well
 			complexity: ARTICLE_COMPLEXITY[0].complexity
 		}
 		drawerSelectedMode = mode
-		saveModeOnClient(mode)
-		goto(makeArticlesPageUrlFromParams(mode))
+		saveModeOnClient(mode, articlesMode)
+		goto(makeArticlesPageUrlFromParams(mode, articlesMode))
 	}
 
 	const handleDrawerConfirm = () => {
 		if (!drawerSelectedMode) return
 		selectedMode = drawerSelectedMode
-		saveModeOnClient(drawerSelectedMode)
-		goto(makeArticlesPageUrlFromParams(drawerSelectedMode))
+		saveModeOnClient(drawerSelectedMode, articlesMode)
+		goto(makeArticlesPageUrlFromParams(drawerSelectedMode, articlesMode))
 	}
 
 	$effect(() => {
-		saveModeOnClient(selectedMode)
+		saveModeOnClient(selectedMode, articlesMode)
 	})
 </script>
 
 {#snippet TabbarButton(mode: ModeItem)}
-	{@const selected = isSelected(mode, articleParams)}
+	{@const selected = isSelected(mode, articlesParams)}
 	<Button
 		variant={selected ? 'default' : 'secondary'}
 		onclick={handleClick.bind(null, mode)}
@@ -121,7 +127,8 @@
 		<Drawer.Content>
 			<ArticlesSwitcher
 				onClose={handleOpenChange.bind(null, false)}
-				{articleParams}
+				{articlesParams}
+				{articlesMode}
 				bind:selectedMode={drawerSelectedMode}
 			/>
 			<Drawer.Footer>

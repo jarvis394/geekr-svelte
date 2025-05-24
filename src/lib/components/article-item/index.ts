@@ -1,13 +1,13 @@
 import Root from './article-item.svelte'
 import ArticleItemVoice from './article-item-voice.svelte'
-import ArticleItemPost from './article-item-post.svelte'
-import ArticleItemPostExpanded from './article-item-post-expanded.svelte'
-import ArticleItemPostSmall from './article-item-post-small.svelte'
+import ArticleItemArticle from './article-item-article.svelte'
+import ArticleItemArticleExpanded from './article-item-article-expanded.svelte'
+import ArticleItemArticleSmall from './article-item-article-small.svelte'
 
 export {
 	Root as ArticleItem,
 	ArticleItemVoice,
-	ArticleItemPost,
-	ArticleItemPostExpanded,
-	ArticleItemPostSmall
+	ArticleItemArticle,
+	ArticleItemArticleExpanded,
+	ArticleItemArticleSmall
 }

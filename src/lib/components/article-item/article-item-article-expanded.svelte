@@ -55,14 +55,18 @@
 	>
 		{titlePlaintext}
 	</a>
-	{#if article.leadData.image}
+	{#if article.leadData?.image}
 		<Image
 			containerProps={{ class: 'mx-3 mb-4 mt-2' }}
 			disableZoom
 			src={article.leadData.image.url}
 		/>
 	{/if}
-	<TextFormatter disableImageZoom class="px-3 text-base/[1.6]" html={article.leadData.textHtml} />
+	<TextFormatter
+		disableImageZoom
+		class="px-3 text-base/[1.6]"
+		html={article.leadData?.textHtml || ''}
+	/>
 	<div class="flex items-center justify-between px-3 pt-3 pb-2">
 		<Button variant="ghost" size="sm" class="-ml-1.5 pl-1.5">
 			<Avatar.Root class="h-6 w-6">
@@ -91,7 +95,7 @@
 				</span>
 			</Button>
 			<Button variant="outline" size="sm" href={articleLink} class="text-[15px]">
-				{@html article.leadData.buttonTextHtml}
+				{@html article.leadData?.buttonTextHtml}
 			</Button>
 		</div>
 	</div>

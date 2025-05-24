@@ -5,6 +5,12 @@
 	import ArticleSidebar from './article/article-sidebar.svelte'
 	import { cn } from '$lib/utils'
 
+	const articlePages = new Set([
+		'/articles/[...params]',
+		'/flows/[...params]',
+		'/news/[...params]',
+		'/posts/[...params]'
+	])
 	const currentRoute = $derived(page.route.id)
 </script>
 
@@ -14,7 +20,7 @@
 		'top-0 z-50 flex h-fit w-[var(--sidebar-width)] shrink flex-col gap-2 px-3 py-2 pt-1 max-lg:hidden'
 	)}
 >
-	{#if currentRoute === '/articles/[...params]' || currentRoute === '/flows/[...params]'}
+	{#if currentRoute && articlePages.has(currentRoute)}
 		<ArticlesSidebar />
 	{:else if currentRoute === '/articles/[id=article]'}
 		<ArticleSidebar />

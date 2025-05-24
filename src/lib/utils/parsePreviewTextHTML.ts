@@ -1,4 +1,4 @@
-const parsePreviewTextHtml = (html: string) => {
+const parsePreviewTextHtml = (html: string = '') => {
 	const onlyClosingTagsRegexp = /(<\/p>)/gi
 	const onlyTagsRegexp = /(<([^>]+)>)/gi
 	const res = html

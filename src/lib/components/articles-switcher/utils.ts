@@ -33,7 +33,13 @@ export const getSelectedModeFromParams = (params: GetArticlesParamsData): ModeIt
 	return { ...(res || TOP_MODES[0]), complexity, flow }
 }
 
-export const saveModeOnClient = (mode: ModeItem) => {
+export const saveModeOnClient = (
+	mode: ModeItem,
+	articlesMode: 'articles' | 'news' | 'posts' = 'articles'
+) => {
 	// Remove first slash from mode and save it on client
-	localStorage.setItem('mode', makeArticlesPageUrlFromParams(mode).replace('/', ''))
+	localStorage.setItem(
+		'mode:' + articlesMode,
+		makeArticlesPageUrlFromParams(mode, articlesMode).replace('/', '')
+	)
 }
