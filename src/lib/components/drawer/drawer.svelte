@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Logo from '../logo/logo.svelte'
+	import { Home } from '../svg'
+	import { Button } from '../ui/button'
 	import UserAvatarButton from '../user-avatar-button/user-avatar-button.svelte'
 </script>
 
@@ -21,6 +23,16 @@
 		<Logo withTitle class="mt-0.5 h-[26px]" />
 	</a>
 	<UserAvatarButton buttonProps={{ class: 'p-2' }} />
+	<Button
+		variant="ghost"
+		size="lg"
+		align="start"
+		class="flex h-12 w-full p-3 [&_svg]:size-6"
+		href="/"
+	>
+		<Home filled />
+		Главная
+	</Button>
 </div>
 
 <style>

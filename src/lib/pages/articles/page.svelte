@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { ArticleItem } from '$lib/components/article-item'
 	import { Pagination } from '$lib/components/pagination'
-	import LoaderCircle from '@lucide/svelte/icons/loader-circle'
 	import type { PageProps } from '../../../routes/articles/[...params]/$types'
 	import { goto } from '$app/navigation'
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
 	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher-row.svelte'
 	import { AppBar } from '$lib/components/appbar'
+	import { ArticleItemPostSkeleton } from '$lib/components/skeletons'
+	import { fadeAbsolute } from '$lib/utils'
+	import { fade } from 'svelte/transition'
 
 	const { data }: PageProps = $props()
 
@@ -69,13 +71,23 @@
 	<AppBar />
 	<ArticlesSwitcher class="min-lg:hidden" articleParams={data.articleParams} />
 	{#await data.articles}
-		<div class="relative h-[10000px] w-full">
-			<div class="sticky top-12 flex w-full items-center justify-center py-16">
-				<LoaderCircle class="animate-spin" />
+		<div class="relative">
+			<div
+				class="relative flex w-full flex-col gap-0"
+				out:fadeAbsolute={{
+					duration: 200,
+					// Disable unnecessary animation when data is already present
+					// `data.articles` is always a Promise, so skeletons will always load
+					enabled: !data.cache
+				}}
+			>
+				{#each Array(20).fill(null)}
+					<ArticleItemPostSkeleton />
+				{/each}
 			</div>
 		</div>
 	{:then articles}
-		<div class="relative flex w-full flex-col gap-0 after:top-[48px] after:h-[100vh-48px]">
+		<div class="relative flex w-full flex-col gap-0" in:fade={{ duration: 200 }}>
 			{#each articles.publicationIds as id}
 				<ArticleItem article={articles.publicationRefs[id]} />
 			{/each}

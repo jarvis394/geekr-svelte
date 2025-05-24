@@ -55,6 +55,7 @@ export const articlesLoader = ({ params, url, fetch }: ArticlesLoaderProps) => {
 
 	return {
 		articleParams: articlesParamsResult.data,
-		articles
+		articles,
+		cache: cache.has(getArticlesQueryKey(articlesParamsResult.data))
 	}
 }

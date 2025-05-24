@@ -57,8 +57,11 @@ export const parseArticlesParams = (params: string[]): GetArticlesParamsResult =
 
 		// Skip page param
 		if (param === 'p') continue
-		// ...and flow param
+		// These are checked by just using routing
 		if (param === 'flows') continue
+		if (param === 'articles') continue
+		if (param === 'news') continue
+		if (param === 'posts') continue
 
 		for (const item in checkMap) {
 			const typedItem = item as keyof GetArticlesParamsData

@@ -1,3 +1,8 @@
+<script module lang="ts">
+	export const ARTICLE_ITEM_IMAGE_HEIGHT = 212
+	export const MAX_PREVIEW_TEXT_LENGTH = 600
+</script>
+
 <script lang="ts">
 	import formatNumber from '$lib/utils/formatNumber'
 	import getArticleLink from '$lib/utils/getArticleLink'
@@ -13,8 +18,6 @@
 	import { cn, getArticleLeadImage } from '$lib/utils'
 	import { ComplexityGauge } from '../complexity-gauge'
 
-	const ARTICLE_ITEM_IMAGE_HEIGHT = 212
-	const MAX_PREVIEW_TEXT_LENGTH = 600
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 
 	let leadImageLoaded = $state(false)
