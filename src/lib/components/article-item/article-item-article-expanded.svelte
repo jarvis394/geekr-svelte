@@ -34,7 +34,7 @@
 <div
 	{...other}
 	class={cn(
-		'animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px]',
+		'border-border relative flex flex-col overflow-hidden border-b-[1px]',
 		containerClasses
 	)}
 >

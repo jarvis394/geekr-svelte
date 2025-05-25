@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { ArticleItem } from '$lib/components/article-item'
 	import { Pagination } from '$lib/components/pagination'
 	import type { PageProps } from '../../../routes/articles/[...params]/$types'
 	import { goto } from '$app/navigation'
@@ -8,9 +7,9 @@
 	import { AppBar } from '$lib/components/appbar'
 	import { ArticleItemPostSkeleton } from '$lib/components/skeletons'
 	import { fadeAbsolute } from '$lib/utils'
-	import { fade } from 'svelte/transition'
 
 	const { data }: PageProps = $props()
+	const promise = $derived(Promise.all([data.articles, import('$lib/components/article-item')]))
 
 	const handlePageChange = (page: number) => {
 		goto(makeArticlesPageUrlFromParams({ ...data.articleParams, page }))
@@ -74,26 +73,18 @@
 		articlesParams={data.articleParams}
 		articlesMode={data.articlesMode}
 	/>
-	{#await data.articles}
+	{#await promise}
 		<div class="relative">
-			<div
-				class="relative flex w-full flex-col gap-0"
-				out:fadeAbsolute={{
-					duration: 200,
-					// Disable unnecessary animation when data is already present
-					// `data.articles` is always a Promise, so skeletons will always load
-					enabled: !data.cache
-				}}
-			>
+			<div class="relative flex w-full flex-col gap-0" out:fadeAbsolute={{ duration: 200 }}>
 				{#each Array(20).fill(null)}
 					<ArticleItemPostSkeleton />
 				{/each}
 			</div>
 		</div>
-	{:then articles}
-		<div class="relative flex w-full flex-col gap-0" in:fade={{ duration: 200 }}>
+	{:then [articles, c]}
+		<div class="animate-in fade-in relative flex w-full flex-col gap-0 duration-200">
 			{#each articles.publicationIds as id}
-				<ArticleItem article={articles.publicationRefs[id]} />
+				<c.ArticleItem article={articles.publicationRefs[id]} />
 			{/each}
 		</div>
 		<Pagination

@@ -43,7 +43,7 @@
 <div
 	{...other}
 	class={cn(
-		'animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px] pt-3 min-lg:first:pt-0',
+		'border-border relative flex flex-col overflow-hidden border-b-[1px] pt-3 min-lg:first:pt-0',
 		{ 'pt-0': leadImage },
 		containerClasses
 	)}
@@ -97,7 +97,7 @@
 					<ComplexityGauge withLabel complexity={article.complexity} />
 				{/if}
 			</div>
-			<h2 class="font-heading text-primary text-xl font-bold">
+			<h2 class="font-heading text-primary text-xl font-bold text-pretty">
 				{titlePlaintext}
 			</h2>
 			<p class="text-muted-foreground line-clamp-7 text-[15px]/5">

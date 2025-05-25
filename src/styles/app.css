@@ -265,7 +265,7 @@
 		}
 
 		& figure {
-			@apply m-0 mt-8 text-center;
+			@apply m-0 mt-4 text-center;
 		}
 
 		& figure.bordered {

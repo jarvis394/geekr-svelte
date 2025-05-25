@@ -34,7 +34,7 @@
 <div
 	{...other}
 	class={cn(
-		'animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px] pt-2 min-lg:first:pt-0',
+		'border-border relative flex flex-col overflow-hidden border-b-[1px] pt-2 min-lg:first:pt-0',
 		containerClasses
 	)}
 >
@@ -56,13 +56,9 @@
 		{titlePlaintext}
 	</a>
 	{#if article.leadData?.image}
-		<Image
-			containerProps={{ class: 'mx-3 mb-4 mt-2' }}
-			disableZoom
-			src={article.leadData.image.url}
-		/>
+		<Image containerProps={{ class: 'mx-3 mb-4 mt-2' }} src={article.leadData.image.url} />
 	{/if}
-	<TextFormatter disableImageZoom class="px-3 text-base/[1.6]" html={article.textHtml || ''} />
+	<TextFormatter class="px-3 text-base/[1.6]" html={article.textHtml || ''} />
 	<div class="flex items-center justify-between px-3 pt-3 pb-2">
 		<Button variant="ghost" size="sm" class="-ml-1.5 pl-1.5">
 			<Avatar.Root class="h-6 w-6">
