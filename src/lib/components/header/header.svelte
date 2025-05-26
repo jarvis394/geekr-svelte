@@ -83,7 +83,7 @@
 <header
 	{...other}
 	class={cn(
-		'Header bg-background/90 text-primary font-heading max-w-article fixed top-0 z-50 flex h-12 w-full flex-row items-center gap-1 overflow-hidden pr-2 pl-1 backdrop-blur-2xl select-none',
+		'Header bg-background/90 text-primary font-heading max-w-article fixed top-0 z-50 flex h-12 w-full flex-row items-center gap-1 overflow-hidden pr-2 pl-1 backdrop-blur-xl select-none',
 		containerClasses,
 		{ 'bg-sidebar h-8': isShrunk, 'Header--withPositionBar': withPositionBar }
 	)}

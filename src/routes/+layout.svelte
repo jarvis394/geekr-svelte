@@ -11,6 +11,7 @@
 	import { Drawer } from '$lib/components/drawer'
 	import { Sidebar } from '$lib/components/sidebar'
 	import { browser } from '$app/environment'
+	import { BottomNavigation } from '$lib/components/bottom-navigation'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
@@ -21,11 +22,12 @@
 	import 'photoswipe/style.css'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
-		const articlesNavigaion = [
+		const disableTransitionRoutes = [
 			'/flows/[...params]',
 			'/articles/[...params]',
 			'/news/[...params]',
-			'/posts/[...params]'
+			'/posts/[...params]',
+			'/hubs'
 		]
 
 		// Catches navigation inside the page and disables transition
@@ -35,8 +37,8 @@
 
 		// Catches navigation between /articles and /flows (they are the same route)
 		if (
-			articlesNavigaion.some((e) => e === navigation.from?.route.id) &&
-			articlesNavigaion.some((e) => e === navigation.to?.route.id)
+			disableTransitionRoutes.some((e) => e === navigation.from?.route.id) &&
+			disableTransitionRoutes.some((e) => e === navigation.to?.route.id)
 		) {
 			return false
 		}
@@ -114,6 +116,7 @@
 			{@render children()}
 		</div>
 		<Sidebar />
+		<BottomNavigation />
 	</main>
 </QueryClientProvider>
 

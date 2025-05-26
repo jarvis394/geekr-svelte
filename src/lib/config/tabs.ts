@@ -26,7 +26,7 @@ export const APP_TABS: AppTab[] = [
 	},
 	{
 		label: 'Хабы',
-		href: '/',
+		href: '/hubs',
 		icon: Compass
 	}
 ]

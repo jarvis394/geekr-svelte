@@ -5,4 +5,4 @@
 	let { class: className, ...restProps }: DrawerPrimitive.OverlayProps = $props()
 </script>
 
-<DrawerPrimitive.Overlay class={cn('fixed inset-0 z-50 bg-black/80', className)} {...restProps} />
+<DrawerPrimitive.Overlay class={cn('fixed inset-0 z-200 bg-black/80', className)} {...restProps} />

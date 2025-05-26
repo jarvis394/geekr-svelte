@@ -25,6 +25,13 @@
 		animation: none;
 	}
 
+	html.view-transition.view-change::view-transition-new(root) {
+		animation: fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
+	}
+	html.view-transition.view-change::view-transition-old(root) {
+		animation: fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
+	}
+
 	html.view-transition.entering::view-transition-new(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
@@ -138,6 +145,17 @@
 		}
 		to {
 			transform: translateX(calc(-1 * var(--transition-slide-offset)));
+		}
+	}
+
+	@keyframes slide-in-from-bottom {
+		from {
+			z-index: 1000;
+			transform: translateY(var(--transition-slide-offset));
+		}
+		to {
+			z-index: 1000;
+			transform: translateY(0);
 		}
 	}
 
