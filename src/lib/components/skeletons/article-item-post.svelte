@@ -3,7 +3,9 @@
 	import { Skeleton } from '../ui/skeleton'
 </script>
 
-<div class="animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px]">
+<div
+	class="ArticleItemPostSkeleton animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px]"
+>
 	<Skeleton style={`height: ${ARTICLE_ITEM_IMAGE_HEIGHT}px;`} class="w-full rounded-none" />
 	<div class="flex flex-col">
 		<div class="flex flex-col gap-1 p-3 pb-0">
@@ -30,3 +32,10 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.ArticleItemPostSkeleton {
+		content-visibility: auto;
+		contain-intrinsic-size: 1px 471px;
+	}
+</style>

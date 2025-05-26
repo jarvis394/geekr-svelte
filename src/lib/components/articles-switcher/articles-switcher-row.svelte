@@ -78,7 +78,7 @@
 		onclick={handleClick.bind(null, mode)}
 		class="gap-1 rounded-xl text-base font-medium [&_svg]:size-5"
 	>
-		{#if mode.complexity}
+		{#if mode.complexity && mode.complexity !== 'all'}
 			<ComplexityGauge filled complexity={mode.complexity} />
 		{/if}
 		{mode.tabbarLabel}
