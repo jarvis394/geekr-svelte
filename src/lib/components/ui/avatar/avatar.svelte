@@ -1,19 +1,33 @@
 <script lang="ts">
-	import { Avatar as AvatarPrimitive } from 'bits-ui'
+	import { type Avatar as AvatarPrimitive } from 'bits-ui'
 	import { cn } from '$lib/utils'
 
 	let {
 		ref = $bindable(null),
 		class: className,
-		children,
+		hash,
+		src,
 		...restProps
-	}: AvatarPrimitive.RootProps = $props()
+	}: AvatarPrimitive.ImageProps & {
+		hash?: string
+	} = $props()
+
+	const placeholderAvatarUrl = $derived.by(() => {
+		if (src) return null
+
+		let n = 0
+		hash?.split('').forEach((e) => (n += e.charCodeAt(0)))
+		const index = (n % 100) + 101
+		return `https://assets.habr.com/habr-web/img/avatars/${index}.png`
+	})
 </script>
 
-<div
+<img
 	bind:this={ref}
-	class={cn('bg-muted relative flex size-10 shrink-0 overflow-hidden rounded-sm', className)}
+	src={src || placeholderAvatarUrl}
+	class={cn(
+		'bg-muted animate-in fade-in relative flex aspect-square size-10 h-full w-full shrink-0 overflow-hidden rounded-sm',
+		className
+	)}
 	{...restProps}
->
-	{@render children?.()}
-</div>
+/>

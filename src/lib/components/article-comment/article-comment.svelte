@@ -3,7 +3,7 @@
 	import TextFormatter from '../text-formatter/text-formatter.svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn } from '$lib/utils'
-	import * as Avatar from '../ui/avatar'
+	import { Avatar } from '../ui/avatar'
 	import { Button } from '../ui/button'
 	import dayjs from 'dayjs'
 	import ChevronUp from '@lucide/svelte/icons/chevron-up'
@@ -85,13 +85,12 @@
 					}
 				)}
 			>
-				<Avatar.Root class="h-6 w-6">
-					<Avatar.Image
-						hash={comment.author.alias}
-						src={comment.author.avatarUrl}
-						alt={'@' + comment.author.alias}
-					/>
-				</Avatar.Root>
+				<Avatar
+					hash={comment.author.alias}
+					src={comment.author.avatarUrl}
+					alt={'@' + comment.author.alias}
+					class="size-6"
+				/>
 				<div class="flex flex-col gap-0.5">
 					<h3 class="font-heading text-[13px] leading-none font-medium">
 						{comment.author.alias}

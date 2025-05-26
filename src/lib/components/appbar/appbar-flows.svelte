@@ -36,7 +36,7 @@
 			<ChevronDown strokeWidth={2.5} class="text-muted-foreground size-5" />
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="start">
-			{#each FLOWS as flow}
+			{#each FLOWS as flow ('flow:' + flow.alias)}
 				<DropdownMenu.Item onclick={handleFlowClick.bind(null, flow.alias)}>
 					{flow.title}
 				</DropdownMenu.Item>

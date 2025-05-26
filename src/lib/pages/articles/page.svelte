@@ -7,9 +7,10 @@
 	import { AppBar } from '$lib/components/appbar'
 	import { ArticleItemPostSkeleton } from '$lib/components/skeletons'
 	import { fadeAbsolute } from '$lib/utils'
+	import { ArticleItem } from '$lib/components/article-item'
 
 	const { data }: PageProps = $props()
-	const promise = $derived(Promise.all([data.articles, import('$lib/components/article-item')]))
+	// const promise = $derived(Promise.all([data.articles, import('$lib/components/article-item')]))
 
 	const handlePageChange = (page: number) => {
 		goto(makeArticlesPageUrlFromParams({ ...data.articleParams, page }))
@@ -73,18 +74,21 @@
 		articlesParams={data.articleParams}
 		articlesMode={data.articlesMode}
 	/>
-	{#await promise}
+	{#await data.articles}
 		<div class="relative">
-			<div class="relative flex w-full flex-col gap-0" out:fadeAbsolute={{ duration: 200 }}>
+			<div
+				class="relative flex w-full flex-col gap-0"
+				out:fadeAbsolute={{ duration: 200, disabled: data.cache }}
+			>
 				{#each Array(20).fill(null)}
 					<ArticleItemPostSkeleton />
 				{/each}
 			</div>
 		</div>
-	{:then [articles, c]}
+	{:then articles}
 		<div class="animate-in fade-in relative flex w-full flex-col gap-0 duration-200">
-			{#each articles.publicationIds as id}
-				<c.ArticleItem article={articles.publicationRefs[id]} />
+			{#each articles.publicationIds as id (id)}
+				<ArticleItem article={articles.publicationRefs[id]} />
 			{/each}
 		</div>
 		<Pagination

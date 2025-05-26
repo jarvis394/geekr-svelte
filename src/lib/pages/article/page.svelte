@@ -5,7 +5,7 @@
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn, fadeAbsolute, getArticleLink } from '$lib/utils'
 	import { Link } from '$lib/components/link'
-	import * as Avatar from '$lib/components/ui/avatar'
+	import { Avatar } from '$lib/components/ui/avatar'
 	import dayjs from 'dayjs'
 	import { Button } from '$lib/components/ui/button'
 	import { fade } from 'svelte/transition'
@@ -41,13 +41,12 @@
 	<div class="flex flex-col" bind:this={scrollElement}>
 		<div class="flex flex-col gap-3">
 			<div class="flex flex-row gap-2">
-				<Avatar.Root class="h-6 w-6">
-					<Avatar.Image
-						hash={article.author.alias}
-						src={article.author.avatarUrl}
-						alt={'@' + article.author.alias}
-					/>
-				</Avatar.Root>
+				<Avatar
+					class="size-6"
+					hash={article.author.alias}
+					src={article.author.avatarUrl}
+					alt={'@' + article.author.alias}
+				/>
 				<h3 class="font-heading text-base font-medium">
 					{article.author.alias}
 				</h3>

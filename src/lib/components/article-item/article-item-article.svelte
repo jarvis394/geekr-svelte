@@ -1,43 +1,28 @@
-<script module lang="ts">
-	export const ARTICLE_ITEM_IMAGE_HEIGHT = 212
-	export const MAX_PREVIEW_TEXT_LENGTH = 600
-</script>
-
 <script lang="ts">
-	import formatNumber from '$lib/utils/formatNumber'
-	import getArticleLink from '$lib/utils/getArticleLink'
-	import parsePreviewTextHtml from '$lib/utils/parsePreviewTextHTML'
-	import dayjs from 'dayjs'
-	import * as Avatar from '$lib/components/ui/avatar'
+	import { Avatar } from '$lib/components/ui/avatar'
 	import { Button } from '../ui/button'
-	import type { ArticleItemProps } from './article-item.svelte'
+	import {
+		ARTICLE_ITEM_IMAGE_HEIGHT,
+		useArticleItem,
+		type ArticleItemProps
+	} from './article-item.svelte'
 	import Image from '../image/image.svelte'
 	import MessageSquare from '@lucide/svelte/icons/message-square'
-	import formatWordByNumber from '$lib/utils/formatWordByNumber'
 	import ArticleLabels from '../article-labels/article-labels.svelte'
-	import { cn, getArticleLeadImage } from '$lib/utils'
+	import { cn } from '$lib/utils'
 	import { ComplexityGauge } from '../complexity-gauge'
 
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
-
+	const {
+		titlePlaintext,
+		timestampText,
+		parsedPreviewText,
+		leadImage,
+		viewsText,
+		articleLink,
+		commentsText
+	} = $derived(useArticleItem(article))
 	let leadImageLoaded = $state(false)
-	const titlePlaintext = $derived(parsePreviewTextHtml(article.titleHtml))
-	const parsedPreviewText = $derived(
-		parsePreviewTextHtml(article.leadData?.textHtml || '').slice(0, MAX_PREVIEW_TEXT_LENGTH)
-	)
-	const articleLink = $derived(getArticleLink(article))
-	const timestampText = $derived(dayjs(article.timePublished).calendar())
-	const viewsText = $derived(
-		formatNumber(article.statistics.readingCount, ['просмотр', 'просмотра', 'просмотров'])
-	)
-	const commentsText = $derived(
-		formatWordByNumber(article.statistics.commentsCount, [
-			'комментарий',
-			'комментария',
-			'комментариев'
-		])
-	)
-	const leadImage = $derived(getArticleLeadImage(article))
 </script>
 
 <div
@@ -107,13 +92,12 @@
 		</a>
 		<div class="flex items-center justify-between p-1.5 pt-1.5 pb-2">
 			<Button variant="ghost" size="sm" class="pl-1.5">
-				<Avatar.Root class="h-6 w-6">
-					<Avatar.Image
-						hash={article.author.alias}
-						src={article.author.avatarUrl}
-						alt={'@' + article.author.alias}
-					/>
-				</Avatar.Root>
+				<Avatar
+					class="size-6"
+					hash={article.author.alias}
+					src={article.author.avatarUrl}
+					alt={'@' + article.author.alias}
+				/>
 				<h3 class="font-heading text-[15px] font-medium">{article.author.alias}</h3>
 			</Button>
 
@@ -123,9 +107,7 @@
 				href={articleLink + '/comments'}
 				class="text-muted-foreground text-[15px]"
 			>
-				<span class="mt-0.5">
-					<MessageSquare strokeWidth={2.5} />
-				</span>
+				<MessageSquare class="mt-0.5" strokeWidth={2.5} />
 				<span class="inline-flex gap-1">
 					{article.statistics.commentsCount}
 					<span class="xs:block hidden">{commentsText}</span>

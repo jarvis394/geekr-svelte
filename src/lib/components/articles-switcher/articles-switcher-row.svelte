@@ -16,6 +16,7 @@
 	} from './utils'
 	import ArticlesSwitcher from './articles-switcher.svelte'
 	import { FLOWS_MAP } from '$lib/config/flows'
+	import { ComplexityGauge } from '../complexity-gauge'
 
 	export type ArticlesSwitcherProps = HTMLAttributes<HTMLDivElement> & {
 		articlesParams: GetArticlesParamsData
@@ -46,7 +47,7 @@
 	}
 
 	const handleClick = (mode: ModeItem) => {
-		if (isSelected(mode, articlesParams)) return
+		if (isSelected(mode, articlesParams, true)) return
 		mode = {
 			...mode, // Do not reset articles flow that user selected
 			flow: articlesParams.flow,
@@ -71,12 +72,15 @@
 </script>
 
 {#snippet TabbarButton(mode: ModeItem)}
-	{@const selected = isSelected(mode, articlesParams)}
+	{@const selected = isSelected(mode, articlesParams, true)}
 	<Button
 		variant={selected ? 'default' : 'secondary'}
 		onclick={handleClick.bind(null, mode)}
-		class="rounded-xl text-base font-medium"
+		class="gap-1 rounded-xl text-base font-medium [&_svg]:size-5"
 	>
+		{#if mode.complexity}
+			<ComplexityGauge filled complexity={mode.complexity} />
+		{/if}
 		{mode.tabbarLabel}
 	</Button>
 {/snippet}

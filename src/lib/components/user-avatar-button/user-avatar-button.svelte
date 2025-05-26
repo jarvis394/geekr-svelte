@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements'
-	import * as Avatar from '../ui/avatar'
+	import { Avatar } from '../ui/avatar'
 	import { cn } from '$lib/utils'
 	import { Button, type ButtonProps } from '../ui/button'
 
@@ -18,8 +18,10 @@
 		buttonProps?.class
 	)}
 >
-	<Avatar.Root class={cn('border-foreground/4 h-8 w-8 rounded-full border', containerClasses)}>
-		<Avatar.Image hash="jarvis394" alt="User avatar" />
-	</Avatar.Root>
+	<Avatar
+		hash="jarvis394"
+		alt="User avatar"
+		class={cn('border-foreground/4 h-8 w-8 rounded-full border', containerClasses)}
+	/>
 	<p class="font-heading mb-0.25 text-base max-xl:hidden">Владислав Екушев</p>
 </Button>

@@ -1,5 +1,5 @@
-import { Parser } from '@lezer/common'
-import { Language, LanguageDescription } from '@codemirror/language'
+import type { Parser } from '@lezer/common'
+import { type Language, LanguageDescription } from '@codemirror/language'
 import { type Highlighter, highlightCode as lezerHighlightCode } from '@lezer/highlight'
 import { languages } from '@codemirror/language-data'
 import escape from 'escape-html'

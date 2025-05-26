@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { ARTICLE_ITEM_IMAGE_HEIGHT } from '../article-item/article-item.svelte'
 	import { Skeleton } from '../ui/skeleton'
-	import { ARTICLE_ITEM_IMAGE_HEIGHT } from '../article-item/article-item-article.svelte'
 </script>
 
 <div class="animate-in fade-in border-border relative flex flex-col overflow-hidden border-b-[1px]">

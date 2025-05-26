@@ -28,7 +28,7 @@
 			variant="ghost"
 			size="lg"
 			align="start"
-			class="text-muted-foreground flex h-12 w-full p-3 [&_svg]:size-6 hover:text-primary"
+			class="text-muted-foreground hover:text-primary flex h-12 w-full p-3 [&_svg]:size-6"
 			href={tab.href}
 		>
 			<tab.icon />

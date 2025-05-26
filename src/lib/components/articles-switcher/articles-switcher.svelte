@@ -48,11 +48,12 @@
 	})
 
 	const handleModeClick = (mode: ModeItem) => {
-		selectedMode = { ...selectedMode, ...mode }
 		const newSelectedComplexity = ARTICLE_COMPLEXITY.find((e) => e.complexity === mode.complexity)
 		if (mode.complexity && newSelectedComplexity) {
 			selectedMode.complexity = mode.complexity
 			selectedComplexity = newSelectedComplexity
+		} else {
+			selectedMode = { ...selectedMode, ...mode }
 		}
 
 		if (applyOnClick) {

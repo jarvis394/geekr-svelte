@@ -21,7 +21,12 @@
 	import 'photoswipe/style.css'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
-		const articlesNavigaion = ['/flows/[...params]', '/articles/[...params]']
+		const articlesNavigaion = [
+			'/flows/[...params]',
+			'/articles/[...params]',
+			'/news/[...params]',
+			'/posts/[...params]'
+		]
 
 		// Catches navigation inside the page and disables transition
 		if (navigation.from?.route.id === navigation.to?.route.id) {

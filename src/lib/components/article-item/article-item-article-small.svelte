@@ -1,21 +1,16 @@
 <script lang="ts">
-	import formatNumber from '$lib/utils/formatNumber'
-	import getArticleLink from '$lib/utils/getArticleLink'
-	import parsePreviewTextHtml from '$lib/utils/parsePreviewTextHTML'
 	import Image from '../image/image.svelte'
-	import { cn, getArticleLeadImage } from '$lib/utils'
+	import { cn, formatNumber } from '$lib/utils'
 	import type { Article } from '$lib/types'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { Eye, MessageSquare } from '@lucide/svelte'
+	import { useArticleItem } from './article-item.svelte'
 
 	type ArticleItemProps = { article: Article } & HTMLAttributes<HTMLAnchorElement>
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
-
-	const titlePlaintext = $derived(parsePreviewTextHtml(article.titleHtml))
-	const articleLink = $derived(getArticleLink(article))
-	const viewsText = $derived(formatNumber(article.statistics.readingCount))
-	const commentsText = $derived(formatNumber(article.statistics.commentsCount))
-	const leadImage = $derived(getArticleLeadImage(article))
+	const { titlePlaintext, leadImage, articleLink } = $derived(useArticleItem(article))
+	const viewsText = formatNumber(article.statistics.readingCount)
+	const commentsText = formatNumber(article.statistics.commentsCount)
 </script>
 
 <a
