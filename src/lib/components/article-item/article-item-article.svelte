@@ -46,7 +46,10 @@
 				disableZoom
 				containerProps={{
 					class: 'w-full rounded-none object-cover',
-					style: 'height: ' + ARTICLE_ITEM_IMAGE_HEIGHT + 'px'
+					style: `
+						height: ${ARTICLE_ITEM_IMAGE_HEIGHT}px;
+						contain-intrinsic-height: ${ARTICLE_ITEM_IMAGE_HEIGHT}px;
+					`
 				}}
 				width="100%"
 				height={ARTICLE_ITEM_IMAGE_HEIGHT}
@@ -90,7 +93,7 @@
 			</p>
 			<md-ripple></md-ripple>
 		</a>
-		<div class="flex items-center justify-between p-1.5 pt-1.5 pb-2">
+		<div class="ArticleItem__bottomBar flex items-center justify-between p-1.5 pt-1.5 pb-2">
 			<Button variant="ghost" size="sm" class="pl-1.5">
 				<Avatar
 					class="size-6"
@@ -118,8 +121,14 @@
 </div>
 
 <style>
+	.ArticleItem__bottomBar {
+		content-visibility: auto;
+		contain-intrinsic-size: 1px 50px;
+	}
+
 	.ArticleItem__image {
 		transform: translateZ(0);
+		content-visibility: auto;
 	}
 
 	.ArticleItem__image::after {
