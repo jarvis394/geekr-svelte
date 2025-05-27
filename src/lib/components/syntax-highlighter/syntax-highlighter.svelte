@@ -31,7 +31,7 @@
 </script>
 
 <div
-	class="not-prose bg-accent relative rounded-xl p-1 text-sm inset-ring inset-ring-black/7 in-[.article]:my-3 dark:bg-white/3 dark:inset-ring-white/7"
+	class="SyntaxHighlighter not-prose bg-accent relative rounded-xl p-1 text-sm inset-ring inset-ring-black/7 in-[.article]:my-3 dark:bg-white/3 dark:inset-ring-white/7"
 >
 	<div
 		class="*:bg-background! inset-ring-black/7 *:flex *:*:max-w-none *:*:shrink-0 *:*:grow *:overflow-auto *:rounded-lg *:p-5 *:inset-ring *:inset-ring-black/7 dark:*:bg-white/3! dark:*:inset-ring-white/3"
