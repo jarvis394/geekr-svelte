@@ -21,3 +21,4 @@
 >
 	{@render children?.()}
 </div>
+<div style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px`}></div>
