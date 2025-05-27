@@ -114,9 +114,9 @@
 		<Drawer />
 		<div class="container-bordered max-w-article relative h-full w-full shrink">
 			{@render children()}
+			<BottomNavigation />
 		</div>
 		<Sidebar />
-		<BottomNavigation />
 	</main>
 </QueryClientProvider>
 

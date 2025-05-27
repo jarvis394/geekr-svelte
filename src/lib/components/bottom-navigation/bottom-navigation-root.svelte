@@ -17,8 +17,8 @@
 		'bg-background/90 fixed right-0 bottom-0 left-0 z-100 flex w-[calc(100%-var(--scrollbar-width))] flex-row items-center justify-center backdrop-blur-xl',
 		className
 	)}
-	style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px;` + style}
+	style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px;${style}`}
 >
 	{@render children?.()}
 </div>
-<div style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px`}></div>
+<div class={cn('shrink-0', className)} style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px`}></div>

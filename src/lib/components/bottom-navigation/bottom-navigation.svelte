@@ -5,20 +5,19 @@
 	import { APP_TABS } from '$lib/config/tabs'
 	import { page } from '$app/state'
 
-	const homeNavigaion = ['/flows/[...params]', '/articles/[...params]']
+	const homeRoutes = ['/flows/[...params]', '/articles/[...params]']
 
 	export type BottomNavigationProps = HTMLAttributes<HTMLDivElement>
 
 	const { class: className, children, ...other }: BottomNavigationProps = $props()
 	const currentRoute = $derived(page.route.id)
-	const currentPathname = $derived(page.url.pathname)
 	const active = $derived(
 		APP_TABS.find((tab) => {
-			if (tab.href === '/') {
-				return homeNavigaion.some((e) => e === currentRoute)
+			if (tab.route === '/') {
+				return homeRoutes.some((e) => e === currentRoute)
 			}
 
-			return currentPathname.startsWith(tab.href)
+			return currentRoute === tab.route
 		})
 	)
 </script>
