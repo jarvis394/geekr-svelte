@@ -431,6 +431,7 @@
 		pointer-events: none;
 		cursor: default;
 		transition: all 150ms ease;
+		animation: 0.5s cubic-bezier(0.2, 0, 0, 1) 0s animation-shimmer-in both;
 	}
 
 	.shimmer::after {
@@ -452,6 +453,15 @@
 		}
 		100% {
 			transform: translateX(100%);
+		}
+	}
+
+	@keyframes animation-shimmer-in {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0.75;
 		}
 	}
 

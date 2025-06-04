@@ -11,6 +11,7 @@
 	import ArticleLabels from '../article-labels/article-labels.svelte'
 	import { cn } from '$lib/utils'
 	import { ComplexityGauge } from '../complexity-gauge'
+	import { browser } from '$app/environment'
 
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 	const {
@@ -22,7 +23,7 @@
 		articleLink,
 		commentsText
 	} = $derived(useArticleItem(article))
-	let leadImageLoaded = $state(false)
+	let leadImageLoaded = $state(!browser)
 </script>
 
 <div

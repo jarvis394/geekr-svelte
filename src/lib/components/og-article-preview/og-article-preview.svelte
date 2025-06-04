@@ -1,0 +1,66 @@
+<svelte:options css="injected" />
+
+<script lang="ts">
+	export type OgArticlePreviewProps = {
+		title?: string
+		hubs?: string
+	}
+	const props: OgArticlePreviewProps = $props()
+</script>
+
+<div class="main">
+	<h1 class="header">geekr.</h1>
+	<svg viewBox="0 0 26 26" class="logo" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M4.36367 2.16664V0H2.18179V2.16664H4.36367Z" fill="currentColor" />
+		<path
+			fill-rule="evenodd"
+			clip-rule="evenodd"
+			d="M13.0908 2.16664H4.36367L4.36342 6.5H2.18155L2.18179 4.33328H0V6.5H2.18155V8.66666H0V10.8333H2.18155L2.18179 15.1667H0V17.3333H2.18179V15.1667H4.36342V17.3333H6.5453L6.54521 23.8333H4.36342V25.9999H6.54521V23.8333H8.72733L8.72709 19.5H10.909V21.6667H15.2727V23.8333H17.4545V21.6667H15.2727L15.2726 17.3333H17.4545L17.4543 19.5H19.6361V17.3333H21.818V15.1667H23.9998V13H21.818V15.1667H19.6364L19.6361 13H17.4545V10.8333H21.818V8.66666H19.6364L19.6361 6.5H17.4545V4.33328H19.6364V2.16664H21.8183V0H19.6364V2.16664H15.2726V0H13.0908V2.16664ZM13.0908 2.16664V4.33328H15.2726V2.16664H13.0908ZM2.18155 10.8333H4.36342V8.66666H2.18155V10.8333Z"
+			fill="currentColor"
+		/>
+	</svg>
+	<h2 class="title">{props.title}</h2>
+	<p class="hubs">{props.hubs}</p>
+</div>
+
+<style>
+	.main {
+		background: #080808;
+		color: white;
+		display: flex;
+		height: 100%;
+		width: 100%;
+		position: relative;
+	}
+
+	.header {
+		font-size: 64px;
+		position: absolute;
+		top: 48px;
+		left: 64px;
+		margin: 0;
+	}
+
+	.logo {
+		position: absolute;
+		top: 48px;
+		right: 64px;
+		height: 84px;
+		width: 84px;
+	}
+
+	.title {
+		/* box-shadow: 0px 0 0px 48px inset #7bb0ff; */
+		color: black;
+		background: #f00;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
+		position: absolute;
+		top: 50%;
+		left: 64px;
+		transform: translateY(-50%);
+		padding: 8px 16px;
+		font-size: 56px;
+		width: 1048px;
+	}
+</style>

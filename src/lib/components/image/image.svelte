@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment'
 	import { openLightbox } from '$lib/hooks/lightbox.svelte'
 	import { cn } from '$lib/utils'
 	import IntersectionObserver from 'svelte-intersection-observer'
@@ -22,11 +23,11 @@
 		containerProps = {},
 		class: imageClasses,
 		disableZoom,
-		loaded = $bindable(false),
+		loaded = $bindable(!browser),
 		...other
 	}: ImageProps = $props()
 	const { class: containerClasses, style, ...otherContainerProps } = containerProps
-	let shouldShowPlaceholder = $state(true)
+	let shouldShowPlaceholder = $state(browser)
 	let imageDimensions = $state({
 		width: isNaN(Number(width)) ? 0 : Number(width),
 		height: isNaN(Number(height)) ? 0 : Number(height)
@@ -89,7 +90,7 @@
 				onanimationend={handleAnimationEnd}
 			/>
 		{/if}
-		{#if intersecting}
+		{#if intersecting || !browser}
 			<img
 				{...other}
 				{src}

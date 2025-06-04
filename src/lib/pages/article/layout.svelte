@@ -8,18 +8,22 @@
 	let article = $state(data.cachedArticle)
 
 	$effect(() => {
-		void data.article.then((res) => {
-			if (JSON.stringify(res) === JSON.stringify(article)) {
-				return
-			}
+		// void data.article.then((res) => {
+		if (JSON.stringify(data.article) === JSON.stringify(article)) {
+			return
+		}
 
-			article = res
-		})
+		article = data.article
+		// })
 	})
 </script>
 
 <svelte:head>
 	<title>Статья / geekr.</title>
+	<meta property="og:image" content={'/api/social/' + data.id} />
+	<meta property="og:description" content={article?.metadata.metaDescription} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 </svelte:head>
 <div class="flex h-full w-full flex-col">
 	<Header withPositionBar withShrinking title={article?.titleHtml} />

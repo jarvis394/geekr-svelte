@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils'
 	import type { WithoutChildren } from 'bits-ui'
-	import { onMount } from 'svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { Spring } from 'svelte/motion'
 
@@ -10,6 +9,7 @@
 		preserveHeight?: boolean
 		/** When container's new width is 0, preserve last width value*/
 		preserveWidth?: boolean
+		enabled?: boolean
 		containerProps?: WithoutChildren<HTMLAttributes<HTMLDivElement>>
 	}
 	const {
@@ -17,6 +17,7 @@
 		preserveHeight,
 		preserveWidth,
 		containerProps,
+		enabled = true,
 		...other
 	}: AnimateProps & HTMLAttributes<HTMLDivElement> = $props()
 	let height = new Spring(0)
@@ -24,8 +25,10 @@
 	let container = $state<HTMLDivElement>()
 	let hydrated = $state(false)
 
-	onMount(() => {
+	$effect(() => {
 		hydrated = true
+
+		if (!enabled) return
 
 		const resizeObserver = new ResizeObserver((entries) => {
 			// We only have one entry, so we can use entries[0]

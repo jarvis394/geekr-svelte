@@ -6,11 +6,11 @@
 	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher-row.svelte'
 	import { AppBar } from '$lib/components/appbar'
 	import { ArticleItemPostSkeleton } from '$lib/components/skeletons'
-	import { fadeAbsolute } from '$lib/utils'
+	import { cn, fadeAbsolute } from '$lib/utils'
 	import { ArticleItem } from '$lib/components/article-item'
+	import { navigating } from '$app/state'
 
 	const { data }: PageProps = $props()
-	// const promise = $derived(Promise.all([data.articles, import('$lib/components/article-item')]))
 
 	const handlePageChange = (page: number) => {
 		goto(makeArticlesPageUrlFromParams({ ...data.articleParams, page }))
@@ -86,7 +86,11 @@
 			</div>
 		</div>
 	{:then articles}
-		<div class="animate-in fade-in relative flex w-full flex-col gap-0 duration-200">
+		<div
+			class={cn('relative flex w-full flex-col gap-0 transition-all', {
+				shimmer: navigating.to
+			})}
+		>
 			{#each articles.publicationIds as id (id)}
 				<ArticleItem article={articles.publicationRefs[id]} />
 			{/each}

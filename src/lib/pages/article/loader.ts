@@ -6,7 +6,7 @@ import { getArticleLink, getArticleQueryKey } from '$lib/utils'
 import { replaceState } from '$app/navigation'
 
 type ArticleLoaderProps = { id: string; fetch: typeof fetch; isCorporative?: boolean }
-export const articleLoader = ({ id, fetch, isCorporative }: ArticleLoaderProps) => {
+export const articleLoader = async ({ id, fetch, isCorporative }: ArticleLoaderProps) => {
 	const fetchArticle = async (id: string) => {
 		const data = await api.article.get({
 			id,
@@ -27,12 +27,14 @@ export const articleLoader = ({ id, fetch, isCorporative }: ArticleLoaderProps) 
 		return data
 	}
 
-	const article = fetchArticle(id)
+	const article = await fetchArticle(id)
 	const cachedArticle = browser
 		? (cache.get(getArticleQueryKey(id)) as Article | undefined)
-		: undefined
+		: article
 
 	return {
+		id,
+		isCorporative,
 		article,
 		cachedArticle
 	}

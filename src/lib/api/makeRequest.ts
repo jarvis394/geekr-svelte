@@ -1,4 +1,6 @@
 import { API_URL } from '$lib/config/constants'
+import type { APIError } from '$lib/types'
+import { error } from '@sveltejs/kit'
 
 export type FetchProp = {
 	/** Fetch function */
@@ -40,5 +42,11 @@ export default async <T = never>({
 		...requestOptions
 	})
 
-	return (await req.json()) as T
+	const res = (await req.json()) as (T & { errorCode?: never }) | APIError
+
+	if (res.errorCode) {
+		throw error(res.httpCode, res.message)
+	}
+
+	return res as T
 }
