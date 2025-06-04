@@ -20,7 +20,7 @@
 
 <svelte:head>
 	<title>Статья / geekr.</title>
-	<meta property="og:image" content={'/api/social/' + data.id} />
+	<meta property="og:image" content={'https://geekr-lambda.vercel.app/api/share?id=' + data.id} />
 	<meta property="og:description" content={article?.metadata.metaDescription} />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
