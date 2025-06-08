@@ -37,7 +37,7 @@ export const articlesLoader = async ({
 	}
 
 	const { complexity, mode, page, period, flow, rating } = articlesParamsResult.data
-	const articles = await cacheFetch(
+	const articles = cacheFetch(
 		getArticlesQueryKey(articlesParamsResult.data, articlesMode),
 		async () => {
 			const apiMethod = articlesMode === 'posts' ? 'posts' : 'articles'

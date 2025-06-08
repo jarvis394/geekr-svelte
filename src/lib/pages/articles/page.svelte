@@ -8,7 +8,6 @@
 	import { ArticleItemPostSkeleton } from '$lib/components/skeletons'
 	import { cn, fadeAbsolute } from '$lib/utils'
 	import { ArticleItem } from '$lib/components/article-item'
-	import { navigating } from '$app/state'
 
 	const { data }: PageProps = $props()
 
@@ -86,11 +85,7 @@
 			</div>
 		</div>
 	{:then articles}
-		<div
-			class={cn('relative flex w-full flex-col gap-0 transition-all', {
-				shimmer: navigating.to
-			})}
-		>
+		<div class={cn('animate-in fade-in relative flex w-full flex-col gap-0 transition-all')}>
 			{#each articles.publicationIds as id (id)}
 				<ArticleItem article={articles.publicationRefs[id]} />
 			{/each}

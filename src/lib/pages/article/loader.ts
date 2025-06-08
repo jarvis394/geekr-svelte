@@ -27,10 +27,10 @@ export const articleLoader = async ({ id, fetch, isCorporative }: ArticleLoaderP
 		return data
 	}
 
-	const article = await fetchArticle(id)
+	const article = fetchArticle(id)
 	const cachedArticle = browser
 		? (cache.get(getArticleQueryKey(id)) as Article | undefined)
-		: article
+		: undefined
 
 	return {
 		id,

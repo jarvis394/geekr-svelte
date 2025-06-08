@@ -14,7 +14,7 @@
 <div
 	{...other}
 	class={cn(
-		'bg-background/90 fixed right-0 bottom-0 left-0 z-100 flex w-[calc(100%-var(--scrollbar-width))] flex-row items-center justify-center backdrop-blur-xl',
+		'bg-background fixed right-0 bottom-0 left-0 z-100 flex w-[calc(100%-var(--scrollbar-width))] flex-row items-center justify-center',
 		className
 	)}
 	style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px;padding-bottom: env(safe-area-inset-bottom);${style}`}
