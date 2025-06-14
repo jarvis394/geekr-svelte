@@ -6,13 +6,18 @@
 	let {
 		ref = $bindable(null),
 		class: className,
+		shimmer,
 		...restProps
-	}: WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props()
+	}: WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> & {
+		shimmer?: boolean
+	} = $props()
 </script>
 
 <div
 	bind:this={ref}
 	data-slot="skeleton"
-	class={cn('bg-accent shimmer rounded-md', className)}
+	class={cn('bg-accent/63 rounded-md', className, {
+		shimmer
+	})}
 	{...restProps}
 ></div>

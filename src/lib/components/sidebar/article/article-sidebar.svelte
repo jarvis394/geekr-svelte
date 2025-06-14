@@ -2,4 +2,6 @@
 	import ArticlesMostReading from '../articles/articles-most-reading.svelte'
 </script>
 
-<ArticlesMostReading />
+<div class="animate-in fade-in flex flex-col gap-2">
+	<ArticlesMostReading />
+</div>
