@@ -66,13 +66,23 @@
 			// passive: true enhances scrolling experience
 			window?.addEventListener('scroll', scrollCallback, { passive: true })
 
+			let rAF = 0
+			/**
+			 * Resize Observer will throw an often benign error that says `ResizeObserver loop
+			 * completed with undelivered notifications`. This means that ResizeObserver was not
+			 * able to deliver all observations within a single animation frame, so we use
+			 * `requestAnimationFrame` to ensure we don't deliver unnecessary observations.
+			 * Further reading: https://github.com/WICG/resize-observer/issues/38
+			 */
 			const resizeObserver = new ResizeObserver(() => {
-				scrollCallback()
+				cancelAnimationFrame(rAF)
+				rAF = scrollCallback()
 			})
 
 			scrollElement && resizeObserver.observe(scrollElement)
 
 			return () => {
+				cancelAnimationFrame(rAF)
 				window?.removeEventListener('scroll', scrollCallback)
 				scrollElement && resizeObserver.unobserve(scrollElement)
 			}

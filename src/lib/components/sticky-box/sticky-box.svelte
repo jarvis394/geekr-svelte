@@ -349,8 +349,8 @@
 
 		const handleScroll =
 			scrollPane === window
-				? () => onScroll(window.scrollY)
-				: () => onScroll((scrollPane as HTMLElement).scrollTop)
+				? () => requestAnimationFrame(() => onScroll(window.scrollY))
+				: () => requestAnimationFrame(() => onScroll((scrollPane as HTMLElement).scrollTop))
 
 		scrollPane.addEventListener('scroll', handleScroll, passiveArg)
 		scrollPane.addEventListener('mousewheel', handleScroll, passiveArg)

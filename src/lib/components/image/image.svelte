@@ -18,22 +18,29 @@
 		src,
 		placeholderSrc,
 		alt,
-		width = 'initial',
-		height = 'initial',
+		width,
+		height,
 		containerProps = {},
 		class: imageClasses,
 		disableZoom,
 		loaded = $bindable(!browser),
 		...other
 	}: ImageProps = $props()
-	const { class: containerClasses, style, ...otherContainerProps } = containerProps
+	const { class: containerClasses, style: propsStyle, ...otherContainerProps } = containerProps
 	let shouldShowPlaceholder = $state(browser)
 	let imageDimensions = $state({
 		width: isNaN(Number(width)) ? 0 : Number(width),
 		height: isNaN(Number(height)) ? 0 : Number(height)
 	})
+	const style = $derived(
+		`aspect-ratio: ${imageDimensions.width || 'auto'} / ${imageDimensions.height || 'auto'};` +
+			propsStyle
+	)
+	const shouldUseIntersectionObserver = $derived(
+		imageDimensions.width === 0 && imageDimensions.height === 0
+	)
 	let element: HTMLElement | null = $state(null)
-	let intersecting: boolean = $state(false)
+	let intersecting: boolean = $derived(!shouldUseIntersectionObserver)
 
 	const handleLoad = (e: { currentTarget: EventTarget & Element }) => {
 		loaded = true
@@ -64,11 +71,11 @@
 	}
 </script>
 
-<IntersectionObserver {element} once rootMargin="512px" bind:intersecting>
+{#snippet image()}
 	<div
 		{...otherContainerProps}
 		class={cn(
-			'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-all',
+			'Image prose-img:m-0 bg-primary/3 relative inline-flex h-auto max-w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md align-middle transition-opacity',
 			containerClasses,
 			{ 'cursor-default': disableZoom },
 			{ 'shimmer min-h-6': shouldShowPlaceholder && !placeholderSrc }
@@ -81,9 +88,12 @@
 			<img
 				{...other}
 				{alt}
+				{width}
+				{height}
 				src={placeholderSrc}
+				{style}
 				class={cn(
-					'no-drag pointer-events-none z-10 h-auto w-full scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded="true"]:invisible data-[loaded="true"]:scale-100 data-[loaded="true"]:opacity-0',
+					'no-drag pointer-events-none z-10 h-auto w-full max-w-full scale-105 blur-sm transition-all duration-500 ease-in-out data-[loaded="true"]:invisible data-[loaded="true"]:scale-100 data-[loaded="true"]:opacity-0',
 					imageClasses
 				)}
 				data-loaded={loaded}
@@ -99,12 +109,23 @@
 				onload={handleLoad}
 				onclick={handleClick}
 				data-loaded={loaded}
+				{style}
+				{width}
+				{height}
 				class={cn(
-					'no-drag z-0 h-auto w-full opacity-0 transition-all duration-200 data-[loaded="true"]:opacity-100',
+					'no-drag z-0 max-w-full h-auto opacity-0 transition-all duration-200 data-[loaded="true"]:opacity-100',
 					imageClasses
 				)}
 				class:absolute={placeholderSrc && shouldShowPlaceholder}
 			/>
 		{/if}
 	</div>
-</IntersectionObserver>
+{/snippet}
+
+{#if shouldUseIntersectionObserver}
+	<IntersectionObserver {element} once rootMargin="512px" bind:intersecting>
+		{@render image()}
+	</IntersectionObserver>
+{:else}
+	{@render image()}
+{/if}

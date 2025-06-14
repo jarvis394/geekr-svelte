@@ -8,7 +8,6 @@ import {
 import { getArticleQueryKey } from '$lib/utils/article'
 import { cache, cacheFetch } from '$lib/utils/cacheFetch'
 import { browser } from '$app/environment'
-import type { Article } from '$lib/types'
 
 type ArticlesLoaderProps = {
 	params: { params: string }
@@ -54,10 +53,12 @@ export const articlesLoader = async ({
 			if (browser && articlesMode !== 'posts') {
 				data.publicationIds.forEach((id) => {
 					const article = data.publicationRefs[id]
-					cache.set(getArticleQueryKey(id), {
-						...article,
-						textHtml: '<p>' + article.leadData?.textHtml + '</p>'
-					} satisfies Article)
+					// TODO: figure out cache behaviour with article page
+					// cache.set(getArticleQueryKey(id), {
+					// 	...article,
+					//   textHtml: '<p>' + article.leadData?.textHtml + '</p>'
+					// } satisfies Article)
+					cache.set(getArticleQueryKey(id), article)
 				})
 			}
 

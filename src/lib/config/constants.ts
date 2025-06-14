@@ -1,4 +1,5 @@
-export const SENTRY_DSN_URL = 'https://564d962b8212ce6df836a684cbfe85dc@o4509498673004544.ingest.de.sentry.io/4509498673987664'
+export const SENTRY_DSN_URL =
+	'https://564d962b8212ce6df836a684cbfe85dc@o4509498673004544.ingest.de.sentry.io/4509498673987664'
 export const API_URL = 'https://habr.com/kek/'
 
 export const HABR_BASE_REGEXP = /(habr|m\.habr)\.com\/(ru|en)\/(.+)/

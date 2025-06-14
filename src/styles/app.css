@@ -318,7 +318,7 @@
 
 		& .Image:has(img.formula.inline) {
 			vertical-align: -0.719ex;
-			@apply mx-1 my-0 inline-flex w-fit;
+			@apply mx-1! my-0! inline-flex!;
 		}
 
 		& iframe {

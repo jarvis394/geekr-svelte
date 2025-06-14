@@ -10,6 +10,7 @@
 	import { Button } from '$lib/components/ui/button'
 	import { fade } from 'svelte/transition'
 	import LoaderCircle from '@lucide/svelte/icons/loader-circle'
+	import { ArticleSkeleton } from '$lib/components/skeletons'
 
 	type ArticlePageProps = {
 		article: Article
@@ -70,16 +71,17 @@
 		</div>
 		<div class="relative mt-6">
 			{#if isLoaded}
-				<div in:fade={{ duration: 200 }}>
-					<TextFormatter class={textFormatterClasses} html={article.textHtml} />
-				</div>
+				{#await import ('$lib/components/text-formatter')}
+					<div class="h-[1000000px]"></div>
+				{:then { TextFormatter }}
+					<TextFormatter
+						class={[textFormatterClasses, 'animate-in fade-in']}
+						html={article.textHtml}
+					/>
+				{/await}
 			{:else}
-				<div
-					class="flex h-full w-full flex-col items-center gap-2 pb-4"
-					out:fadeAbsolute={{ duration: 100 }}
-				>
-					<TextFormatter class={textFormatterClasses} html={article.leadData?.textHtml || ''} />
-					<LoaderCircle class="animate-spin opacity-12" />
+				<div out:fadeAbsolute={{ duration: 200 }} class="-z-50 w-full h-[1000000px]">
+					<ArticleSkeleton class="p-0" />
 				</div>
 			{/if}
 		</div>
