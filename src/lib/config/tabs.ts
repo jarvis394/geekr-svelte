@@ -1,5 +1,6 @@
 import type { Component } from 'svelte'
 import { Home, Scroll, Compass, NewsFeed } from '../components/svg'
+import { Settings } from '@lucide/svelte'
 
 type AppTab = {
 	label: string
@@ -32,5 +33,11 @@ export const APP_TABS: AppTab[] = [
 		href: '/hubs',
 		route: '/hubs',
 		icon: Compass
+	},
+	{
+		label: 'Настройки',
+		href: '/settings',
+		route: '/settings',
+		icon: Settings
 	}
 ]

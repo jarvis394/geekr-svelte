@@ -22,6 +22,7 @@
 	import 'photoswipe/style.css'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
+		const viewTransitionsDisabled = localStorage.getItem('view-transitions') === 'false'
 		const disableTransitionRoutes = [
 			'/flows/[...params]',
 			'/articles/[...params]',
@@ -29,6 +30,10 @@
 			'/posts/[...params]',
 			'/hubs'
 		]
+
+		if (viewTransitionsDisabled) {
+			return false
+		}
 
 		// Catches navigation inside the page and disables transition
 		if (navigation.from?.route.id === navigation.to?.route.id) {

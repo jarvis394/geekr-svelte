@@ -13,6 +13,7 @@
 		scrollThreshold?: number
 		scrollElement?: HTMLElement | null
 		divider?: boolean
+		noBackButton?: boolean
 		withShrinking?: boolean
 		withPositionBar?: boolean
 	} & HTMLAttributes<HTMLElement>
@@ -26,6 +27,7 @@
 		withShrinking,
 		children,
 		style,
+		noBackButton,
 		...other
 	}: HeaderProps = $props()
 	const scrollTrigger = useScrollTrigger({ defaultValue: false })
@@ -101,19 +103,24 @@
 	data-progressed={scrollProgress > 0}
 	style={[style, `--progress: ${scrollProgress * 100}%`].join(';')}
 >
-	<Button
-		onclick={handleBack}
-		size="icon"
-		class={['size-12 rounded-full [&_svg]:size-6', isShrunk && hiddenClasses]}
-		variant="ghost"
-	>
-		<ArrowLeft />
-	</Button>
+	{#if !noBackButton}
+		<Button
+			onclick={handleBack}
+			size="icon"
+			class={['size-12 rounded-full [&_svg]:size-6', isShrunk && hiddenClasses]}
+			variant="ghost"
+		>
+			<ArrowLeft />
+		</Button>
+	{/if}
 	{#if title}
 		<p
 			class={[
 				'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
-				isShrunk && hiddenClasses
+				isShrunk && hiddenClasses,
+				{
+					'ml-3': noBackButton
+				}
 			]}
 		>
 			{title}
