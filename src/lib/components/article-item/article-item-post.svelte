@@ -29,7 +29,7 @@
 		{timestampText}<span>•</span>{viewsText}
 		{#if article.complexity}
 			<span>•</span>
-			<ComplexityGauge withLabel complexity={article.complexity} />
+			<ComplexityGauge withLabel class="fade-in animate-in" complexity={article.complexity} />
 		{/if}
 	</div>
 	<a

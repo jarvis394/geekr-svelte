@@ -7,7 +7,7 @@
 	import { AppBar } from '$lib/components/appbar'
 	import { ArticleItemPostSkeleton } from '$lib/components/skeletons'
 	import { cn, fadeAbsolute } from '$lib/utils'
-	import { quintIn, quintOut } from 'svelte/easing'
+	import { ArticleItem } from '$lib/components/article-item'
 
 	const { data }: PageProps = $props()
 
@@ -85,13 +85,9 @@
 			</div>
 		</div>
 	{:then articles}
-		<div class={cn('animate-in fade-in relative flex w-full flex-col gap-0 transition-all')}>
+		<div class={cn('relative flex w-full flex-col gap-0 transition-all')}>
 			{#each articles.publicationIds as id (id)}
-				{#await import('$lib/components/article-item')}
-					<div class="h-[471px]"></div>
-				{:then { ArticleItem }}
-					<ArticleItem class="animate-in fade-in" article={articles.publicationRefs[id]} />
-				{/await}
+				<ArticleItem article={articles.publicationRefs[id]} />
 			{/each}
 		</div>
 		<Pagination

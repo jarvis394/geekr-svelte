@@ -158,11 +158,11 @@
 
 	.Header {
 		will-change: transform;
-		transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+		transition: height 250ms cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.Header > p {
-		transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+		transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.Header__shrinkedTitle {

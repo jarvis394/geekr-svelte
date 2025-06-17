@@ -58,6 +58,32 @@
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 
+	html.view-transition.slide.entering::view-transition-new(root) {
+		transform-origin: var(--vt-transform-origin);
+		animation:
+			slide-in-from-right 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
+	}
+	html.view-transition.slide.entering::view-transition-old(root) {
+		transform-origin: var(--vt-transform-origin);
+		animation:
+			slide-out-to-left 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
+	}
+
+	html.view-transition.slide.leaving::view-transition-new(root) {
+		transform-origin: var(--vt-transform-origin);
+		animation:
+			slide-in-from-left 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
+	}
+	html.view-transition.slide.leaving::view-transition-old(root) {
+		transform-origin: var(--vt-transform-origin);
+		animation:
+			slide-out-to-right 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
+	}
+
 	@media (min-width: 1024px) {
 		:root {
 			--real-sidebar-width: min(

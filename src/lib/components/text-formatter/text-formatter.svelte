@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { type Element, Html, isTag, type ProcessNode, type Text } from 'html-svelte-parser'
+	import { Html, isTag, type Element, type ProcessNode, type Text } from 'html-svelte-parser'
 	import { Image } from '../image'
-	import { Link } from '../link'
-	import NoContent from './no-content.svelte'
 	import { cn } from '$lib/utils'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import formatLink from '$lib/utils/formatLink'
-	import Iframe from './iframe.svelte'
 	import { SyntaxHighlighter } from '../syntax-highlighter'
 
 	interface IframeResizeData {
@@ -36,20 +33,16 @@
 		if (!isTag(node)) return
 
 		if (node.name === 'p' && node.children.length === 0) {
-			return {
-				component: NoContent
-			}
+			return false
 		}
 
 		if (node.name === 'iframe') {
-			return {
-				component: Iframe,
-				props: {
-					src: node.attribs['data-src'] || node.attribs.src,
-					height: iframeHeights[node.attribs.id]?.toString() || 'auto',
-					id: node.attribs.id
-				}
-			}
+			node.attribs.src = node.attribs['data-src'] || node.attribs.src
+			node.attribs.class = cn(node.attribs.class, 'w-full')
+			node.attribs.height = iframeHeights[node.attribs.id]?.toString() || 'auto'
+			node.attribs.frameborder = '0'
+			node.attribs.allowfullscreen = 'true'
+			return
 		}
 
 		if (node.name === 'pre') {
@@ -79,14 +72,11 @@
 
 		if (node.name === 'a') {
 			const formattedLink = formatLink(node.attribs.href)
-			return {
-				component: Link,
-				props: {
-					...node.attribs,
-					href: formattedLink || node.attribs.href,
-					target: formattedLink ? node.attribs.target : '_blank'
-				}
-			}
+
+			node.attribs.href = formattedLink || '#'
+			node.attribs.target = formattedLink ? node.attribs.target : '_blank'
+			node.attribs.class = cn(node.attribs.class, 'link')
+			return
 		}
 
 		if (node.name === 'img') {

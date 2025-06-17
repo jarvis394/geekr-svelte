@@ -13,20 +13,12 @@
 	}
 
 	const { language, code, theme = oneDarkHighlightStyle }: HighlighterProps = $props()
-	let highlighedCode = $state(escape(code))
+	const escapedCode = $derived(escape(code))
 
 	onMount(() => {
 		if (theme.module) {
 			StyleModule.mount(document, theme.module)
 		}
-	})
-
-	$effect(() => {
-		if (!language) return
-
-		highlightCode(language, code, theme).then((res) => {
-			highlighedCode = res
-		})
 	})
 </script>
 
@@ -36,6 +28,10 @@
 	<div
 		class="*:bg-background! inset-ring-black/7 *:flex *:*:max-w-none *:*:shrink-0 *:*:grow *:overflow-auto *:rounded-lg *:p-5 *:inset-ring *:inset-ring-black/7 dark:*:bg-white/3! dark:*:inset-ring-white/3"
 	>
-		<pre><code>{@html highlighedCode}</code></pre>
+		{#await highlightCode(language || 'plaintext', code, theme)}
+			<pre><code>{@html escapedCode}</code></pre>
+		{:then highlighedCode}
+			<pre><code>{@html highlighedCode}</code></pre>
+		{/await}
 	</div>
 </div>

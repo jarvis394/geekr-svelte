@@ -22,7 +22,7 @@
 	import 'photoswipe/style.css'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
-		const viewTransitionsDisabled = localStorage.getItem('view-transitions') === 'false'
+		const viewTransitionsDisabled = localStorage.getItem('view-transition') === 'false'
 		const disableTransitionRoutes = [
 			'/flows/[...params]',
 			'/articles/[...params]',
@@ -90,16 +90,18 @@
 
 	classes(({ navigation }) => {
 		const shouldStartTransition = shouldStartViewTransition(navigation)
+		const shouldUseSlideTransition = localStorage.getItem('view-transition:type') === 'slide'
+		const res = shouldUseSlideTransition ? ['slide'] : []
 
 		if (!shouldStartTransition) {
 			return []
 		}
 
 		if (navigation.delta === -1) {
-			return ['view-transition', 'leaving']
+			return res.concat(['view-transition', 'leaving'])
 		}
 
-		return ['view-transition', 'entering']
+		return res.concat(['view-transition', 'entering'])
 	}, on)
 
 	onMount(async () => {

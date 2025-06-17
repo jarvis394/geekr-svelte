@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Article } from '$lib/types'
-	import TextFormatter from '$lib/components/text-formatter/text-formatter.svelte'
 	import { ArticleLabels } from '$lib/components/article-labels'
 	import type { HTMLAttributes } from 'svelte/elements'
 	import { cn, fadeAbsolute, getArticleLink } from '$lib/utils'
@@ -8,8 +7,6 @@
 	import { Avatar } from '$lib/components/ui/avatar'
 	import dayjs from 'dayjs'
 	import { Button } from '$lib/components/ui/button'
-	import { fade } from 'svelte/transition'
-	import LoaderCircle from '@lucide/svelte/icons/loader-circle'
 	import { ArticleSkeleton } from '$lib/components/skeletons'
 
 	type ArticlePageProps = {
@@ -36,7 +33,14 @@
 </script>
 
 <svelte:head>
-	<title>{article.titleHtml} / geekr.</title>
+	<title>{article.titleHtml || 'Статья'} / geekr.</title>
+	<meta
+		property="og:image"
+		content={'https://geekr-lambda.vercel.app/api/share?id=' + article.id}
+	/>
+	<meta property="og:description" content={article.metadata?.metaDescription} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 </svelte:head>
 <div {...other} class={cn('animate-in fade-in flex flex-col gap-4 p-4', containerClasses)}>
 	<div class="flex flex-col" bind:this={scrollElement}>
@@ -80,7 +84,7 @@
 					/>
 				{/await}
 			{:else}
-				<div out:fadeAbsolute={{ duration: 200 }} class="-z-50 w-full h-[1000000px]">
+				<div out:fadeAbsolute={{ duration: 200 }} class="-z-50 h-[1000000px] w-full">
 					<ArticleSkeleton class="p-0" />
 				</div>
 			{/if}

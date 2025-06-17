@@ -12,7 +12,10 @@
 
 <div
 	{...other}
-	class={cn('animate-in fade-in relative flex w-full flex-col gap-1 p-4', containerClasses)}
+	class={cn(
+		'animate-in fade-in relative flex w-full flex-col gap-1 p-4 duration-200',
+		containerClasses
+	)}
 >
 	{#if withHeader}
 		<div class="flex flex-col gap-3">
