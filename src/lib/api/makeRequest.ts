@@ -22,31 +22,49 @@ export type MakeRequestProps = {
 
 	/** API version */
 	version?: 1 | 2
+
+	/** Use authorizated route */
+	auth?: boolean
 } & FetchProp
 
-export default async <T = never>({
+export type MakeRequestResult<T> = T & {
+	_response?: Response
+}
+
+export default async <T = object>({
 	language = 'ru',
 	path,
 	params,
 	requestOptions,
 	version = 2,
-	fetch: propsFetch
-}: MakeRequestProps): Promise<T> => {
+	fetch: propsFetch,
+	auth = true
+}: MakeRequestProps): Promise<MakeRequestResult<T>> => {
 	const searchParams = new URLSearchParams(params)
 	searchParams.append('fl', language)
 	searchParams.append('hl', language)
 
 	const fetchFunction = propsFetch || fetch
-	const req = await fetchFunction(API_URL + `v${version}/` + path + '?' + searchParams.toString(), {
-		method: requestOptions?.method || 'get',
-		...requestOptions
-	})
+	const res = await fetchFunction(
+		(auth ? '/api/' : API_URL) + `v${version}/` + path + '?' + searchParams.toString(),
+		{
+			method: requestOptions?.method || 'get',
+			...requestOptions
+		}
+	)
 
-	const res = (await req.json()) as (T & { errorCode?: never }) | APIError
+	try {
+		const text = await res.text()
+		
+		if (!text) return { _response: res } as MakeRequestResult<T>
+		
+		const data = JSON.parse(text) as (T & { errorCode?: never }) | APIError
+		if (data.errorCode) {
+			throw error(data.httpCode, data.message)
+		}
 
-	if (res.errorCode) {
-		throw error(res.httpCode, res.message)
+		return { ...(data as T), _response: res }
+	} catch (e) {
+		throw error(500, (e as Error).message)
 	}
-
-	return res as T
 }

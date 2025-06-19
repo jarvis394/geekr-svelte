@@ -85,7 +85,7 @@
 			</div>
 		</div>
 	{:then articles}
-		<div class={cn('relative flex w-full flex-col gap-0 transition-all')}>
+		<div class={cn('animate-in fade-in relative flex w-full flex-col gap-0 transition-all')}>
 			{#each articles.publicationIds as id (id)}
 				<ArticleItem article={articles.publicationRefs[id]} />
 			{/each}
