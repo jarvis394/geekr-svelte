@@ -2,7 +2,8 @@ import { z } from 'zod'
 import axios from 'axios'
 import { wrapper } from 'axios-cookiejar-support'
 import { CookieJar } from 'tough-cookie'
-import { error, redirect, type Actions } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
+import type { Actions } from './$types'
 
 const csrfRegexp = /<meta\s+name="csrf-token"\s+content="([^"]+)"/i
 
@@ -114,6 +115,12 @@ export const actions = {
 				path: '/'
 			})
 		}
+
+		event.cookies.set('is-authorized', 'true', {
+			path: '/',
+			httpOnly: false,
+			secure: false
+		})
 
 		return redirect(302, '/')
 	}

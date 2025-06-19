@@ -1,13 +1,14 @@
 import type { Article } from '$lib/types'
-import makeRequest, { type FetchProp } from '../makeRequest'
+import makeRequest, { type FetchAndAuthProp } from '../makeRequest'
 
 type GetArticleProps = {
 	id: number | string
-} & FetchProp
+} & FetchAndAuthProp
 
-export default async ({ id, fetch }: GetArticleProps) =>
+export default async ({ id, fetch, auth }: GetArticleProps) =>
 	await makeRequest<Article>({
 		path: `articles/${id}`,
 		version: 2,
+		auth,
 		fetch
 	})

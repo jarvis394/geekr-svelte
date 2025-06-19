@@ -6,22 +6,11 @@ import devtoolsJson from 'vite-plugin-devtools-json'
 export default defineConfig({
 	server: {
 		host: true,
-		warmup: {
-			clientFiles: ['./src/routes/**/*']
-		}
+		// TODO: fix +page.server.ts files
+		// warmup: {
+		// 	clientFiles: ['./src/routes/**/*']
+		// }
 	},
-	ssr: {
-		external: ['@napi-rs/canvas-linux-x64-musl', '@napi-rs/canvas-linux-x64-gnu']
-	},
-	optimizeDeps: {
-		exclude: ['@napi-rs/canvas-linux-x64-musl', '@napi-rs/canvas-linux-x64-gnu']
-	},
-	build: {
-		rollupOptions: {
-			external: ['@napi-rs/canvas-linux-x64-musl', '@napi-rs/canvas-linux-x64-gnu']
-		}
-	},
-	assetsInclude: ['**/*.node'],
 	plugins: [
 		devtoolsJson(),
 		tailwindcss(),

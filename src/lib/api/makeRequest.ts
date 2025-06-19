@@ -2,9 +2,11 @@ import { API_URL } from '$lib/config/constants'
 import type { APIError } from '$lib/types'
 import { error } from '@sveltejs/kit'
 
-export type FetchProp = {
+export type FetchAndAuthProp = {
 	/** Fetch function */
 	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
+	/** Use authorizated route */
+	auth?: boolean
 }
 
 export type MakeRequestProps = {
@@ -22,10 +24,7 @@ export type MakeRequestProps = {
 
 	/** API version */
 	version?: 1 | 2
-
-	/** Use authorizated route */
-	auth?: boolean
-} & FetchProp
+} & FetchAndAuthProp
 
 export type MakeRequestResult<T> = T & {
 	_response?: Response
@@ -38,11 +37,15 @@ export default async <T = object>({
 	requestOptions,
 	version = 2,
 	fetch: propsFetch,
-	auth = true
+	auth: propsAuth
 }: MakeRequestProps): Promise<MakeRequestResult<T>> => {
 	const searchParams = new URLSearchParams(params)
 	searchParams.append('fl', language)
 	searchParams.append('hl', language)
+
+	const defaultAuth =
+		typeof document !== 'undefined' && document.cookie.indexOf('is-authorized') >= 0
+	const auth = propsAuth || defaultAuth
 
 	const fetchFunction = propsFetch || fetch
 	const res = await fetchFunction(
@@ -55,9 +58,9 @@ export default async <T = object>({
 
 	try {
 		const text = await res.text()
-		
+
 		if (!text) return { _response: res } as MakeRequestResult<T>
-		
+
 		const data = JSON.parse(text) as (T & { errorCode?: never }) | APIError
 		if (data.errorCode) {
 			throw error(data.httpCode, data.message)

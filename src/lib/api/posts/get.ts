@@ -1,5 +1,5 @@
 import type { ArticlesFlow, ArticlesPeriod, ArticlesRating, ArticlesResponse } from '$lib/types'
-import makeRequest, { type FetchProp } from '../makeRequest'
+import makeRequest, { type FetchAndAuthProp } from '../makeRequest'
 
 export const postsModeParams: Record<
 	ArticlesPeriod | ArticlesRating,
@@ -26,7 +26,7 @@ type GetPostsProps = {
 	perPage?: number
 	news?: boolean
 	posts?: boolean
-} & FetchProp
+} & FetchAndAuthProp
 
 export default async ({
 	mode,
@@ -36,6 +36,7 @@ export default async ({
 	perPage = 20,
 	news,
 	posts,
+	auth,
 	fetch
 }: GetPostsProps) =>
 	await makeRequest<ArticlesResponse>({
@@ -51,5 +52,6 @@ export default async ({
 			...(news && { news: 'true' }),
 			...(posts && { posts: 'true' })
 		},
+		auth,
 		fetch
 	})
