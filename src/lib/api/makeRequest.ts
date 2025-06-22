@@ -1,11 +1,12 @@
 import { API_URL } from '$lib/config/constants'
 import type { APIError } from '$lib/types'
+import { parseCookies } from '$lib/utils'
 import { error } from '@sveltejs/kit'
 
 export type FetchAndAuthProp = {
 	/** Fetch function */
 	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
-	/** Use authorizated route */
+	/** Use authorized API */
 	auth?: boolean
 }
 
@@ -31,34 +32,35 @@ export type MakeRequestResult<T> = T & {
 }
 
 export default async <T = object>({
-	language = 'ru',
 	path,
 	params,
 	requestOptions,
 	version = 2,
+	language = 'ru',
 	fetch: propsFetch,
 	auth: propsAuth
 }: MakeRequestProps): Promise<MakeRequestResult<T>> => {
+	const cookies = typeof document !== 'undefined' && parseCookies(document.cookie)
 	const searchParams = new URLSearchParams(params)
 	searchParams.append('fl', language)
 	searchParams.append('hl', language)
 
-	const defaultAuth =
-		typeof document !== 'undefined' && document.cookie.indexOf('is-authorized') >= 0
-	const auth = propsAuth || defaultAuth
-
 	const fetchFunction = propsFetch || fetch
-	const res = await fetchFunction(
-		(auth ? '/api/' : API_URL) + `v${version}/` + path + '?' + searchParams.toString(),
-		{
-			method: requestOptions?.method || 'get',
-			...requestOptions
-		}
-	)
+	const isAuthorized = cookies && !!cookies['is-authorized']
+	const csrfToken = cookies && cookies['csrf-token']
+	const auth = propsAuth || isAuthorized
+	const apiUrl = auth ? '/api/' : API_URL
+	const res = await fetchFunction(apiUrl + `v${version}/` + path + '?' + searchParams.toString(), {
+		method: requestOptions?.method || 'get',
+		headers: {
+			...requestOptions?.headers,
+			...(csrfToken && { 'csrf-token': csrfToken })
+		},
+		...requestOptions
+	})
 
 	try {
 		const text = await res.text()
-
 		if (!text) return { _response: res } as MakeRequestResult<T>
 
 		const data = JSON.parse(text) as (T & { errorCode?: never }) | APIError

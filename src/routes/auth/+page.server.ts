@@ -12,7 +12,7 @@ const AuthSchema = z
 		email: z.string().email(),
 		password: z.string(),
 		'h-captcha-response': z.string(),
-		'g-recaptcha-response': z.string()
+		'g-recaptcha-response': z.string().optional()
 	})
 	.transform((obj) => ({
 		...obj,
@@ -50,7 +50,13 @@ const getAccountAuthData = async ({
 	const jar = new CookieJar()
 	const client = wrapper(axios.create({ jar }))
 
-	const res = await client.get<string>('https://habr.com/kek/v1/auth/habrahabr/')
+	const res = await client.get<string>('https://habr.com/kek/v1/auth/habrahabr/', {
+		headers: {
+			origin: 'https://habr.com',
+			host: 'habr.com',
+			referrer: 'https://habr.com/ru/feed/'
+		}
+	})
 	const match = res.data.match(/ident\/([^"]*)/)
 	const identUrl = 'https://account.habr.com/en/ident/' + match?.[1]
 	const params = new URLSearchParams()
@@ -65,9 +71,17 @@ const getAccountAuthData = async ({
 		params.append('g-recaptcha-response', gRecaptchaResponse)
 	}
 
+	console.log(identUrl)
+
 	const identRes = await client.post(identUrl, params, {
-		withCredentials: true
+		withCredentials: true,
+		headers: {
+			origin: 'https://account.habr.com',
+			host: 'account.habr.com'
+		}
 	})
+
+	console.log(identRes.data)
 
 	const parsedIdentRes = IdentResponseSchema.safeParse(identRes.data)
 
@@ -98,12 +112,16 @@ export const actions = {
 		const formData = await event.request.formData()
 		const parseResult = AuthSchema.safeParse(Object.fromEntries(formData))
 
-		if (!parseResult.success) return parseResult.error
+		if (!parseResult.success) return error(400, parseResult.error.message)
 
+		console.log({
+			hcaptcha: parseResult.data.hCaptchaResponse,
+			recaptcha: parseResult.data.gRecaptchaResponse
+		})
 		const data = await getAccountAuthData({ ...parseResult.data })
 
 		data.cookies.forEach((cookie) => {
-			event.cookies.set(cookie.key, cookie.value, {
+			event.cookies.set(cookie.key, decodeURIComponent(cookie.value), {
 				path: '/',
 				expires: cookie.expiryDate(),
 				...(typeof cookie.maxAge === 'number' && { maxAge: cookie.maxAge })
@@ -112,7 +130,9 @@ export const actions = {
 
 		if (data.csrf) {
 			event.cookies.set('csrf-token', data.csrf, {
-				path: '/'
+				path: '/',
+				httpOnly: false,
+				secure: false
 			})
 		}
 

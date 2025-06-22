@@ -15,7 +15,7 @@ const config = {
 			? adapterVercel({
 					runtime: 'edge'
 				})
-			: adapterAuto()
+			: adapterAuto({})
 	}
 }
 

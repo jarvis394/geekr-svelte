@@ -113,7 +113,7 @@
 				{width}
 				{height}
 				class={cn(
-					'no-drag z-0 max-w-full h-auto opacity-0 transition-all duration-200 data-[loaded="true"]:opacity-100',
+					'no-drag z-0 h-auto max-w-full opacity-0 transition-all duration-200 data-[loaded="true"]:opacity-100',
 					imageClasses
 				)}
 				class:absolute={placeholderSrc && shouldShowPlaceholder}

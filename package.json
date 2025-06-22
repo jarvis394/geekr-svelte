@@ -58,6 +58,7 @@
 		"@lezer/highlight": "^1.2.1",
 		"@lucide/svelte": "^0.515.0",
 		"@material/web": "^2.3.0",
+		"@sveltejs/adapter-node": "^5.2.12",
 		"@tanstack/svelte-query": "https://pkg.pr.new/@tanstack/svelte-query@746b9c5d83e901deb3a5ca7012a4b4e2b617c5e3",
 		"axios": "^1.10.0",
 		"axios-cookiejar-support": "^6.0.2",

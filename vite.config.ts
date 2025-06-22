@@ -6,14 +6,9 @@ import devtoolsJson from 'vite-plugin-devtools-json'
 export default defineConfig({
 	server: {
 		host: true,
-		// TODO: fix +page.server.ts files
-		// warmup: {
-		// 	clientFiles: ['./src/routes/**/*']
-		// }
+		warmup: {
+			clientFiles: ['./src/routes/**/*', '!./src/routes/**/*.server.ts']
+		}
 	},
-	plugins: [
-		devtoolsJson(),
-		tailwindcss(),
-		sveltekit()
-	]
+	plugins: [devtoolsJson(), tailwindcss(), sveltekit()]
 })
