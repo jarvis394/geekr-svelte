@@ -14,11 +14,17 @@
 <div
 	{...other}
 	class={cn(
-		'bg-background fixed right-0 bottom-0 left-0 z-100 flex w-[calc(100%-var(--scrollbar-width))] flex-row items-center justify-center',
+		'BottomNavigationRoot bg-background fixed right-0 bottom-0 left-0 z-100 flex w-[calc(100%-var(--scrollbar-width))] flex-row items-center justify-center',
 		className
 	)}
-	style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px;padding-bottom: env(safe-area-inset-bottom);${style}`}
+	{style}
 >
 	{@render children?.()}
 </div>
 <div class={cn('shrink-0', className)} style={`height: ${BOTTOM_NAVIGATION_HEIGHT}px`}></div>
+
+<style>
+	.BottomNavigationRoot {
+		padding-bottom: var(--insetBottom, env(safe-area-inset-bottom));
+	}
+</style>

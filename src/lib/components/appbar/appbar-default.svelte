@@ -14,7 +14,7 @@
 <header
 	{...other}
 	class={cn(
-		'bg-background/90 max-w-article fixed top-0 z-50 flex w-full flex-row items-center px-4 py-2 backdrop-blur-xl',
+		'AppBar bg-background/90 max-w-article fixed top-0 z-50 flex w-full flex-row items-center px-4 py-2 backdrop-blur-xl',
 		containerClasses
 	)}
 >
@@ -30,3 +30,9 @@
 	</div>
 </header>
 <div {...spacerProps} class={cn('h-12 shrink-0', spacerProps?.class)}></div>
+
+<style>
+	.AppBar {
+		padding-top: calc(var(--insetTop, env(safe-area-inset-top)) + var(--spacing) * 2);
+	}
+</style>

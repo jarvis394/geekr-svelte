@@ -1,9 +1,9 @@
 @layer base {
 	:root,
 	html {
-		--transition-slide-offset: 40px;
-		--transition-zoom-in-scale: 1.05;
-		--transition-zoom-out-scale: 0.9;
+		--transition-slide-offset: 24px;
+		--transition-zoom-in-scale: 1.04;
+		--transition-zoom-out-scale: 0.92;
 		--vt-transform-origin-x: 50%;
 		--vt-transform-origin-y: 50%;
 		--vt-transform-origin: var(--vt-transform-origin-x) var(--vt-transform-origin-y);
@@ -35,52 +35,52 @@
 	html.view-transition.entering::view-transition-new(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			zoom-in-enter 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			zoom-in-enter 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 	html.view-transition.entering::view-transition-old(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			zoom-out-enter 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			zoom-out-enter 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 
 	html.view-transition.leaving::view-transition-new(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			zoom-in-leave 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			zoom-in-leave 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 	html.view-transition.leaving::view-transition-old(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			zoom-out-leave 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			zoom-out-leave 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 
 	html.view-transition.slide.entering::view-transition-new(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			slide-in-from-right 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			slide-in-from-right 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 	html.view-transition.slide.entering::view-transition-old(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			slide-out-to-left 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			slide-out-to-left 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 
 	html.view-transition.slide.leaving::view-transition-new(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			slide-in-from-left 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			slide-in-from-left 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-in 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 	html.view-transition.slide.leaving::view-transition-old(root) {
 		transform-origin: var(--vt-transform-origin);
 		animation:
-			slide-out-to-right 500ms cubic-bezier(0.2, 0, 0, 1) both,
+			slide-out-to-right 400ms cubic-bezier(0.2, 0, 0, 1) both,
 			fade-out 300ms cubic-bezier(0.7, 0, 0, 1) both;
 	}
 

@@ -95,46 +95,52 @@
 <header
 	{...other}
 	class={cn(
-		'Header bg-background/90 text-primary font-heading max-w-article fixed top-0 z-50 flex h-12 w-full flex-row items-center gap-1 overflow-hidden pr-2 pl-1 backdrop-blur-xl select-none',
+		'Header bg-background/90 text-primary font-heading max-w-article fixed top-0 z-50 flex w-full flex-row items-center gap-1 overflow-hidden pr-2 pl-1 backdrop-blur-xl select-none',
 		containerClasses,
-		{ 'bg-sidebar h-8': isShrunk, 'Header--withPositionBar': withPositionBar }
+		{ 'bg-sidebar': isShrunk, 'Header--withPositionBar': withPositionBar }
 	)}
 	data-shrunk={isShrunk}
 	data-progressed={scrollProgress > 0}
 	style={[style, `--progress: ${scrollProgress * 100}%`].join(';')}
 >
-	{#if !noBackButton}
-		<Button
-			onclick={handleBack}
-			size="icon"
-			class={['size-12 rounded-full [&_svg]:size-6', isShrunk && hiddenClasses]}
-			variant="ghost"
-		>
-			<ArrowLeft />
-		</Button>
-	{/if}
-	{#if title}
-		<p
-			class={[
-				'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
-				isShrunk && hiddenClasses,
-				{
-					'ml-3': noBackButton
-				}
-			]}
-		>
-			{title}
-		</p>
-		<p
-			class={[
-				'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
-				!isShrunk && hiddenClasses
-			]}
-		>
-			{title}
-		</p>
-	{/if}
-	{@render children?.()}
+	<div
+		class={cn('Header__toolbar flex h-12 flex-row items-center gap-1 overflow-hidden', {
+			'h-8': isShrunk
+		})}
+	>
+		{#if !noBackButton}
+			<Button
+				onclick={handleBack}
+				size="icon"
+				class={['size-12 rounded-full [&_svg]:size-6', isShrunk && hiddenClasses]}
+				variant="ghost"
+			>
+				<ArrowLeft />
+			</Button>
+		{/if}
+		{#if title}
+			<p
+				class={[
+					'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
+					isShrunk && hiddenClasses,
+					{
+						'ml-3': noBackButton
+					}
+				]}
+			>
+				{title}
+			</p>
+			<p
+				class={[
+					'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
+					!isShrunk && hiddenClasses
+				]}
+			>
+				{title}
+			</p>
+		{/if}
+		{@render children?.()}
+	</div>
 </header>
 <div class="h-12 shrink-0"></div>
 
@@ -157,11 +163,15 @@
 	}
 
 	.Header {
+		padding-top: var(--insetTop, env(safe-area-inset-top));
+	}
+
+	.Header__toolbar {
 		will-change: transform;
 		transition: height 250ms cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.Header > p {
+	.Header__toolbar > p {
 		transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
 	}
 

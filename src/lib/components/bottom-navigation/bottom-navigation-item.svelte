@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/state'
 	import { cn } from '$lib/utils'
 	import type { Component } from 'svelte'
 	import type { HTMLAttributes, MouseEventHandler } from 'svelte/elements'
+	import { BOTTOM_NAVIGATION_HEIGHT } from './bottom-navigation-root.svelte'
 
 	export type BottomNavigationItemProps = {
 		icon: Component
@@ -17,6 +17,7 @@
 		label,
 		icon: Icon,
 		active,
+		style,
 		onclick,
 		...other
 	}: BottomNavigationItemProps = $props()
@@ -34,8 +35,9 @@
 	{...other}
 	{href}
 	onclick={handleClick}
+	style={`height:${BOTTOM_NAVIGATION_HEIGHT}px;${style}`}
 	class={cn(
-		'font-heading text-muted-foreground relative isolate flex h-full grow cursor-pointer flex-col items-center justify-center gap-0.75 pt-0.5 text-xs font-medium transition-all select-none',
+		'font-heading text-muted-foreground relative isolate flex h-full grow cursor-pointer flex-col items-center justify-center gap-0.5 py-0.5 text-xs font-medium transition-all select-none',
 		className,
 		{
 			'text-primary': active

@@ -56,14 +56,14 @@
 				alt={titlePlaintext}
 				bind:loaded={leadImageLoaded}
 			/>
-			{#if leadImageLoaded}
+			<!-- {#if leadImageLoaded}
 				<img
 					src={leadImage}
 					alt={titlePlaintext}
 					aria-hidden="true"
 					class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full scale-105 blur-2xl brightness-250 contrast-100 saturate-125 duration-500 select-none"
 				/>
-			{/if}
+			{/if} -->
 			<md-ripple></md-ripple>
 		</a>
 	{/if}

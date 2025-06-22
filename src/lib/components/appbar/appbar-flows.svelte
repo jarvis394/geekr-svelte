@@ -24,7 +24,7 @@
 <header
 	{...other}
 	class={cn(
-		'bg-background/90 max-w-article fixed top-0 z-50 flex h-12 w-full flex-row items-center px-1 backdrop-blur-xl',
+		'AppBar bg-background/90 max-w-article fixed top-0 z-50 flex min-h-12 w-full flex-row items-center px-1 backdrop-blur-xl',
 		containerClasses
 	)}
 >
@@ -45,3 +45,9 @@
 	</DropdownMenu.Root>
 </header>
 <div {...spacerProps} class={cn('h-12 shrink-0', spacerProps?.class)}></div>
+
+<style>
+	.AppBar {
+		padding-top: var(--insetTop, env(safe-area-inset-top));
+	}
+</style>

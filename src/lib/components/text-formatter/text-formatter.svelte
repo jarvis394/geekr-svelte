@@ -73,7 +73,7 @@
 		if (node.name === 'a') {
 			const formattedLink = formatLink(node.attribs.href)
 
-			node.attribs.href = formattedLink || '#'
+			node.attribs.href = formattedLink || node.attribs.href
 			node.attribs.target = formattedLink ? node.attribs.target : '_blank'
 			node.attribs.class = cn(node.attribs.class, 'link')
 			return
