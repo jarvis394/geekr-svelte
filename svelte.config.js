@@ -1,5 +1,5 @@
-import adapterAuto from '@sveltejs/adapter-auto'
 import adapterVercel from '@sveltejs/adapter-vercel'
+import adapterStatic from '@sveltejs/adapter-static'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 const isVercel = process.env.VERCEL === '1'
@@ -15,7 +15,9 @@ const config = {
 			? adapterVercel({
 					runtime: 'edge'
 				})
-			: adapterAuto({})
+			: adapterStatic({
+					fallback: 'index.html'
+				})
 	}
 }
 

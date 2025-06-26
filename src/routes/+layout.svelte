@@ -21,6 +21,7 @@
 	import '../styles/fonts.css'
 	import '../styles/transitions.css'
 	import 'photoswipe/style.css'
+	import { useDeepLinks } from '$lib/hooks/deepLinks.svelte'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
 		const viewTransitionsDisabled = localStorage.getItem('view-transition') === 'false'
@@ -89,6 +90,7 @@
 
 	dayjs.locale('ru')
 	useLightbox()
+	useDeepLinks()
 	initLazy()
 
 	classes(({ navigation }) => {
@@ -132,9 +134,9 @@
 
 <style>
 	.main {
-		--insetTop: env(safe-area-inset-top);
-		--insetBottom: env(safe-area-inset-bottom);
-		padding-top: var(--insetTop, env(safe-area-inset-top));
-		padding-bottom: var(--insetBottom, env(safe-area-inset-bottom));
+		--insetTop: var(--safe-area-inset-top, env(safe-area-inset-top));
+		--insetBottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom));
+		padding-top: var(--insetTop);
+		padding-bottom: var(--insetBottom);
 	}
 </style>
