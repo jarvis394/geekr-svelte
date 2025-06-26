@@ -8,7 +8,7 @@
 
 	const query = createQuery(() => ({
 		queryKey: ['articles:most-reading'],
-		queryFn: async () => await api.articles.getMostReading()
+		queryFn: async () => (await api.articles.getMostReading()).data
 	}))
 </script>
 
@@ -25,7 +25,7 @@
 				{/each}
 			</div>
 		{/if}
-		{#if query.isSuccess}
+		{#if query.isSuccess && query.data}
 			<div in:fade={{ duration: 200 }}>
 				{#each query.data.articleIds.slice(0, 5) as id}
 					<ArticleItemArticleSmall article={query.data.articleRefs[id]} />

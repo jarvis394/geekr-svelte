@@ -32,7 +32,7 @@
 	}: HeaderProps = $props()
 	const scrollTrigger = useScrollTrigger({ defaultValue: false })
 	const isShrunk = $derived(scrollTrigger.trigger && withShrinking)
-
+	const noTitleOnFirstRender = !title
 	const handleBack = () => {
 		// @ts-expect-error Chrome specific API
 		const canGoBackChrome = window?.navigation?.canGoBack
@@ -121,10 +121,11 @@
 		{#if title}
 			<p
 				class={[
-					'animate-in fade-in mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
+					'mr-4 w-full overflow-hidden text-xl font-medium text-nowrap text-ellipsis',
 					isShrunk && hiddenClasses,
 					{
-						'ml-3': noBackButton
+						'ml-3': noBackButton,
+						'animate-in fade-in': noTitleOnFirstRender
 					}
 				]}
 			>

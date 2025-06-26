@@ -1,9 +1,9 @@
 import type { CommentsMap } from '$lib/types'
-import makeRequest, { type FetchAndAuthProp } from '../makeRequest'
+import makeRequest, { type MakeRequestCommonOptions } from '../makeRequest'
 
 type GetArticlePinnedCommentsProps = {
 	id: number | string
-} & FetchAndAuthProp
+} & MakeRequestCommonOptions
 
 export default async ({ id, fetch, auth }: GetArticlePinnedCommentsProps) =>
 	await makeRequest<CommentsMap>({

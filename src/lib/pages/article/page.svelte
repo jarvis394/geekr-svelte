@@ -42,9 +42,9 @@
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 </svelte:head>
-<div {...other} class={cn('animate-in fade-in flex flex-col gap-4 p-4', containerClasses)}>
+<div {...other} class={cn('flex flex-col gap-4 p-4', containerClasses)}>
 	<div class="flex flex-col" bind:this={scrollElement}>
-		<div class="flex flex-col gap-3">
+		<div class="z-20 flex flex-col gap-3">
 			<div class="flex flex-row gap-2">
 				<Avatar
 					class="size-6"
@@ -73,21 +73,19 @@
 				{/each}
 			</div>
 		</div>
-		<div class="relative mt-6">
-			{#if isLoaded}
-				{#await import ('$lib/components/text-formatter')}
-					<div class="h-[1000000px]"></div>
-				{:then { TextFormatter }}
-					<TextFormatter
-						class={[textFormatterClasses, 'animate-in fade-in']}
-						html={article.textHtml}
-					/>
-				{/await}
-			{:else}
-				<div out:fadeAbsolute={{ duration: 200 }} class="-z-50 h-[1000000px] w-full">
+		<div class="relative isolate mt-6">
+			{#await import ('$lib/components/text-formatter')}
+				<div out:fadeAbsolute={{ duration: 200 }} class="z-50 w-full">
 					<ArticleSkeleton class="p-0" />
 				</div>
-			{/if}
+			{:then { TextFormatter }}
+				{#if isLoaded}
+					<TextFormatter
+						class={[textFormatterClasses, 'animate-in fade-in ease-quick duration-200']}
+						html={article.textHtml}
+					/>
+				{/if}
+			{/await}
 		</div>
 	</div>
 	<Button href={articleLink + '/comments'} variant="ghost">Комментарии</Button>

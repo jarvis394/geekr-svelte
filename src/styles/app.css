@@ -146,6 +146,17 @@
 	.font-heading {
 		font-family: 'Google Sans';
 	}
+
+	.no-drag {
+		-webkit-user-drag: none;
+		-khtml-user-drag: none;
+		-moz-user-drag: none;
+		-o-user-drag: none;
+	}
+
+	.ease-quick {
+		animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+	}
 }
 
 @layer base {
@@ -190,13 +201,6 @@
 		@apply focus-visible:ring-2;
 		@apply focus-visible:ring-offset-2;
 		@apply focus-visible:outline-none;
-	}
-
-	.no-drag {
-		-webkit-user-drag: none;
-		-khtml-user-drag: none;
-		-moz-user-drag: none;
-		-o-user-drag: none;
 	}
 
 	.focus-ring {
@@ -465,7 +469,28 @@
 		}
 	}
 
-	.reveal::after {
+	.mask-controlled::before {
+		content: '';
+		z-index: 10;
+		user-select: none;
+		pointer-events: none;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		/* animation: reveal 500ms cubic-bezier(0.2, 0, 0, 1); */
+		background-position-y: var(--mask-position);
+		background-size: 100% 300%;
+		background-repeat: no-repeat;
+		background-image: linear-gradient(
+			to bottom,
+			hsl(var(--background) / 0),
+			hsl(var(--background) / 1),
+			hsl(var(--background) / 1),
+			hsl(var(--background) / 0)
+		);
+	}
+
+	.reveal::before {
 		content: '';
 		z-index: 10;
 		user-select: none;
@@ -473,7 +498,10 @@
 		position: fixed;
 		height: 100%;
 		width: 100%;
-		animation: reveal 500ms cubic-bezier(0.2, 0, 0, 1);
+		animation-duration: 1000ms;
+		animation-name: reveal;
+		animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+		animation-fill-mode: both;
 		background-position-y: -50%;
 		background-size: 100% 300%;
 		background-repeat: no-repeat;

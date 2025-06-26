@@ -3,13 +3,18 @@
 	import { Header } from '$lib/components/header'
 	import type { PageProps } from '../../../routes/articles/[id=article]/$types'
 	import { ArticleSkeleton } from '$lib/components/skeletons'
-	import { fadeAbsolute } from '$lib/utils'
 
 	const { data }: PageProps = $props()
-	let articleTitle = $state(data.cachedArticle?.titleHtml)
+	let articleTitle = $derived.by(() => {
+		if (!('then' in data.article.promise)) {
+			return data.article.promise.titleHtml
+		}
+
+		return data.cachedArticle?.titleHtml
+	})
 
 	$effect(() => {
-		data.article.then((res) => {
+		Promise.resolve(data.article.promise).then((res) => {
 			articleTitle = res.titleHtml
 		})
 	})
@@ -24,11 +29,8 @@
 </svelte:head>
 <div class="relative flex h-full w-full flex-col">
 	<Header withPositionBar withShrinking title={articleTitle} />
-	{#await data.article}
-		<div
-			out:fadeAbsolute={{ duration: 200, disabled: !!data.cachedArticle?.textHtml }}
-			class="top-12 -z-50 h-[1000000px] w-full"
-		>
+	{#await data.article.promise}
+		<div class="top-12 -z-50 h-[1000000px] w-full">
 			<ArticleSkeleton withHeader />
 		</div>
 	{:then article}

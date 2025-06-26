@@ -3,7 +3,7 @@ import type { APIError } from '$lib/types'
 import { parseCookies } from '$lib/utils'
 import { error } from '@sveltejs/kit'
 
-export type FetchAndAuthProp = {
+export type MakeRequestCommonOptions = {
 	/** Fetch function */
 	fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
 	/** Use authorized API */
@@ -25,10 +25,11 @@ export type MakeRequestProps = {
 
 	/** API version */
 	version?: 1 | 2
-} & FetchAndAuthProp
+} & MakeRequestCommonOptions
 
-export type MakeRequestResult<T> = T & {
-	_response?: Response
+export type MakeRequestResult<T> = {
+	response?: Response
+	data: T
 }
 
 export default async <T = object>({
@@ -39,7 +40,7 @@ export default async <T = object>({
 	language = 'ru',
 	fetch: propsFetch,
 	auth: propsAuth
-}: MakeRequestProps): Promise<MakeRequestResult<T>> => {
+}: MakeRequestProps): Promise<MakeRequestResult<T | null>> => {
 	const cookies = typeof document !== 'undefined' && parseCookies(document.cookie)
 	const searchParams = new URLSearchParams(params)
 	searchParams.append('fl', language)
@@ -61,14 +62,16 @@ export default async <T = object>({
 
 	try {
 		const text = await res.text()
-		if (!text) return { _response: res } as MakeRequestResult<T>
+		if (!text) {
+			return { response: res, data: null }
+		}
 
 		const data = JSON.parse(text) as (T & { errorCode?: never }) | APIError
 		if (data.errorCode) {
 			throw error(data.httpCode, data.message)
 		}
 
-		return { ...(data as T), _response: res }
+		return { data: data as T, response: res }
 	} catch (e) {
 		throw error(500, (e as Error).message)
 	}

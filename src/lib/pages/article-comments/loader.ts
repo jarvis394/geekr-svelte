@@ -7,7 +7,7 @@ import { getArticleCommentsQueryKey } from '$lib/utils/comments'
 type ArticleCommentsLoaderProps = { id: string; fetch: typeof fetch; isCorporative?: boolean }
 export const articleCommentsLoader = ({ id, fetch }: ArticleCommentsLoaderProps) => {
 	const fetchArticleComments = async (id: string) => {
-		const data = await api.article.getComments({
+		const { data } = await api.article.getComments({
 			id,
 			fetch
 		})

@@ -10,13 +10,7 @@
 	}: { withHeader?: boolean } & HTMLAttributes<HTMLDivElement> = $props()
 </script>
 
-<div
-	{...other}
-	class={cn(
-		'animate-in fade-in relative flex w-full flex-col gap-1 p-4 duration-200',
-		containerClasses
-	)}
->
+<div {...other} class={cn('relative flex w-full flex-col gap-1 p-4', containerClasses)}>
 	{#if withHeader}
 		<div class="flex flex-col gap-3">
 			<div class="flex items-center gap-2">
@@ -50,6 +44,14 @@
 	<Skeleton class="h-4 w-38/40" />
 	<Skeleton class="h-4 w-37/40" />
 	<Skeleton class="h-4 w-38/40" />
+	<Skeleton class="h-4 w-39/40" />
+	<Skeleton class="h-4 w-18/20" />
+	<Skeleton class="h-4 w-39/40" />
+	<Skeleton class="h-4 w-19/20" />
+	<Skeleton class="h-4 w-38/40" />
+	<Skeleton class="h-4 w-18/20" />
+	<Skeleton class="h-4 w-39/40" />
+	<Skeleton class="h-4 w-18/20" />
 	<Skeleton class="h-4 w-39/40" />
 	<Skeleton class="h-4 w-18/20" />
 	<Skeleton class="h-4 w-39/40" />

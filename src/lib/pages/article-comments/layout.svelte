@@ -9,7 +9,7 @@
 
 	$effect(() => {
 		void data.comments.then((res) => {
-			if (JSON.stringify(res) === JSON.stringify(comments)) {
+			if (!res || JSON.stringify(res) === JSON.stringify(comments)) {
 				return
 			}
 

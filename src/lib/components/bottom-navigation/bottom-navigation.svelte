@@ -9,7 +9,7 @@
 
 	export type BottomNavigationProps = HTMLAttributes<HTMLDivElement>
 
-	const { class: className, children, ...other }: BottomNavigationProps = $props()
+	const { class: className, ...other }: BottomNavigationProps = $props()
 	const currentRoute = $derived(page.route.id)
 	const active = $derived(
 		APP_TABS.find((tab) => {

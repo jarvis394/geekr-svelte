@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$lib/components/ui/button'
-	import enhance from 'svelte-captcha-enhance'
 	import { Label } from '$lib/components/ui/label'
 	import { Header } from '$lib/components/header'
 </script>

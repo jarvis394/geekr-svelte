@@ -120,6 +120,7 @@
 
 <style>
 	.ArticleItem__bottomBar {
+		height: 50px;
 		content-visibility: auto;
 		contain-intrinsic-size: 1px 50px;
 	}
@@ -128,7 +129,7 @@
 		transform: translateZ(0);
 		height: var(--imageHeight);
 		content-visibility: auto;
-		contain-intrinsic-size: 0 var(--imageHeight);
+		contain-intrinsic-size: 1px var(--imageHeight);
 	}
 
 	:global(.ArticleItem__image)::after {

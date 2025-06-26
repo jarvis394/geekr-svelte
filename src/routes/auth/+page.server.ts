@@ -118,7 +118,7 @@ export const actions = {
 			hcaptcha: parseResult.data.hCaptchaResponse,
 			recaptcha: parseResult.data.gRecaptchaResponse
 		})
-		const data = await getAccountAuthData({ ...parseResult.data })
+		const data = await getAccountAuthData(parseResult.data)
 
 		data.cookies.forEach((cookie) => {
 			event.cookies.set(cookie.key, decodeURIComponent(cookie.value), {

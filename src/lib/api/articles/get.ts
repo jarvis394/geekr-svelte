@@ -5,7 +5,7 @@ import type {
 	ArticlesRating,
 	ArticlesResponse
 } from '$lib/types'
-import makeRequest, { type FetchAndAuthProp } from '../makeRequest'
+import makeRequest, { type MakeRequestCommonOptions } from '../makeRequest'
 
 export const modeParams: Record<
 	ArticlesPeriod | ArticlesRating,
@@ -33,7 +33,7 @@ type GetArticlesProps = {
 	perPage?: number
 	news?: boolean
 	posts?: boolean
-} & FetchAndAuthProp
+} & MakeRequestCommonOptions
 
 export default async ({
 	mode,

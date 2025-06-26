@@ -1,7 +1,7 @@
 import type { MostReadingArticlesResponse } from '$lib/types'
-import makeRequest, { type FetchAndAuthProp } from '../makeRequest'
+import makeRequest, { type MakeRequestCommonOptions } from '../makeRequest'
 
-type GetMostReadingArticlesProps = FetchAndAuthProp
+type GetMostReadingArticlesProps = MakeRequestCommonOptions
 
 export default async ({ fetch, auth }: GetMostReadingArticlesProps = {}) =>
 	await makeRequest<MostReadingArticlesResponse>({

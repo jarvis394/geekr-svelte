@@ -18,9 +18,9 @@ export const fallback = async ({ params, url, request, fetch }) => {
 		fetch
 	})
 	const headers = new Headers()
-	const { status = 200, statusText = 'OK' } = res._response || {}
+	const { status = 200, statusText = 'OK' } = res.response || {}
 	BYPASS_HEADERS.forEach((key) => {
-		const value = res._response?.headers.get(key)
+		const value = res.response?.headers.get(key)
 		if (value) headers.append(key, value)
 	})
 
@@ -33,9 +33,7 @@ export const fallback = async ({ params, url, request, fetch }) => {
 		})
 	}
 
-	delete res._response
-
-	return json(res, {
+	return json(res.data, {
 		headers,
 		status,
 		statusText

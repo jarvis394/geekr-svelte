@@ -1,9 +1,9 @@
 import type { APIResponseComments } from '$lib/types'
-import makeRequest, { type FetchAndAuthProp } from '../makeRequest'
+import makeRequest, { type MakeRequestCommonOptions } from '../makeRequest'
 
 type GetArticleCommentsProps = {
 	id: number | string
-} & FetchAndAuthProp
+} & MakeRequestCommonOptions
 
 export default async ({ id, fetch, auth }: GetArticleCommentsProps) =>
 	await makeRequest<APIResponseComments>({

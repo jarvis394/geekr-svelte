@@ -8,6 +8,7 @@ import {
 import { getArticleQueryKey } from '$lib/utils/article'
 import { cache, cacheFetch } from '$lib/utils/cacheFetch'
 import { browser } from '$app/environment'
+import type { ArticlesResponse } from '$lib/types'
 
 type ArticlesLoaderProps = {
 	params: { params: string }
@@ -40,7 +41,7 @@ export const articlesLoader = async ({
 		getArticlesQueryKey(articlesParamsResult.data, articlesMode),
 		async () => {
 			const apiMethod = articlesMode === 'posts' ? 'posts' : 'articles'
-			const data = await api[apiMethod].get({
+			const { data } = await api[apiMethod].get({
 				mode: mode === 'new' ? rating : period,
 				page,
 				complexity,
@@ -49,6 +50,10 @@ export const articlesLoader = async ({
 				news: articlesMode === 'news',
 				posts: articlesMode === 'posts'
 			})
+
+			if (!data) {
+				return { pagesCount: 0, publicationIds: [], publicationRefs: {} } satisfies ArticlesResponse
+			}
 
 			if (browser && articlesMode !== 'posts') {
 				data.publicationIds.forEach((id) => {
