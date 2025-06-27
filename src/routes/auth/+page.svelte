@@ -1,30 +1,80 @@
 <script lang="ts">
-	import { Input } from '$lib/components/ui/input'
-	import { Button } from '$lib/components/ui/button'
-	import { Label } from '$lib/components/ui/label'
-	import { Header } from '$lib/components/header'
+	import { InAppBrowser, ToolBarType } from '@capgo/inappbrowser'
+	import { onMount } from 'svelte'
+	import { LoaderCircle } from '@lucide/svelte'
+	import { CapacitorCookies } from '@capacitor/core'
+
+	let logs = $state<string[]>([])
+
+	const handleLogin = async () => {
+		await InAppBrowser.close()
+
+		const cookies = await InAppBrowser.getCookies({
+			url: 'https://habr.com'
+		})
+		const cookiePromises: Array<Promise<void>> = [
+			CapacitorCookies.setCookie({
+				path: '/',
+				key: 'is-authorized',
+				value: 'true'
+			})
+		]
+
+		for (const key in cookies) {
+			cookiePromises.push(
+				CapacitorCookies.setCookie({
+					path: '/',
+					key,
+					value: cookies[key]
+				})
+			)
+		}
+
+		await Promise.all(cookiePromises)
+	}
+
+	onMount(async () => {
+		InAppBrowser.addListener('urlChangeEvent', async (data) => {
+			// We can only access this page when auth succeded (https://habr.com/ru/articles)
+			if (data.url.includes('/articles')) {
+				await handleLogin()
+			}
+		})
+
+		InAppBrowser.addListener('closeEvent', async () => {
+			logs.push(
+				JSON.stringify(
+					await InAppBrowser.getCookies({
+						url: 'https://habr.com'
+					})
+				)
+			)
+		})
+
+		await InAppBrowser.openWebView({
+			url: 'https://habr.com/kek/v1/auth/habrahabr/?back=/ru/all/&hl=ru',
+			toolbarType: ToolBarType.COMPACT,
+			isPresentAfterPageLoad: true,
+			title: 'Хабр Аккаунт',
+			activeNativeNavigationForWebview: true,
+			disableGoBackOnNativeApplication: true,
+			ignoreUntrustedSSLError: true,
+			materialPicker: true,
+			showArrow: true,
+			showReloadButton: true,
+			toolbarColor: '#000000'
+		})
+	})
 </script>
 
-<svelte:head>
-	<script src="https://js.hcaptcha.com/1/api.js?render=onload" async defer></script>
-</svelte:head>
+{#if logs.length === 0}
+	<div class="flex w-full items-center justify-center py-16">
+		<LoaderCircle class="animate-spin" />
+	</div>
+{/if}
 
-<Header title="Вход" />
-<form class="mx-auto flex max-w-sm flex-col gap-4 p-4" method="post">
-	<div class="flex flex-col gap-3">
-		<Label for="email">Электропочта</Label>
-		<Input id="email" type="text" name="email" placeholder="me@example.com" required />
-	</div>
-	<div class="flex flex-col gap-3">
-		<Label for="password">Пароль</Label>
-		<Input id="password" type="password" name="password" required />
-	</div>
-	<div
-		data-captcha="hcaptcha"
-		class="h-captcha"
-		id="hcaptcha"
-		data-sitekey="73161cf8-44fa-4a7c-b220-3c8c327c6da4"
-		data-theme="dark"
-	></div>
-	<Button size="lg" type="submit">Войти</Button>
-</form>
+<div class="article px-4 py-4">
+	{#each logs as log}
+		<p>{log}</p>
+	{/each}
+</div>

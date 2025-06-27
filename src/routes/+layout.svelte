@@ -13,6 +13,7 @@
 	import { browser } from '$app/environment'
 	import { BottomNavigation } from '$lib/components/bottom-navigation'
 	import { initLazy } from '$lib/utils/lazy'
+	import { useNativeFeatures } from '$lib/hooks/nativeFeatures.svelte'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
@@ -21,7 +22,6 @@
 	import '../styles/fonts.css'
 	import '../styles/transitions.css'
 	import 'photoswipe/style.css'
-	import { useDeepLinks } from '$lib/hooks/deepLinks.svelte'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
 		const viewTransitionsDisabled = localStorage.getItem('view-transition') === 'false'
@@ -90,7 +90,7 @@
 
 	dayjs.locale('ru')
 	useLightbox()
-	useDeepLinks()
+	useNativeFeatures()
 	initLazy()
 
 	classes(({ navigation }) => {

@@ -1,6 +1,7 @@
 import { API_URL } from '$lib/config/constants'
 import type { APIError } from '$lib/types'
 import { parseCookies } from '$lib/utils'
+import { Capacitor } from '@capacitor/core'
 import { error } from '@sveltejs/kit'
 
 export type MakeRequestCommonOptions = {
@@ -49,7 +50,8 @@ export default async <T = object>({
 	const fetchFunction = propsFetch || fetch
 	const isAuthorized = cookies && !!cookies['is-authorized']
 	const csrfToken = cookies && cookies['csrf-token']
-	const auth = propsAuth || isAuthorized
+	// On a native platform we should use a patched fetch function instead of server API
+	const auth = Capacitor.isNativePlatform() ? false : propsAuth || isAuthorized
 	const apiUrl = auth ? '/api/' : API_URL
 	const res = await fetchFunction(apiUrl + `v${version}/` + path + '?' + searchParams.toString(), {
 		method: requestOptions?.method || 'get',
