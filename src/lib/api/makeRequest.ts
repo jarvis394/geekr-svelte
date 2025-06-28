@@ -48,8 +48,9 @@ export default async <T = object>({
 	searchParams.append('hl', language)
 
 	const fetchFunction = propsFetch || fetch
-	const isAuthorized = cookies && !!cookies['is-authorized']
+	const isAuthorized = cookies && cookies['is-authorized'] === 'true'
 	const csrfToken = cookies && cookies['csrf-token']
+	const habrUserUUID = cookies && cookies['habr_uuid']
 	// On a native platform we should use a patched fetch function instead of server API
 	const auth = Capacitor.isNativePlatform() ? false : propsAuth || isAuthorized
 	const apiUrl = auth ? '/api/' : API_URL
@@ -57,8 +58,11 @@ export default async <T = object>({
 		method: requestOptions?.method || 'get',
 		headers: {
 			...requestOptions?.headers,
-			...(csrfToken && { 'csrf-token': csrfToken })
+			...(csrfToken && { 'csrf-token': csrfToken }),
+			...(habrUserUUID && { 'habr-user-uuid': habrUserUUID })
 		},
+		// Include cross-origin cookies on native platform as fetch function is patched
+		credentials: Capacitor.isNativePlatform() ? 'include' : 'same-origin',
 		...requestOptions
 	})
 

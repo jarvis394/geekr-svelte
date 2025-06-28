@@ -22,6 +22,7 @@
 	import '../styles/fonts.css'
 	import '../styles/transitions.css'
 	import 'photoswipe/style.css'
+	import { Toaster } from '$lib/components/ui/sonner'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
 		const viewTransitionsDisabled = localStorage.getItem('view-transition') === 'false'
@@ -129,6 +130,7 @@
 			<BottomNavigation />
 		</div>
 		<Sidebar />
+		<Toaster />
 	</main>
 </QueryClientProvider>
 

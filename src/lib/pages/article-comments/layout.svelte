@@ -5,10 +5,16 @@
 	import type { PageProps } from '../../../routes/articles/[id=article]/comments/$types'
 
 	const { data }: PageProps = $props()
-	let comments = $state(data.cachedComments)
+	let comments = $derived.by(() => {
+		if (data.comments.promise && !('then' in data.comments.promise)) {
+			return data.comments.promise
+		}
+
+		return data.cachedComments
+	})
 
 	$effect(() => {
-		void data.comments.then((res) => {
+		Promise.resolve(data.comments.promise).then((res) => {
 			if (!res || JSON.stringify(res) === JSON.stringify(comments)) {
 				return
 			}
@@ -19,17 +25,19 @@
 </script>
 
 <svelte:head>
-	<title>Статья / geekr.</title>
+	<title>Комментарии / geekr.</title>
 </svelte:head>
 <div class="flex h-full w-full flex-col">
 	<Header title="Комментарии" />
-	{#if comments}
-		<ArticleCommentsPage {comments} />
-	{:else}
-		<div class="relative h-[50000px] w-full">
+	{#await data.comments.promise}
+		<div class="relative h-[1000000px] w-full">
 			<div class="sticky top-12 flex w-full items-center justify-center py-16">
 				<LoaderCircle class="animate-spin" />
 			</div>
 		</div>
-	{/if}
+	{:then comments}
+		{#if comments}
+			<ArticleCommentsPage {comments} />
+		{/if}
+	{/await}
 </div>

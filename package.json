@@ -90,7 +90,7 @@
 		"svelte-intersection-observer": "^1.0.0",
 		"svelte-sonner": "^1.0.5",
 		"tough-cookie": "^5.1.2",
-		"virtua": "^0.41.0",
+		"virtua": "^0.41.5",
 		"zod": "^3.24.1"
 	},
 	"trustedDependencies": [

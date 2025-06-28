@@ -7,6 +7,9 @@
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
 	import getCachedMode from '$lib/utils/getCachedMode'
+	import { Tween } from 'svelte/motion'
+	import { expoOut } from 'svelte/easing'
+	import { MediaQuery } from 'svelte/reactivity'
 
 	export type HeaderProps = {
 		title?: string
@@ -30,8 +33,14 @@
 		noBackButton,
 		...other
 	}: HeaderProps = $props()
-	const scrollTrigger = useScrollTrigger({ defaultValue: false })
-	const isShrunk = $derived(scrollTrigger.trigger && withShrinking)
+	const isSingleColumnMode = new MediaQuery('max-width: 1023px')
+	const scrollTrigger = $derived(
+		useScrollTrigger({
+			defaultValue: false,
+			enabled: withShrinking ? isSingleColumnMode.current : false
+		})
+	)
+	const isShrunk = $derived(scrollTrigger.trigger)
 	const noTitleOnFirstRender = !title
 	const handleBack = () => {
 		// @ts-expect-error Chrome specific API
@@ -54,11 +63,14 @@
 		return element ? Math.min(progress || 0, 1) : 0
 	}
 
-	let scrollProgress = $state(getScrollProgress())
+	let scrollProgress = new Tween(getScrollProgress(), {
+		easing: expoOut,
+		duration: 100
+	})
 
 	const scrollCallback = () =>
 		requestAnimationFrame(() => {
-			scrollProgress = getScrollProgress()
+			scrollProgress.set(getScrollProgress())
 		})
 
 	onMount(() => {
@@ -97,11 +109,11 @@
 	class={cn(
 		'Header bg-background/90 text-primary font-heading max-w-article fixed top-0 z-50 flex w-full flex-row items-center gap-1 overflow-hidden pr-2 pl-1 backdrop-blur-xl transition-colors select-none',
 		containerClasses,
-		{ 'bg-sidebar/95': isShrunk, 'Header--withPositionBar': withPositionBar }
+		{ 'bg-sidebar': isShrunk, 'Header--withPositionBar': withPositionBar }
 	)}
 	data-shrunk={isShrunk}
-	data-progressed={scrollProgress > 0}
-	style={[style, `--progress: ${scrollProgress * 100}%`].join(';')}
+	data-progressed={scrollProgress.current > 0}
+	style={[style, `--progress: ${scrollProgress.current * 100}%`].join(';')}
 >
 	<div
 		class={cn('Header__toolbar flex h-12 flex-row items-center gap-1 overflow-hidden', {
@@ -133,7 +145,7 @@
 			</p>
 			<p
 				class={[
-					'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-4 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
+					'Header__shrinkedTitle animate-in fade-in text-muted-foreground text-md absolute left-3 w-full overflow-hidden font-medium text-nowrap text-ellipsis',
 					!isShrunk && hiddenClasses
 				]}
 			>

@@ -27,9 +27,8 @@ const config: CapacitorConfig = {
 		: undefined,
 	plugins: {
 		SplashScreen: {
-			launchAutoHide: false,
-			backgroundColor: '#0B0809',
-			showSpinner: true
+			launchAutoHide: true,
+			androidSplashResourceName: 'ic_splash'
 		},
 		CapacitorHttp: {
 			enabled: true
@@ -43,7 +42,9 @@ const config: CapacitorConfig = {
 			keystorePath: keystore.storeFile,
 			keystorePassword: keystore.storePassword,
 			keystoreAlias: keystore.keyAlias,
-			keystoreAliasPassword: keystore.keyPassword
+			keystoreAliasPassword: keystore.keyPassword,
+			releaseType: 'APK',
+			signingType: 'jarsigner'
 		}
 	}
 }

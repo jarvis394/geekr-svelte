@@ -93,8 +93,21 @@ export interface Article {
 			value: number | null
 			voteTimeExpired: string
 		}
+		voteMinus: {
+			canVote: boolean
+			isChargeEnough: boolean
+			isKarmaEnough: boolean
+			isPublicationLimitEnough: boolean
+			isVotingOver: boolean
+		}
+		votePlus: {
+			canVote: boolean
+			isChargeEnough: boolean
+			isKarmaEnough: boolean
+			isPublicationLimitEnough: boolean
+			isVotingOver: boolean
+		}
 	}
-	votesEnabled: boolean
 
 	/** Contains an URL of the first image in text preview */
 	leadImage?: string

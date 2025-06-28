@@ -2,7 +2,6 @@ import { App, type URLOpenListenerEvent } from '@capacitor/app'
 import { onMount } from 'svelte'
 import { goto } from '$app/navigation'
 import { formatLink } from '$lib/utils'
-import { SplashScreen } from '@capacitor/splash-screen'
 
 export const useNativeFeatures = () => {
 	onMount(async () => {
@@ -20,7 +19,5 @@ export const useNativeFeatures = () => {
 				history.back()
 			}
 		})
-
-		await SplashScreen.hide()
 	})
 }

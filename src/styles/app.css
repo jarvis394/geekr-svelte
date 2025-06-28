@@ -363,6 +363,8 @@
 			@apply mb-0!;
 		}
 
+		word-break: break-word;
+
 		@apply prose-blockquote:mt-3! prose-blockquote:mb-3! prose-blockquote:py-1 prose-blockquote:[&_p:first-of-type]:font-medium prose-blockquote:[&_p:first-of-type]:not-italic prose-blockquote:[&_p:first-of-type]:after:hidden prose-blockquote:[&_p:first-of-type]:before:hidden;
 		@apply prose prose-zinc dark:prose-invert prose-pre:border-1 break-words;
 	}

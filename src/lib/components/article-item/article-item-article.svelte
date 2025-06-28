@@ -112,6 +112,9 @@
 				<span class="inline-flex gap-1">
 					{article.statistics.commentsCount}
 					<span class="xs:block hidden">{commentsText}</span>
+					{#if article.relatedData?.unreadCommentsCount}
+						<span class="text-secondary-foreground/90 bg-secondary px-1.75 rounded-full text-xs font-bold flex items-center">+{article.relatedData.unreadCommentsCount}</span>
+					{/if}
 				</span>
 			</Button>
 		</div>

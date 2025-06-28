@@ -1,0 +1,9 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="108dp" android:viewportHeight="2732" android:viewportWidth="2732" android:width="108dp">
+      
+    <path android:fillColor="@color/ic_launcher_background_tint" android:pathData="M0,0h2732v2732h-2732z"/>
+      
+    <path android:fillColor="@color/ic_launcher_foreground_tint" android:pathData="M1187.7,1068.8V1005H1123.4V1068.8H1187.7Z"/>
+      
+    <path android:fillColor="@color/ic_launcher_foreground_tint" android:fillType="evenOdd" android:pathData="M1445.2,1068.8H1187.7L1187.7,1196.3H1123.4L1123.4,1132.5H1059V1196.3H1123.4V1260H1059V1323.8H1123.4L1123.4,1451.3H1059V1515H1123.4V1451.3H1187.7V1515H1252.1L1252.1,1706.3H1187.7V1770H1252.1V1706.3H1316.5L1316.4,1578.8H1380.8V1642.5H1509.6V1706.3H1573.9V1642.5H1509.6L1509.6,1515H1573.9L1573.9,1578.8H1638.3V1515H1702.6V1451.3H1767V1387.5H1702.6V1451.3H1638.3L1638.3,1387.5H1573.9V1323.8H1702.6V1260H1638.3L1638.3,1196.3H1573.9V1132.5H1638.3V1068.8H1702.6V1005H1638.3V1068.8H1509.6V1005H1445.2V1068.8ZM1445.2,1068.8V1132.5H1509.6V1068.8H1445.2ZM1123.4,1323.8H1187.7V1260H1123.4V1323.8Z"/>
+    
+</vector>

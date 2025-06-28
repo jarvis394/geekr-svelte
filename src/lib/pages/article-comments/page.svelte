@@ -123,7 +123,7 @@
 
 {@html branchHighlightStyles}
 <div
-	class="ArticleComments animate-in fade-in translate-z-0 contain-content [&>div]:contain-content"
+	class="ArticleComments animate-in fade-in flex translate-z-0 contain-content [&>div]:contain-content"
 >
 	<WindowVirtualizer bind:this={virtualizer} getKey={getItemKey} data={items}>
 		{#snippet children(item: Comment, index)}
