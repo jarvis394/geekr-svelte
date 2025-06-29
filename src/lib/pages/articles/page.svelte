@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { Pagination } from '$lib/components/pagination'
 	import type { PageProps } from '../../../routes/articles/[...params]/$types'
-	import { goto } from '$app/navigation'
+	import { goto, preloadCode } from '$app/navigation'
 	import { makeArticlesPageUrlFromParams, type GetArticlesParamsData } from '$lib/utils/articles'
 	import ArticlesSwitcher from '$lib/components/articles-switcher/articles-switcher-row.svelte'
 	import { AppBar } from '$lib/components/appbar'
 	import { ArticleItemPostSkeleton } from '$lib/components/skeletons'
 	import { cn, fadeAbsolute } from '$lib/utils'
 	import { ArticleItem } from '$lib/components/article-item'
+	import { onMount } from 'svelte'
 
 	const { data }: PageProps = $props()
 
@@ -61,6 +62,13 @@
 			return `Все ${complexity}${rating} подряд`
 		}
 	}
+
+	onMount(() => {
+		preloadCode('/articles/[id=article]')
+		preloadCode('/companies/[alias]/articles/[id]')
+		preloadCode('/news/[id=article]')
+		preloadCode('/posts/[id=article]')
+	})
 </script>
 
 <svelte:head>

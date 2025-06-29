@@ -25,13 +25,30 @@ export interface SchemaJsonLd {
 	image: string[]
 }
 
+export type ArticleFormat =
+	| 'review'
+	| 'opinion'
+	| 'analytics'
+	| 'retrospective'
+	| 'tutorial'
+	| 'faq'
+	| 'roadmap'
+	| 'digest'
+	| 'case'
+	| 'interview'
+	| 'reportage'
+	| 'habrItMedia'
+	| 'megapostType'
+	| 'season'
+	| 'target-audience'
+
 export interface Article {
 	id: string | number
 	author: ProfileExtended
 	commentsEnabled: boolean
 	/** Values here are different than ones from `ArticlesComplexity` */
 	complexity: 'low' | 'medium' | 'high' | null
-	format: 'review' | 'opinion' | 'analytics' | 'retrospective' | 'tutorial' | null
+	format: 'common' | ArticleFormat | null
 	editorVersion: '1.0' | '2.0'
 	flows: Flow[]
 	hubs: HubArticleLabels[]

@@ -9,7 +9,12 @@
 		'/news/[...params]',
 		'/posts/[...params]'
 	])
-	const articlePages = new Set(['/articles/[id=article]', '/companies/[alias]/articles/[id]'])
+	const articlePages = new Set([
+		'/articles/[id=article]',
+		'/companies/[alias]/articles/[id]',
+		'/news/[id=article]',
+		'/posts/[id=article]'
+	])
 	const currentRoute = $derived(page.route.id || '')
 </script>
 

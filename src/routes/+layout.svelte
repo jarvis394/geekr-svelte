@@ -14,6 +14,7 @@
 	import { BottomNavigation } from '$lib/components/bottom-navigation'
 	import { initLazy } from '$lib/utils/lazy'
 	import { useNativeFeatures } from '$lib/hooks/nativeFeatures.svelte'
+	import { Toaster } from '$lib/components/ui/sonner'
 
 	import 'dayjs/locale/en'
 	import 'dayjs/locale/ru'
@@ -22,7 +23,6 @@
 	import '../styles/fonts.css'
 	import '../styles/transitions.css'
 	import 'photoswipe/style.css'
-	import { Toaster } from '$lib/components/ui/sonner'
 
 	const shouldStartViewTransition = (navigation: OnNavigate) => {
 		const viewTransitionsDisabled = localStorage.getItem('view-transition') === 'false'

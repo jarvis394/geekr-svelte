@@ -73,9 +73,15 @@
 	})
 </script>
 
-{#snippet TabContent(value: string, modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
+{#snippet TabContent(value: 'top' | 'new', modes: ModeItem[], withAlltimeButtonExpanded?: boolean)}
 	<Tabs.Content {value} class="mt-1 flex flex-col">
-		<small class="text-muted-foreground font-heading mb-2 text-base font-medium"> Период </small>
+		<small class="text-muted-foreground font-heading mb-2 text-base font-medium">
+			{#if value === 'top'}
+				Период
+			{:else}
+				Порог рейтинга
+			{/if}
+		</small>
 		<div
 			class={cn('gap-2', {
 				'flex flex-wrap': variant === 'desktop',

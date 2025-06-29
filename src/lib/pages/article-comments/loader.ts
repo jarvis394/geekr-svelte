@@ -4,6 +4,7 @@ import * as api from '$lib/api'
 import type { APIResponseComments } from '$lib/types'
 import { getArticleCommentsQueryKey } from '$lib/utils/comments'
 import { lazy } from '$lib/utils/lazy'
+import { error } from '@sveltejs/kit'
 
 type ArticleCommentsLoaderProps = { id: string; fetch: typeof fetch; isCorporative?: boolean }
 export const articleCommentsLoader = async ({ id, fetch }: ArticleCommentsLoaderProps) => {
@@ -12,6 +13,10 @@ export const articleCommentsLoader = async ({ id, fetch }: ArticleCommentsLoader
 			id,
 			fetch
 		})
+
+		if (!data) {
+			throw error(404, 'Not found')
+		}
 
 		// Should not set any data to cache on server as it will persist indefinetly
 		if (browser) cache.set(getArticleCommentsQueryKey(id), data)

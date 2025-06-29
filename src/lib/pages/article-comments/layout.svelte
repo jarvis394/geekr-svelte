@@ -36,8 +36,6 @@
 			</div>
 		</div>
 	{:then comments}
-		{#if comments}
-			<ArticleCommentsPage {comments} />
-		{/if}
+		<ArticleCommentsPage {comments} />
 	{/await}
 </div>

@@ -12,6 +12,7 @@
 	import { cn } from '$lib/utils'
 	import { ComplexityGauge } from '../complexity-gauge'
 	import { browser } from '$app/environment'
+	import { Bookmark, Share } from '@lucide/svelte'
 
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 	const {
@@ -36,11 +37,18 @@
 >
 	<ArticleLabels
 		{article}
-		class={cn('pointer-events-none z-10 p-2', {
+		class={cn('pointer-events-none z-10 p-2 pr-12', {
 			'absolute pt-2': leadImage,
 			'p-3 py-0': !leadImage
 		})}
 	/>
+	<Button
+		variant="ghost"
+		size="icon"
+		class="text-primary/63 absolute top-0 right-0 z-50 size-12 rounded-full"
+	>
+		<Bookmark class="drop-shadow-background/63 size-6 drop-shadow-sm" />
+	</Button>
 	{#if leadImage}
 		<a href={articleLink} title={titlePlaintext} class="ring-default relative flex">
 			<Image
@@ -67,7 +75,7 @@
 			<md-ripple></md-ripple>
 		</a>
 	{/if}
-	<div class="flex flex-col">
+	<div class="flex flex-col select-none">
 		<a
 			href={articleLink}
 			title={titlePlaintext}
@@ -102,21 +110,27 @@
 				<h3 class="font-heading text-[15px] font-medium">{article.author.alias}</h3>
 			</Button>
 
-			<Button
-				variant="ghost"
-				size="sm"
-				href={articleLink + '/comments'}
-				class="text-muted-foreground text-[15px]"
-			>
-				<MessageSquare class="mt-0.5" strokeWidth={2.5} />
-				<span class="inline-flex gap-1">
-					{article.statistics.commentsCount}
-					<span class="xs:block hidden">{commentsText}</span>
-					{#if article.relatedData?.unreadCommentsCount}
-						<span class="text-secondary-foreground/90 bg-secondary px-1.75 rounded-full text-xs font-bold flex items-center">+{article.relatedData.unreadCommentsCount}</span>
-					{/if}
-				</span>
-			</Button>
+			<div class="flex">
+				<Button
+					variant="ghost"
+					size="sm"
+					href={articleLink + '/comments'}
+					class="text-muted-foreground text-[15px]"
+				>
+					<MessageSquare class="mt-0.5" strokeWidth={2.5} />
+					<span class="inline-flex gap-1">
+						{article.statistics.commentsCount}
+						<span class="xs:block hidden">{commentsText}</span>
+						{#if article.relatedData?.unreadCommentsCount}
+							<span
+								class="text-secondary-foreground/90 bg-secondary flex items-center rounded-full px-1.75 text-xs font-bold"
+							>
+								+{article.relatedData.unreadCommentsCount}
+							</span>
+						{/if}
+					</span>
+				</Button>
+			</div>
 		</div>
 	</div>
 </div>

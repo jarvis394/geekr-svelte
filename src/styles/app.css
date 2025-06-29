@@ -134,11 +134,11 @@
 	}
 
 	.link:not(:has(.Image)) {
-		@apply decoration-accent-foreground/24 decoration-2 underline-offset-2 hover:decoration-transparent hover:underline-offset-3 active:decoration-transparent active:underline-offset-3;
+		@apply decoration-accent-foreground/32 decoration-2 underline-offset-2 hover:decoration-transparent hover:underline-offset-3 active:decoration-transparent active:underline-offset-3;
 		@apply text-accent-foreground relative rounded-xs box-decoration-clone ring-2 ring-transparent transition-all active:transition-none;
 		@apply not-is-touch:hover:bg-border not-is-touch:hover:ring-4 not-is-touch:hover:ring-border;
 		@apply not-is-touch:active:bg-border not-is-touch:active:ring-4 not-is-touch:active:ring-border not-is-touch:active:brightness-85 dark:not-is-touch:active:brightness-150;
-		@apply is-touch:active:bg-border is-touch:active:ring-4 is-touch:active:ring-border;
+		@apply is-touch:active:bg-hint is-touch:active:ring-4 is-touch:active:ring-hint;
 	}
 }
 
@@ -179,6 +179,12 @@
 		:root {
 			--article-width: var(--article-collapsed-width);
 		}
+	}
+
+	a,
+	input,
+	button {
+		touch-action: manipulation;
 	}
 
 	* {

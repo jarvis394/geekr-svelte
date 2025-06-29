@@ -6,7 +6,13 @@ import { getProperties } from 'properties-file'
 import ip from 'ip'
 
 const keystorePath = path.join('.', 'android', 'keystore.properties')
-const keystore = getProperties(readFileSync(keystorePath))
+let keystore: Record<string, string> = {}
+try {
+	keystore = getProperties(readFileSync(keystorePath))
+} catch (e) {
+	console.warn('Could not parse keystore.properties file: ' + (e as Error).message)
+}
+
 const isLocalDev = process.env.CAPACITOR_DEV === 'true'
 const localIp = ip.address()
 const localServerAddress = `http://${localIp}:5173`

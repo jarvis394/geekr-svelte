@@ -8,11 +8,21 @@
 	import { cn } from '$lib/utils'
 	import TextFormatter from '../text-formatter/text-formatter.svelte'
 	import { ComplexityGauge } from '../complexity-gauge'
+	import { Link } from '../link'
+	import { Bookmark } from '@lucide/svelte'
 
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 	const { titlePlaintext, timestampText, viewsText, articleLink, commentsText } = $derived(
 		useArticleItem(article)
 	)
+	const leadImage = $derived(article.leadData?.image)
+	// Have to sort hubs to prevent mismatch between
+	// preview article hubs and full article hubs
+	const sortedHubs = $derived.by(() => {
+		const hubs = [...article.hubs]
+		hubs.sort((a, b) => Number(a.id) - Number(b.id))
+		return hubs
+	})
 </script>
 
 <div
@@ -22,9 +32,16 @@
 		containerClasses
 	)}
 >
-	<ArticleLabels {article} class="z-10 pb-2" />
+	<ArticleLabels {article} class="z-10 pr-12 pb-2" />
+	<Button
+		variant="ghost"
+		size="icon"
+		class="text-primary/63 absolute top-0 right-0 z-50 size-12 rounded-full"
+	>
+		<Bookmark class="drop-shadow-background/63 size-6 drop-shadow-sm" />
+	</Button>
 	<div
-		class="font-heading text-muted-foreground dark:text-hint -z-20 flex flex-row flex-wrap gap-1.5 gap-y-0.5 pb-2 text-sm font-medium"
+		class="font-heading text-muted-foreground dark:text-hint -z-20 flex flex-row flex-wrap gap-1.5 gap-y-0.5 pb-1 text-sm font-medium"
 	>
 		{timestampText}<span>•</span>{viewsText}
 		{#if article.complexity}
@@ -35,12 +52,30 @@
 	<a
 		title={titlePlaintext}
 		href={articleLink}
-		class="font-heading text-primary pb-4 text-xl font-bold text-pretty"
+		class="font-heading text-primary pb-1.5 text-xl font-bold text-pretty"
 	>
 		{titlePlaintext}
 	</a>
+	<div class="flex flex-wrap gap-1.5 pb-4">
+		{#each sortedHubs as hub}
+			<span class="ArticleItem__hub text-muted-foreground text-sm">
+				<Link class="text-muted-foreground text-sm" href={'/hubs/' + hub.alias}>
+					{hub.title}
+				</Link>
+			</span>
+		{/each}
+	</div>
 	{#if article.leadData?.image}
-		<Image containerProps={{ class: 'mb-4' }} disableZoom src={article.leadData.image.url} />
+		<Image
+			containerProps={{
+				class: 'mb-4 relative pb-[56.4103%] items-start justify-start',
+				style: `object-fit: ${leadImage?.fit || 'cover'}`
+			}}
+			style={`object-position: ${leadImage?.positionX + '%' || '0%'} ${leadImage?.positionY + '%' || '50%'}; object-fit: ${leadImage?.fit || 'cover'}`}
+			disableZoom
+			class="absolute h-full w-full"
+			src={article.leadData.image.url}
+		/>
 	{/if}
 	<TextFormatter disableImageZoom class="text-base/[1.6]" html={article.leadData?.textHtml || ''} />
 	<div class="flex items-center justify-between pt-3">
@@ -73,3 +108,15 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.ArticleItem__hub::after {
+		content: ', ';
+		z-index: 10;
+		position: relative;
+	}
+
+	.ArticleItem__hub:last-child:after {
+		content: '';
+	}
+</style>

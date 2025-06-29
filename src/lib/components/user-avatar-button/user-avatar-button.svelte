@@ -14,7 +14,7 @@
 	{...buttonProps}
 	variant={buttonProps?.variant || 'ghost'}
 	class={cn(
-		'xl:bg-foreground/7 size-12 justify-start gap-2 rounded-full p-0 xl:w-full xl:rounded-xl xl:px-2',
+		'transition-colors xl:bg-foreground/7 size-12 justify-start gap-2 rounded-full p-0 xl:w-full xl:rounded-xl xl:px-2',
 		buttonProps?.class
 	)}
 	href="/auth"

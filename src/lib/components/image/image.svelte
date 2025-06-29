@@ -23,18 +23,20 @@
 		containerProps = {},
 		class: imageClasses,
 		disableZoom,
+		style: propsStyle,
 		loaded = $bindable(!browser),
 		...other
 	}: ImageProps = $props()
-	const { class: containerClasses, style: propsStyle, ...otherContainerProps } = containerProps
+	const { class: containerClasses, style: containerStyle, ...otherContainerProps } = containerProps
 	let shouldShowPlaceholder = $state(browser)
 	let imageDimensions = $state({
 		width: isNaN(Number(width)) ? 0 : Number(width),
 		height: isNaN(Number(height)) ? 0 : Number(height)
 	})
+	// TODO: fix this mess / Probably was done for Habr articles formatting quirks, be careful
 	const style = $derived(
 		`aspect-ratio: ${imageDimensions.width || 'auto'} / ${imageDimensions.height || 'auto'};` +
-			propsStyle
+			(propsStyle || containerStyle)
 	)
 	const shouldUseIntersectionObserver = $derived(
 		imageDimensions.width === 0 && imageDimensions.height === 0
@@ -80,7 +82,7 @@
 			{ 'cursor-default': disableZoom },
 			{ 'shimmer min-h-6': shouldShowPlaceholder && !placeholderSrc }
 		)}
-		{style}
+		style={containerStyle || style}
 		data-loaded={loaded}
 		bind:this={element}
 	>
@@ -113,10 +115,12 @@
 				{width}
 				{height}
 				class={cn(
-					'no-drag z-0 h-auto max-w-full opacity-0 transition-all duration-200 data-[loaded="true"]:opacity-100',
+					'no-drag z-0 h-auto w-full max-w-full opacity-0 transition-all duration-200 data-[loaded="true"]:opacity-100',
+					{
+						absolute: placeholderSrc && shouldShowPlaceholder
+					},
 					imageClasses
 				)}
-				class:absolute={placeholderSrc && shouldShowPlaceholder}
 			/>
 		{/if}
 	</div>

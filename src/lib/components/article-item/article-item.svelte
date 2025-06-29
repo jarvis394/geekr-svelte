@@ -50,6 +50,7 @@
 	import ArticleItemArticleExpanded from './article-item-article-expanded.svelte'
 	import ArticleItemVoice from './article-item-voice.svelte'
 	import ArticleItemPost from './article-item-post.svelte'
+	import { MediaQuery } from 'svelte/reactivity'
 
 	export type ArticleItemProps = {
 		article: Article
@@ -57,7 +58,8 @@
 	const { article, ...other }: ArticleItemProps = $props()
 
 	// TODO: get value from user settings
-	const expandArticleItems = false
+	const isSingleColumnMode = new MediaQuery('min-width: 1024px')
+	const expandArticleItems = $derived(isSingleColumnMode.current)
 </script>
 
 {#if article.publicationType === 'voice'}

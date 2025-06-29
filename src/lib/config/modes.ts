@@ -42,7 +42,7 @@ export const TOP_MODES: ModeItem[] = [
 ]
 export const NEW_MODES: ModeItem[] = [
 	{
-		label: 'Все',
+		label: 'Все подряд',
 		mode: 'new',
 		rating: 'all',
 		tabbarLabel: 'Новые'

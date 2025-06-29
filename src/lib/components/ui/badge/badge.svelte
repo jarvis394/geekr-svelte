@@ -13,6 +13,9 @@
 				white: 'bg-primary text-primary-foreground',
 				lightgray: 'text-primary dark:text-primary-foreground/85 bg-[#E9E9E9]',
 				sky: 'bg-sky-600 text-sky-50 dark:bg-sky-700',
+				rose: 'bg-rose-800 text-rose-50',
+				fuchsia: 'bg-fuchsia-800 text-fuchsia-50',
+				emerald: 'bg-emerald-800 text-emerald-50',
 				zinc: 'bg-zinc-800 text-zinc-50',
 				indigo: 'bg-indigo-500 text-indigo-50',
 				orange: 'bg-orange-500 text-orange-50',
@@ -22,7 +25,8 @@
 				scoreNegative: 'bg-destructive text-destructive-foreground',
 				darkGreen: 'bg-emerald-950 text-emerald-100',
 				darkBlue: 'bg-blue-950 text-blue-100',
-				darkRed: 'bg-red-950 text-red-100'
+				darkRed: 'bg-red-950 text-red-100',
+				darkOrange: 'bg-orange-800 text-orange-50'
 			}
 		},
 		defaultVariants: {
