@@ -63,7 +63,7 @@
 		return element ? Math.min(progress || 0, 1) : 0
 	}
 
-	let scrollProgress = new Tween(getScrollProgress(), {
+	let scrollProgress = new Tween(withPositionBar ? getScrollProgress() : 0, {
 		easing: expoOut,
 		duration: 100
 	})
@@ -74,13 +74,15 @@
 		})
 
 	onMount(() => {
+		let rAF = 0
+		let resizeObserver: ResizeObserver | undefined
+
 		if (withPositionBar) {
 			// Reset scroll trigger state, as it might be `false` when navigating from previous page
 			scrollTrigger.trigger = false
 			// passive: true enhances scrolling experience
 			window?.addEventListener('scroll', scrollCallback, { passive: true })
 
-			let rAF = 0
 			/**
 			 * Resize Observer will throw an often benign error that says `ResizeObserver loop
 			 * completed with undelivered notifications`. This means that ResizeObserver was not
@@ -88,18 +90,18 @@
 			 * `requestAnimationFrame` to ensure we don't deliver unnecessary observations.
 			 * Further reading: https://github.com/WICG/resize-observer/issues/38
 			 */
-			const resizeObserver = new ResizeObserver(() => {
+			resizeObserver = new ResizeObserver(() => {
 				cancelAnimationFrame(rAF)
 				rAF = scrollCallback()
 			})
 
 			scrollElement && resizeObserver.observe(scrollElement)
+		}
 
-			return () => {
-				cancelAnimationFrame(rAF)
-				window?.removeEventListener('scroll', scrollCallback)
-				scrollElement && resizeObserver.unobserve(scrollElement)
-			}
+		return () => {
+			cancelAnimationFrame(rAF)
+			window?.removeEventListener('scroll', scrollCallback)
+			scrollElement && resizeObserver?.unobserve(scrollElement)
 		}
 	})
 </script>

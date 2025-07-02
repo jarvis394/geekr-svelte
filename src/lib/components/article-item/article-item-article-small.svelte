@@ -25,10 +25,10 @@
 			class="font-heading text-muted-foreground dark:text-hint flex w-full flex-row items-center gap-1.5 overflow-hidden text-sm font-medium text-nowrap text-ellipsis"
 		>
 			<Eye class="size-4" strokeWidth={2.5} />
-			{viewsText}
+			<span class="text-muted-foreground">{viewsText}</span>
 			<span class="w-1"></span>
 			<MessageSquare class="size-4" strokeWidth={2.5} />
-			{commentsText}
+			<span class="text-muted-foreground">{commentsText}</span>
 		</p>
 	</div>
 	{#if leadImage}

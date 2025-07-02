@@ -17,7 +17,7 @@
 
 	let highlightedCommentIndex = $state(-1)
 	let branchHighlightStyles = $state('')
-	let virtualizer: WindowVirtualizer<Comment>
+	let virtualizer: WindowVirtualizer<Comment> | undefined = $state()
 
 	const highlightBranch = (branch: CommentBranch) => {
 		branchHighlightStyles = `<style>
@@ -35,7 +35,7 @@
 	const scrollToIndex = async (index: number) => {
 		highlightedCommentIndex = -1
 		await tick()
-		virtualizer.scrollToIndex(index, {
+		virtualizer?.scrollToIndex(index, {
 			smooth: true,
 			offset: -48
 		})
@@ -122,20 +122,36 @@
 </script>
 
 {@html branchHighlightStyles}
-<div
-	class="ArticleComments animate-in fade-in flex translate-z-0 contain-content [&>div]:contain-content"
->
-	<WindowVirtualizer bind:this={virtualizer} getKey={getItemKey} data={items}>
-		{#snippet children(item: Comment, index)}
-			<ArticleComment
-				{expandBranch}
-				{onBranchClick}
-				{highlightBranch}
-				{resetBranchHighlight}
-				comment={item}
-				highlighted={highlightedCommentIndex === index}
-				collapsedRoot={collapsedRoots.get(item.id)}
-			/>
-		{/snippet}
-	</WindowVirtualizer>
+<div class="ArticleComments flex translate-z-0 flex-col contain-content [&>div]:contain-content">
+	<!-- {#if mounted}
+		<WindowVirtualizer bind:this={virtualizer} getKey={getItemKey} data={items}>
+			{#snippet children(item: Comment, index)}
+				{#await import('$lib/components/article-comment')}
+					<div class="h-100"></div>
+				{:then { ArticleComment }}
+					<ArticleComment
+						{expandBranch}
+						{onBranchClick}
+						{highlightBranch}
+						{resetBranchHighlight}
+						comment={item}
+						highlighted={highlightedCommentIndex === index}
+						collapsedRoot={collapsedRoots.get(item.id)}
+					/>
+				{/await}
+			{/snippet}
+		</WindowVirtualizer>
+	{:else} -->
+	{#each comments as item, index}
+		<ArticleComment
+			{expandBranch}
+			{onBranchClick}
+			{highlightBranch}
+			{resetBranchHighlight}
+			comment={item}
+			highlighted={highlightedCommentIndex === index}
+			collapsedRoot={collapsedRoots.get(item.id)}
+		/>
+	{/each}
+	<!-- {/if} -->
 </div>

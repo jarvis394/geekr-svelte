@@ -45,9 +45,9 @@
 	<Button
 		variant="ghost"
 		size="icon"
-		class="text-primary/63 absolute top-0 right-0 z-50 size-12 rounded-full"
+		class="absolute top-0 right-0 z-20 size-12 rounded-full text-white/63"
 	>
-		<Bookmark class="drop-shadow-background/63 size-6 drop-shadow-sm" />
+		<Bookmark class="size-6 drop-shadow-sm drop-shadow-black/63" />
 	</Button>
 	{#if leadImage}
 		<a href={articleLink} title={titlePlaintext} class="ring-default relative flex">
@@ -64,14 +64,14 @@
 				alt={titlePlaintext}
 				bind:loaded={leadImageLoaded}
 			/>
-			<!-- {#if leadImageLoaded}
+			{#if leadImageLoaded}
 				<img
 					src={leadImage}
 					alt={titlePlaintext}
 					aria-hidden="true"
 					class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full scale-105 blur-2xl brightness-250 contrast-100 saturate-125 duration-500 select-none"
 				/>
-			{/if} -->
+			{/if}
 			<md-ripple></md-ripple>
 		</a>
 	{/if}

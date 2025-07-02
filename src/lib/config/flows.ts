@@ -5,37 +5,6 @@ export interface Flow {
 	alias: ArticlesFlow
 }
 
-export const FLOWS: Flow[] = [
-	{
-		title: 'Все потоки',
-		alias: 'all'
-	},
-	{
-		title: 'Разработка',
-		alias: 'develop'
-	},
-	{
-		title: 'Администрирование',
-		alias: 'admin'
-	},
-	{
-		title: 'Дизайн',
-		alias: 'design'
-	},
-	{
-		title: 'Менеджмент',
-		alias: 'management'
-	},
-	{
-		title: 'Маркетинг',
-		alias: 'marketing'
-	},
-	{
-		title: 'Научпоп',
-		alias: 'popsci'
-	}
-]
-
 export const FLOWS_MAP: Record<ArticlesFlow, Flow> = {
 	all: {
 		title: 'Все потоки',
@@ -66,3 +35,5 @@ export const FLOWS_MAP: Record<ArticlesFlow, Flow> = {
 		alias: 'popsci'
 	}
 }
+
+export const FLOWS: Flow[] = Object.values(FLOWS_MAP)

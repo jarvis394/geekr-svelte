@@ -33,8 +33,9 @@ export const useScrollTrigger = (options: Partial<Options> = {}) => {
 		defaultValue,
 		enabled = true
 	} = options
-	const initalScrollTop =
-		(target && ('scrollY' in target ? target?.scrollY : target?.scrollTop)) || 0
+	const initalScrollTop = enabled
+		? (target && ('scrollY' in target ? target?.scrollY : target?.scrollTop)) || 0
+		: 0
 	const initialTriggerValue = initalScrollTop > threshold
 	let position = initalScrollTop
 	let previousScroll: number | null = null

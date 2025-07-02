@@ -19,7 +19,7 @@
 		...other
 	}: ArticleLabelsProps = $props()
 	const labels = $derived.by(() => {
-		return article.postLabels.sort((a, b) => a.title.length - b.title.length)
+		return article.postLabels?.sort((a, b) => a.title.length - b.title.length)
 	})
 </script>
 

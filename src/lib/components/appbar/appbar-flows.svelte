@@ -32,7 +32,11 @@
 		<DropdownMenu.Trigger
 			class="button button-ghost gap-2 px-3.25 py-1.5 pb-1.75 text-lg font-medium"
 		>
-			{FLOWS_MAP[selectedFlow].title}
+			{@const selectedFlowObject = FLOWS_MAP[selectedFlow]}
+			{#if selectedFlowObject.alias !== 'all'}
+				<span class="h-6 w-1 rounded-full bg-blue-500"></span>
+			{/if}
+			{selectedFlowObject.title}
 			<ChevronDown strokeWidth={2.5} class="text-muted-foreground size-5" />
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="start">

@@ -55,7 +55,8 @@
 	class={cn('relative flex grow flex-row', containerClasses, {
 		'pl-4': !isThread,
 		'border-border border-b-1': comment.isLastInThread,
-		'animate-highlight': highlighted
+		'animate-highlight': highlighted,
+		'hidden': comment.isCollapsed
 	})}
 >
 	{#each comment.branches || [] as branch}
@@ -69,7 +70,7 @@
 		></button>
 	{/each}
 	<article
-		class={cn('flex w-full flex-col pt-4 pr-4 pb-3', {
+		class={cn('ArticleComment flex w-full flex-col pt-4 pr-4 pb-3', {
 			'pl-4': isThread,
 			'pt-3': !comment.author
 		})}
@@ -136,5 +137,9 @@
 	:global(.ArticleComment__branch--highlighted) {
 		border-color: white;
 		border-left-width: 2px;
+	}
+
+	.ArticleComment {
+		content-visibility: auto;
 	}
 </style>

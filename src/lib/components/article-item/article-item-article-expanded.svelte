@@ -36,7 +36,7 @@
 	<Button
 		variant="ghost"
 		size="icon"
-		class="text-primary/63 absolute top-0 right-0 z-50 size-12 rounded-full"
+		class="text-primary/63 absolute top-0 right-0 z-20 size-12 rounded-full"
 	>
 		<Bookmark class="drop-shadow-background/63 size-6 drop-shadow-sm" />
 	</Button>
@@ -68,7 +68,7 @@
 	{#if article.leadData?.image}
 		<Image
 			containerProps={{
-				class: 'mb-4 relative pb-[56.4103%] items-start justify-start',
+				class: 'mb-4 w-full relative pb-[56.4103%] items-start justify-start',
 				style: `object-fit: ${leadImage?.fit || 'cover'}`
 			}}
 			style={`object-position: ${leadImage?.positionX + '%' || '0%'} ${leadImage?.positionY + '%' || '50%'}; object-fit: ${leadImage?.fit || 'cover'}`}
@@ -103,7 +103,7 @@
 				</span>
 			</Button>
 			<Button variant="outline" size="sm" href={articleLink} class="text-[15px]">
-				{@html article.leadData?.buttonTextHtml}
+				{@html article.leadData?.buttonTextHtml || 'Читать далее'}
 			</Button>
 		</div>
 	</div>
@@ -118,5 +118,20 @@
 
 	.ArticleItem__hub:last-child:after {
 		content: '';
+	}
+
+	.ArticleItem__imageBlur {
+		opacity: 0.24;
+		transform: translateZ(0);
+		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 0.24;
+		}
 	}
 </style>
