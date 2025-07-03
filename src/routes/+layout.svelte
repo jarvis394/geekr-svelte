@@ -136,8 +136,6 @@
 
 <style>
 	.main {
-		--insetTop: var(--safe-area-inset-top, env(safe-area-inset-top));
-		--insetBottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom));
 		padding-top: var(--insetTop);
 		padding-bottom: var(--insetBottom);
 	}

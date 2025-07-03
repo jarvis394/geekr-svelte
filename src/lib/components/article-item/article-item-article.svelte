@@ -69,6 +69,7 @@
 					src={leadImage}
 					alt={titlePlaintext}
 					aria-hidden="true"
+					style={`--imageHeight: ${ARTICLE_ITEM_IMAGE_HEIGHT}px;`}
 					class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full scale-105 blur-2xl brightness-250 contrast-100 saturate-125 duration-500 select-none"
 				/>
 			{/if}
@@ -166,6 +167,9 @@
 		opacity: 0.24;
 		transform: translateZ(0);
 		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
+		height: var(--imageHeight);
+		content-visibility: auto;
+		contain-intrinsic-size: 1px var(--imageHeight);
 	}
 
 	@keyframes fadeIn {

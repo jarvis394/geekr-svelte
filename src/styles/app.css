@@ -226,7 +226,13 @@
 	}
 
 	html {
+		--insetTop: var(--safe-area-inset-top, env(safe-area-inset-top));
+		--insetBottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom));
 		scrollbar-color: hsl(var(--secondary-foreground) / 0.5) hsl(var(--secondary) / 0.32);
+	}
+
+	.pswp__top-bar {
+		padding-top: var(--insetTop);
 	}
 
 	.article {
