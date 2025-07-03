@@ -32,12 +32,21 @@
 		branchHighlightStyles = ''
 	}
 
-	const scrollToIndex = async (index: number) => {
+	const scrollToComment = async (id: string, index: number) => {
 		highlightedCommentIndex = -1
 		await tick()
-		virtualizer?.scrollToIndex(index, {
-			smooth: true,
-			offset: -48
+		// virtualizer?.scrollToIndex(index, {
+		// 	smooth: true,
+		// 	offset: -48
+		// })
+		const commentElement = document.querySelector(`section[data-comment-id="${id}"]`)
+		// TODO: fixme offset
+		commentElement?.scrollIntoView({
+			behavior: 'instant'
+		})
+		window.scrollBy({
+			behavior: 'smooth',
+			top: -48
 		})
 		highlightedCommentIndex = index
 	}
@@ -77,7 +86,7 @@
 
 		const index = items.findIndex((e) => e.id === comments[startIndex].id)
 		resetBranchHighlight()
-		scrollToIndex(index)
+		scrollToComment(branch.parentId, index)
 	}
 
 	const expandBranch = (comment: Comment) => {
