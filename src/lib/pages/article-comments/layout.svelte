@@ -6,15 +6,15 @@
 
 	const { data }: PageProps = $props()
 	let comments = $derived.by(() => {
-		if (data.comments.promise && !('then' in data.comments.promise)) {
-			return data.comments.promise
+		if (data.comments && !('then' in data.comments)) {
+			return data.comments
 		}
 
 		return data.cachedComments
 	})
 
 	$effect(() => {
-		Promise.resolve(data.comments.promise).then((res) => {
+		Promise.resolve(data.comments).then((res) => {
 			if (!res || JSON.stringify(res) === JSON.stringify(comments)) {
 				return
 			}
@@ -37,5 +37,7 @@
 		</div>
 	{:then comments}
 		<ArticleCommentsPage {comments} />
+	{:catch}
+		error
 	{/await}
 </div>

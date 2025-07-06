@@ -24,11 +24,11 @@
 		class: imageClasses,
 		disableZoom,
 		style: propsStyle,
-		loaded = $bindable(!browser),
+		loaded = $bindable(false),
 		...other
 	}: ImageProps = $props()
 	const { class: containerClasses, style: containerStyle, ...otherContainerProps } = containerProps
-	let shouldShowPlaceholder = $state(browser)
+	let shouldShowPlaceholder = $state(true)
 	let imageDimensions = $state({
 		width: isNaN(Number(width)) ? 0 : Number(width),
 		height: isNaN(Number(height)) ? 0 : Number(height)
@@ -45,12 +45,12 @@
 	let intersecting: boolean = $derived(!shouldUseIntersectionObserver)
 
 	const handleLoad = (e: { currentTarget: EventTarget & Element }) => {
-		loaded = true
-		shouldShowPlaceholder = false
 		imageDimensions = {
 			width: (e.currentTarget as HTMLImageElement).naturalWidth || 0,
 			height: (e.currentTarget as HTMLImageElement).naturalHeight || 0
 		}
+		loaded = true
+		shouldShowPlaceholder = false
 	}
 
 	const handleAnimationEnd = () => {

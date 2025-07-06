@@ -56,7 +56,7 @@
 		'pl-4': !isThread,
 		'border-border border-b-1': comment.isLastInThread,
 		'animate-highlight': highlighted,
-		'hidden': comment.isCollapsed
+		hidden: comment.isCollapsed
 	})}
 >
 	{#each comment.branches || [] as branch}
@@ -101,10 +101,13 @@
 					</p>
 				</div>
 			</header>
-			<TextFormatter
+			<!-- <TextFormatter
 				class="text-[16px] leading-[1.6rem] *:first:mt-0 *:last:mb-0"
 				html={comment.message}
-			/>
+			/> -->
+			<div class="text-[16px] leading-[1.6rem] *:first:mt-0 *:last:mb-0">
+				{@html comment.message}
+			</div>
 			<div class="mt-1.5 flex flex-row items-center justify-between">
 				<Button variant="ghost" size="sm">Ответить</Button>
 				<div class="flex items-center justify-center gap-1">

@@ -151,7 +151,7 @@
 			{/snippet}
 		</WindowVirtualizer>
 	{:else} -->
-	{#each comments as item, index}
+	{#each comments as item, index ('comment:' + item.id)}
 		<ArticleComment
 			{expandBranch}
 			{onBranchClick}

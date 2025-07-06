@@ -1,4 +1,6 @@
+import { browser } from '$app/environment'
 import { SafeArea } from '@capacitor-community/safe-area'
+import { QueryClient } from '@tanstack/svelte-query'
 
 export const ssr = false
 export const prerender = false
@@ -14,4 +16,14 @@ export const load = async () => {
 			navigationBarContent: 'light'
 		}
 	})
+
+	const client = new QueryClient({
+		defaultOptions: {
+			queries: {
+				enabled: browser
+			}
+		}
+	})
+
+	return { client }
 }

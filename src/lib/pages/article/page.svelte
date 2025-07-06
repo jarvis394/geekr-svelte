@@ -8,15 +8,18 @@
 	import dayjs from 'dayjs'
 	import { Button } from '$lib/components/ui/button'
 	import { ArticleSkeleton } from '$lib/components/skeletons'
+	import { TextFormatter } from '$lib/components/text-formatter'
 
 	type ArticlePageProps = {
 		article: Article
 		scrollElement?: HTMLDivElement
+		isServerRendered?: boolean
 	} & HTMLAttributes<HTMLDivElement>
 	let {
 		article,
 		class: containerClasses,
 		scrollElement = $bindable(),
+		isServerRendered,
 		...other
 	}: ArticlePageProps = $props()
 	const timestampText = $derived(dayjs(article.timePublished).calendar().toLowerCase())
@@ -44,7 +47,11 @@
 </svelte:head>
 <div {...other} class={cn('flex flex-col gap-4 p-4', containerClasses)}>
 	<div class="flex flex-col" bind:this={scrollElement}>
-		<div class="z-20 flex flex-col gap-3">
+		<div
+			class={cn('z-20 flex flex-col gap-3', {
+				'animate-in fade-in': !isServerRendered
+			})}
+		>
 			<div class="flex flex-row gap-2">
 				<Avatar
 					class="size-6"
@@ -74,18 +81,22 @@
 			</div>
 		</div>
 		<div class="relative isolate mt-6">
-			{#await import ('$lib/components/text-formatter')}
-				<div out:fadeAbsolute={{ duration: 200 }} class="z-50 w-full">
-					<ArticleSkeleton class="p-0" />
-				</div>
-			{:then { TextFormatter }}
-				{#if isLoaded}
-					<TextFormatter
-						class={[textFormatterClasses, 'animate-in fade-in ease-quick duration-200']}
-						html={article.textHtml}
-					/>
-				{/if}
-			{/await}
+			{#if isServerRendered}
+				<TextFormatter class={textFormatterClasses} html={article.textHtml} />
+			{:else}
+				{#await import('$lib/components/text-formatter')}
+					<div out:fadeAbsolute={{ duration: 200 }} class="z-50 w-full">
+						<ArticleSkeleton class="p-0" />
+					</div>
+				{:then { TextFormatter }}
+					{#if isLoaded}
+						<TextFormatter
+							class={[textFormatterClasses, 'animate-in fade-in ease-quick duration-200']}
+							html={article.textHtml}
+						/>
+					{/if}
+				{/await}
+			{/if}
 		</div>
 	</div>
 	<Button href={articleLink + '/comments'} variant="ghost">Комментарии</Button>

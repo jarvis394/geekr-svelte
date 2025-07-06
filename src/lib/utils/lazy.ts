@@ -1,3 +1,4 @@
+// adapted from https://github.com/david-plugge/sveltekit-lazy-data/blob/main/src/lib/lazy.ts
 import { browser } from '$app/environment'
 
 let initial = true
@@ -5,7 +6,7 @@ let initial = true
 /**
  * Set initial to false when the client finishes loading.
  *
- * **Call this in your root layout.**
+ * **Call this in root layout**
  */
 export function initLazy() {
 	initial = false
@@ -20,7 +21,7 @@ export async function lazy<T>(
 	options: {
 		awaitInitial?: boolean
 	} = {}
-): Promise<{ promise: T | Promise<T> }> {
+): Promise<{ promise: T | Promise<T>; initial: boolean }> {
 	const { awaitInitial } = options
 
 	if (awaitInitial !== false && initial) {
@@ -28,6 +29,7 @@ export async function lazy<T>(
 	}
 
 	return {
-		promise: !browser ? await promise : promise
+		promise: !browser ? await promise : promise,
+		initial
 	}
 }

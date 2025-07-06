@@ -3,6 +3,7 @@
 	import { Header } from '$lib/components/header'
 	import type { PageProps } from '../../../routes/articles/[id=article]/$types'
 	import { ArticleSkeleton } from '$lib/components/skeletons'
+	import { browser } from '$app/environment'
 
 	const { data }: PageProps = $props()
 	let articleTitle = $derived.by(() => {
@@ -12,6 +13,8 @@
 
 		return data.cachedArticle?.titleHtml
 	})
+
+	const isServerRendered = $derived(!browser || data.article?.initial || false)
 
 	$effect(() => {
 		Promise.resolve(data.article.promise).then((res) => {
@@ -34,6 +37,6 @@
 			<ArticleSkeleton withHeader />
 		</div>
 	{:then article}
-		<ArticlePage {article} />
+		<ArticlePage {article} {isServerRendered} />
 	{/await}
 </div>

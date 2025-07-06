@@ -4,7 +4,7 @@
 	import ArticlesMostReading from './articles-most-reading.svelte'
 </script>
 
-<div class="animate-in fade-in flex flex-col gap-2">
+<div class="flex flex-col gap-2">
 	<ArticlesSearch />
 	<ArticlesSwitcher />
 	<ArticlesMostReading />

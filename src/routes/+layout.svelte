@@ -7,10 +7,9 @@
 	import { useLightbox } from '$lib/hooks/lightbox.svelte'
 	import { onMount } from 'svelte'
 	import { classes, setupViewTransition } from '$lib/utils/viewTransitions'
-	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query'
+	import { QueryClientProvider } from '@tanstack/svelte-query'
 	import { Drawer } from '$lib/components/drawer'
 	import { Sidebar } from '$lib/components/sidebar'
-	import { browser } from '$app/environment'
 	import { BottomNavigation } from '$lib/components/bottom-navigation'
 	import { initLazy } from '$lib/utils/lazy'
 	import { useNativeFeatures } from '$lib/hooks/nativeFeatures.svelte'
@@ -55,17 +54,10 @@
 		return true
 	}
 
-	let { children } = $props()
+	let { children, data } = $props()
+	const { client } = data
 	const { on } = setupViewTransition({
 		shouldStartViewTransition
-	})
-
-	const client = new QueryClient({
-		defaultOptions: {
-			queries: {
-				enabled: browser
-			}
-		}
 	})
 
 	dayjs.extend(relativeTimePlugin)
