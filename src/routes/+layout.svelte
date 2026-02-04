@@ -55,7 +55,6 @@
 	}
 
 	let { children, data } = $props()
-	const { client } = data
 	const { on } = setupViewTransition({
 		shouldStartViewTransition
 	})
@@ -111,7 +110,7 @@
 <svelte:head>
 	<title>geekr.</title>
 </svelte:head>
-<QueryClientProvider {client}>
+<QueryClientProvider client={data.client}>
 	<main
 		id="main"
 		class="main relative mx-auto flex min-h-full w-full flex-row justify-center overscroll-x-none"
