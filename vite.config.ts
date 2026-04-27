@@ -12,7 +12,6 @@ export default defineConfig({
 			clientFiles: ['./src/routes/**/*', '!./src/routes/**/*.server.ts']
 		},
 		watch: {
-			// 3. tell vite to ignore watching `src-tauri`
 			ignored: ['./android/**', 'capacitor.config.ts']
 		}
 	},
