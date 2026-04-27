@@ -9,8 +9,8 @@
 	type ArticleItemProps = { article: Article } & HTMLAttributes<HTMLAnchorElement>
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 	const { titlePlaintext, leadImage, articleLink } = $derived(useArticleItem(article))
-	const viewsText = formatNumber(article.statistics.readingCount)
-	const commentsText = formatNumber(article.statistics.commentsCount)
+	const viewsText = $derived(formatNumber(article.statistics.readingCount))
+	const commentsText = $derived(formatNumber(article.statistics.commentsCount))
 </script>
 
 <a
@@ -36,7 +36,7 @@
 			disableZoom
 			src={leadImage}
 			class="h-16 w-20 object-cover"
-			containerProps={{ class: 'h-16 w-20 rounded-md shrink-0 z-10' }}
+			containerProps={{ class: 'h-16 w-20! rounded-md shrink-0 z-10' }}
 		/>
 	{/if}
 	<md-ripple></md-ripple>

@@ -41,6 +41,7 @@
 		})
 	)
 	const isShrunk = $derived(scrollTrigger.trigger)
+	// svelte-ignore state_referenced_locally
 	const noTitleOnFirstRender = !title
 	const handleBack = () => {
 		// @ts-expect-error Chrome specific API
@@ -50,6 +51,7 @@
 		if (canGoBack) {
 			history.back()
 		} else {
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			goto(makeArticlesPageUrlFromParams(getCachedMode()), {
 				replaceState: true
 			})
@@ -63,10 +65,12 @@
 		return element ? Math.min(progress || 0, 1) : 0
 	}
 
-	let scrollProgress = new Tween(withPositionBar ? getScrollProgress() : 0, {
-		easing: expoOut,
-		duration: 100
-	})
+	let scrollProgress = $derived(
+		new Tween(withPositionBar ? getScrollProgress() : 0, {
+			easing: expoOut,
+			duration: 100
+		})
+	)
 
 	const scrollCallback = () =>
 		requestAnimationFrame(() => {

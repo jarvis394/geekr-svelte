@@ -96,7 +96,7 @@ export const parseArticlesParams = (params: string[]): GetArticlesParamsResult =
 export const makeArticlesPageUrlFromParams = (
 	articlesParams: Partial<GetArticlesParamsData>,
 	mode: 'articles' | 'news' | 'posts' = 'articles'
-): string => {
+) => {
 	const urlParts: string[] = []
 
 	if (articlesParams.flow && articlesParams.flow !== 'all') {

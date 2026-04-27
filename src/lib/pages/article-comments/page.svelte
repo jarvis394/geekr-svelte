@@ -10,9 +10,9 @@
 	const { comments: propsComments }: ArticleCommentsPageProps = $props()
 
 	/** Real comments data */
-	let comments = $state<Comment[]>(flattenComments(propsComments))
+	let comments = $derived<Comment[]>(flattenComments(propsComments))
 	/** Items that are rendered in virtualized list */
-	let items = $state<Comment[]>(comments)
+	let items = $derived<Comment[]>(comments)
 	const collapsedRoots = new SvelteMap<string, { collapsedAmount: number }>()
 
 	let highlightedCommentIndex = $state(-1)

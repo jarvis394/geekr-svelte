@@ -3,36 +3,18 @@
 	import { Header } from '$lib/components/header'
 	import type { PageProps } from '../../../routes/articles/[id=article]/$types'
 	import { ArticleSkeleton } from '$lib/components/skeletons'
-	import { browser } from '$app/environment'
-	import * as api from '$lib/api'
-	import { getArticleQueryKey } from '$lib/utils'
-	import { hydratable } from 'svelte'
+	import { onMount } from 'svelte'
+	// import { browser } from '$app/environment'
 
-	const { data, params }: PageProps = $props()
+	const { data }: PageProps = $props()
 
-	const isServerRendered = $derived(!browser || false)
+	// const isServerRendered = $derived(!browser)
+	const isServerRendered = true
 
-	// svelte-ignore state_referenced_locally
-	const articlePromise = hydratable(getArticleQueryKey(params.id), async () => {
-		const res = await api.article.get({
-			id: params.id,
-			fetch
-		})
+	let articleTitle = $derived(data.cachedArticle?.titleHtml)
 
-		if (!res.data) throw new Error('Not found')
-		return res.data
-	})
-
-	let articleTitle = $derived.by(() => {
-		// if (!('then' in article)) {
-		// 	return article.titleHtml
-		// }
-
-		return data.cachedArticle?.titleHtml
-	})
-
-	$effect(() => {
-		Promise.resolve(articlePromise).then((res) => {
+	onMount(() => {
+		Promise.resolve(data.article.promise).then((res) => {
 			articleTitle = res.titleHtml
 		})
 	})
@@ -47,8 +29,8 @@
 </svelte:head>
 <div class="relative flex h-full w-full flex-col">
 	<Header withPositionBar withShrinking title={articleTitle} />
-	{#await articlePromise}
-		<div class="top-12 -z-50 h-[1000000px] w-full">
+	{#await data.article.promise}
+		<div class="top-12 z-50 h-[1000000px] w-full">
 			<ArticleSkeleton withHeader />
 		</div>
 	{:then article}

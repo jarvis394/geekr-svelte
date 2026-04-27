@@ -270,6 +270,10 @@
 			@apply ring-border m-0 -mx-4 mt-6 overflow-auto break-normal ring min-[42rem]:mx-0 min-[42rem]:rounded-xl;
 		}
 
+		& div.table {
+			@apply mb-6;
+		}
+
 		@apply prose-tr:border-b-border! prose-th:border-b prose-th:border-hint/40;
 
 		& table {

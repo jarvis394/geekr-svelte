@@ -27,15 +27,19 @@
 		loaded = $bindable(false),
 		...other
 	}: ImageProps = $props()
-	const { class: containerClasses, style: containerStyle, ...otherContainerProps } = containerProps
+	const {
+		class: containerClasses,
+		style: containerStyle,
+		...otherContainerProps
+	} = $derived(containerProps)
 	let shouldShowPlaceholder = $state(true)
-	let imageDimensions = $state({
+	let imageDimensions = $derived({
 		width: isNaN(Number(width)) ? 0 : Number(width),
 		height: isNaN(Number(height)) ? 0 : Number(height)
 	})
 	// TODO: fix this mess / Probably was done for Habr articles formatting quirks, be careful
 	const style = $derived(
-		`aspect-ratio: ${imageDimensions.width || 'auto'} / ${imageDimensions.height || 'auto'};` +
+		`width: ${imageDimensions.width + 'px' || 'auto'}; aspect-ratio: ${imageDimensions.width || 'auto'} / ${imageDimensions.height || 'auto'};` +
 			(propsStyle || containerStyle)
 	)
 	const shouldUseIntersectionObserver = $derived(
@@ -45,10 +49,13 @@
 	let intersecting: boolean = $derived(!shouldUseIntersectionObserver)
 
 	const handleLoad = (e: { currentTarget: EventTarget & Element }) => {
-		imageDimensions = {
-			width: (e.currentTarget as HTMLImageElement).naturalWidth || 0,
-			height: (e.currentTarget as HTMLImageElement).naturalHeight || 0
+		if (!width || !height) {
+			imageDimensions = {
+				width: (e.currentTarget as HTMLImageElement).naturalWidth || 0,
+				height: (e.currentTarget as HTMLImageElement).naturalHeight || 0
+			}
 		}
+
 		loaded = true
 		shouldShowPlaceholder = false
 	}

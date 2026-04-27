@@ -59,7 +59,7 @@
 				<Image
 					disableZoom
 					containerProps={{
-						class: 'ArticleItem__image w-full rounded-none object-cover',
+						class: 'ArticleItem__image w-full! rounded-none object-cover',
 						style: `--imageHeight: ${ARTICLE_ITEM_IMAGE_HEIGHT}px;`
 					}}
 					width="100%"
@@ -76,7 +76,7 @@
 						aria-hidden="true"
 						style={`--imageHeight: ${ARTICLE_ITEM_IMAGE_HEIGHT}px;` +
 							(intersecting ? '' : 'display: none;')}
-						class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full scale-105 blur-2xl brightness-250 contrast-100 saturate-125 duration-500 select-none"
+						class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full! scale-105 blur-2xl brightness-250 contrast-100 saturate-125 duration-500 select-none"
 					/>
 				{/if}
 				<md-ripple></md-ripple>
