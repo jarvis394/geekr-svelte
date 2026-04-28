@@ -23,6 +23,7 @@ COPY . .
 
 ENV NODE_ENV=production
 
+RUN ls -la node_modules/html-dom-parser/lib/server
 RUN bun run build
 
 # copy production dependencies and source code into final image
