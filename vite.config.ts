@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import devtoolsJson from 'vite-plugin-devtools-json'
 
-
 export default defineConfig({
 	resolve: {
 		alias: [
