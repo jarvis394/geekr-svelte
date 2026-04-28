@@ -6,12 +6,25 @@
 	import { onMount } from 'svelte'
 	// import { browser } from '$app/environment'
 
-	const { data }: PageProps = $props()
+	const { data, params }: PageProps = $props()
 
 	// const isServerRendered = $derived(!browser)
 	const isServerRendered = true
 
-	let articleTitle = $derived(data.cachedArticle?.titleHtml)
+	let articleTitle = $derived.by(() => {
+		if (!('then' in data.article.promise)) {
+			return data.article.promise?.titleHtml
+		}
+
+		return data.cachedArticle?.titleHtml
+	})
+	let articleDescription = $derived.by(() => {
+		if (!('then' in data.article.promise)) {
+			return data.article.promise.metadata?.metaDescription
+		}
+
+		return data.cachedArticle?.metadata?.metaDescription
+	})
 
 	onMount(() => {
 		Promise.resolve(data.article.promise).then((res) => {
@@ -22,8 +35,8 @@
 
 <svelte:head>
 	<title>{articleTitle || 'Статья'} / geekr.</title>
-	<meta property="og:image" content={'https://geekr-lambda.vercel.app/api/share?id=' + data.id} />
-	<meta property="og:description" content={data.cachedArticle?.metadata?.metaDescription} />
+	<meta property="og:image" content={'https://geekr-lambda.vercel.app/api/share?id=' + params.id} />
+	<meta property="og:description" content={articleDescription} />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 </svelte:head>

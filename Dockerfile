@@ -23,7 +23,7 @@ COPY . .
 
 ENV NODE_ENV=production
 
-RUN bun --bun run vite build
+RUN bun run build
 
 # copy production dependencies and source code into final image
 FROM base AS release

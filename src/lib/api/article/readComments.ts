@@ -12,7 +12,7 @@ export default async ({ id, fetch, auth }: ReadArticleCommentsProps) =>
 			body: '{}',
 			headers: {
 				'content-type': 'application/json',
-				'accept': 'application/json, text/plain, */*'
+				accept: 'application/json, text/plain, */*'
 			}
 		},
 		version: 2,

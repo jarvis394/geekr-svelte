@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Html, isTag, type Element, type ProcessNode, type Text } from 'html-svelte-parser'
+	import { Html, isTag, type Element, type Text } from '@jarvis394/html-svelte-parser'
 	import { Image } from '../image'
 	import { cn } from '$lib/utils'
 	import type { HTMLAttributes } from 'svelte/elements'
@@ -114,5 +114,5 @@
 </script>
 
 <div {...other} class={cn('TextFormatter article', containerClasses)}>
-	<Html {html} processNode={processNode as ProcessNode} />
+	<Html {html} {processNode} />
 </div>

@@ -63,6 +63,12 @@ get along, so we shut typescript up by casting `value` to `never`.
 			bind:clientWidth={trackSize}
 			data-orientation={orientation}
 			{onpointerdown}
+			role="slider"
+			aria-orientation={orientation}
+			aria-valuemin={min}
+			aria-valuemax={max}
+			aria-valuenow={Array.isArray(value) ? value[0] : value}
+			tabindex="0"
 			class={cn(
 				"relative grow cursor-pointer overflow-hidden rounded-lg data-[orientation='horizontal']:h-10 data-[orientation='horizontal']:w-full data-[orientation='vertical']:h-full data-[orientation='vertical']:w-2",
 				{

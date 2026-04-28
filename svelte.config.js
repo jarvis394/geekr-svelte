@@ -27,7 +27,7 @@ const config = {
 	preprocess: vitePreprocess(),
 	kit: {
 		experimental: {
-			forkPreloads: true,
+			forkPreloads: true
 		},
 		serviceWorker: {
 			register: process.env.MODE === 'production'

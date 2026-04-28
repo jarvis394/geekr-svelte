@@ -35,7 +35,7 @@
 		{...other}
 		bind:this={element}
 		class={cn(
-			'border-border relative flex flex-col overflow-hidden border-b-[1px] pt-3 min-lg:first:pt-0',
+			'border-border relative flex flex-col overflow-hidden border-b pt-3 lg:first:pt-0',
 			{ 'pt-0': leadImage },
 			containerClasses
 		)}

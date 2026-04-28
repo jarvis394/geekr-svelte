@@ -92,7 +92,7 @@
 			stroke-width="2.5"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class={cn('lucide lucide-gauge mb-[1px] transition-all', {
+			class={cn('lucide lucide-gauge mb-px transition-all', {
 				'w-0': complexity === 'all'
 			})}
 		>
