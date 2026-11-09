@@ -143,5 +143,7 @@
 
 	.ArticleComment {
 		content-visibility: auto;
+		/* Remember rendered size while offscreen so scroll targets don't shift */
+		contain-intrinsic-size: auto 200px;
 	}
 </style>

@@ -6,6 +6,9 @@
 	import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 	import { tick } from 'svelte'
 
+	/** Height of the fixed app bar (`h-12`) that covers the top of the page */
+	const APPBAR_HEIGHT = 48
+
 	type ArticleCommentsPageProps = { comments: APIResponseComments }
 	const { comments: propsComments }: ArticleCommentsPageProps = $props()
 
@@ -42,14 +45,10 @@
 		// 	offset: -48
 		// })
 		const commentElement = document.querySelector(`section[data-comment-id="${id}"]`)
-		// TODO: fixme offset
-		commentElement?.scrollIntoView({
-			behavior: 'instant'
-		})
-		window.scrollBy({
-			behavior: 'smooth',
-			top: -48
-		})
+		if (!commentElement) return
+
+		const top = commentElement.getBoundingClientRect().top + window.scrollY - APPBAR_HEIGHT
+		window.scrollTo({ top, behavior: 'smooth' })
 		highlightedCommentIndex = index
 	}
 
