@@ -1,0 +1,12 @@
+# Used by Dokploy (Compose service). Dokploy injects the Traefik labels and
+# joins the container to dokploy-network for the domain set in its UI.
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      - PORT=3000
