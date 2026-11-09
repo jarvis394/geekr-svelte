@@ -13,6 +13,7 @@
 	type ArticleCommentProps = {
 		comment: Comment
 		highlighted?: boolean
+		collapsed?: boolean
 		collapsedRoot?: { collapsedAmount: number }
 		expandBranch?: (comment: Comment) => void
 		onBranchClick?: (branch: CommentBranch) => void
@@ -22,6 +23,7 @@
 	const {
 		comment,
 		highlighted,
+		collapsed,
 		collapsedRoot,
 		expandBranch,
 		onBranchClick,
@@ -56,7 +58,7 @@
 		'pl-4': !isThread,
 		'border-border border-b-1': comment.isLastInThread,
 		'animate-highlight': highlighted,
-		hidden: comment.isCollapsed
+		hidden: collapsed ?? comment.isCollapsed
 	})}
 >
 	{#each comment.branches || [] as branch}

@@ -3,7 +3,7 @@
 	import { WindowVirtualizer } from 'virtua/svelte'
 	import { ArticleComment } from '$lib/components/article-comment'
 	import { flattenComments } from '$lib/utils/comments'
-	import { SvelteMap } from 'svelte/reactivity'
+	import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 	import { tick } from 'svelte'
 
 	type ArticleCommentsPageProps = { comments: APIResponseComments }
@@ -14,6 +14,8 @@
 	/** Items that are rendered in virtualized list */
 	let items = $derived<Comment[]>(comments)
 	const collapsedRoots = new SvelteMap<string, { collapsedAmount: number }>()
+	/** IDs of comments hidden under a collapsed branch */
+	const collapsedIds = new SvelteSet<string>()
 
 	let highlightedCommentIndex = $state(-1)
 	let branchHighlightStyles = $state('')
@@ -52,7 +54,7 @@
 	}
 
 	const syncVirtualItems = () => {
-		items = comments.filter((e) => !e.isCollapsed)
+		items = comments.filter((e) => !collapsedIds.has(e.id))
 	}
 
 	const onBranchClick = (branch: CommentBranch) => {
@@ -72,7 +74,7 @@
 			const startComment = comments[startIndex]
 
 			if (current.level > startComment.level) {
-				comments[i].isCollapsed = true
+				collapsedIds.add(current.id)
 				collapsedAmount++
 			} else {
 				break
@@ -84,9 +86,8 @@
 			collapsedAmount
 		})
 
-		const index = items.findIndex((e) => e.id === comments[startIndex].id)
 		resetBranchHighlight()
-		scrollToComment(branch.parentId, index)
+		scrollToComment(branch.parentId, startIndex)
 	}
 
 	const expandBranch = (comment: Comment) => {
@@ -116,7 +117,7 @@
 			const startComment = comments[startIndex]
 
 			if (current.level > startComment.level) {
-				comments[i].isCollapsed = false
+				collapsedIds.delete(current.id)
 			} else {
 				break
 			}
@@ -158,6 +159,7 @@
 			{highlightBranch}
 			{resetBranchHighlight}
 			comment={item}
+			collapsed={collapsedIds.has(item.id)}
 			highlighted={highlightedCommentIndex === index}
 			collapsedRoot={collapsedRoots.get(item.id)}
 		/>
