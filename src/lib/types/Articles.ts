@@ -26,7 +26,7 @@ export const articlesComplexitySchema = z
 	.optional()
 	.default('all')
 export const articlesFlowSchema = z
-	.enum(['all', 'develop', 'design', 'admin', 'management', 'marketing', 'popsci'])
+	.enum(['all', 'backend', 'frontend', 'design', 'admin', 'management', 'marketing', 'popsci'])
 	.optional()
 	.default('all')
 export const articlesPageSchema = z

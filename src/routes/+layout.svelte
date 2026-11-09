@@ -28,8 +28,6 @@
 		const disableTransitionRoutes = [
 			'/flows/[...params]',
 			'/articles/[...params]',
-			'/news/[...params]',
-			'/posts/[...params]',
 			'/hubs',
 			'/settings'
 		]

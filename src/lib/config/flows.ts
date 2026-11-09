@@ -10,9 +10,13 @@ export const FLOWS_MAP: Record<ArticlesFlow, Flow> = {
 		title: 'Все потоки',
 		alias: 'all'
 	},
-	develop: {
-		title: 'Разработка',
-		alias: 'develop'
+	backend: {
+		title: 'Бэкенд',
+		alias: 'backend'
+	},
+	frontend: {
+		title: 'Фронтенд',
+		alias: 'frontend'
 	},
 	admin: {
 		title: 'Администрирование',

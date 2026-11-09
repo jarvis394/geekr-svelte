@@ -31,9 +31,26 @@ type GetArticlesProps = {
 	hubAlias?: string
 	flow?: ArticlesFlow
 	perPage?: number
-	news?: boolean
-	posts?: boolean
 } & MakeRequestCommonOptions
+
+const getQueryParams = (
+	mode: ArticlesPeriod | ArticlesRating,
+	flow: ArticlesFlow,
+	hubAlias?: string
+): Record<string, string> => {
+	// Hubs and flows use `sort=all` with either `score` or `period` filter
+	if (hubAlias || flow !== 'all') {
+		const filters: Record<string, string> = { ...modeParams[mode] }
+		delete filters.sort
+		return {
+			...filters,
+			...(hubAlias ? { queryType: 'hubs', hub: hubAlias } : { queryType: 'flows_new', flow }),
+			sort: 'all'
+		}
+	}
+
+	return { queryType: 'articles', ...modeParams[mode] }
+}
 
 export default async ({
 	mode,
@@ -42,8 +59,6 @@ export default async ({
 	flow = 'all',
 	complexity,
 	perPage = 20,
-	news,
-	posts,
 	auth,
 	fetch
 }: GetArticlesProps) =>
@@ -52,15 +67,10 @@ export default async ({
 		version: 2,
 		auth,
 		params: {
-			...modeParams[mode],
-			sort: flow === 'all' ? modeParams[mode].sort : 'all',
+			...getQueryParams(mode, flow, hubAlias),
 			page: page.toString(),
-			hub: hubAlias || '',
-			flow: flow === 'all' ? '' : flow,
 			perPage: perPage.toString(),
-			...(complexity && complexity !== 'all' && { complexity }),
-			...(news && { news: 'true' }),
-			...(posts && { posts: 'true' })
+			...(complexity && complexity !== 'all' && { complexity })
 		},
 		fetch
 	})
