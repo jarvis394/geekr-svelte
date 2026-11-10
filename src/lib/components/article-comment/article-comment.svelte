@@ -60,7 +60,7 @@
 		'border-border border-b-1': comment.isLastInThread
 	})}
 	class:hidden={collapsed ?? comment.isCollapsed}
-	class:animate-highlight={highlighted}
+	class:ArticleComment__section--highlighted={highlighted}
 >
 	{#each comment.branches || [] as branch}
 		<button
@@ -73,7 +73,7 @@
 		></button>
 	{/each}
 	<article
-		class={cn('ArticleComment flex w-full flex-col pt-4 pr-4 pb-3', {
+		class={cn('ArticleComment flex w-full min-w-0 flex-col pt-4 pr-4 pb-3', {
 			'pl-4': isThread,
 			'pt-3': !comment.author
 		})}
@@ -132,19 +132,42 @@
 </section>
 
 <style>
-	.ArticleComment__header {
-		content-visibility: auto;
-		contain-intrinsic-size: 1px 24px;
-	}
-
 	:global(.ArticleComment__branch--highlighted) {
 		border-color: hsl(var(--foreground) / 1);
 		border-left-width: 2px;
 	}
 
-	.ArticleComment {
-		content-visibility: auto;
-		/* Remember rendered size while offscreen so scroll targets don't shift */
-		contain-intrinsic-size: auto 200px;
+	/*
+	 * Fade an overlay's opacity instead of animating `background`: opacity runs on
+	 * the compositor, while a background animation restyles and repaints the
+	 * comment (inside the page-tall comments layer) on every frame
+	 */
+	.ArticleComment__section--highlighted {
+		isolation: isolate;
+	}
+
+	.ArticleComment__section--highlighted::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background: hsl(var(--accent));
+		opacity: 0;
+		will-change: opacity;
+		animation: comment-highlight 2s ease-in-out;
+	}
+
+	@keyframes comment-highlight {
+		0% {
+			opacity: 1;
+		}
+		25%,
+		50% {
+			opacity: 0.7;
+		}
+		100% {
+			opacity: 0;
+		}
 	}
 </style>
