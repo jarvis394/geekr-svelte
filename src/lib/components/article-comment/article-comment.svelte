@@ -14,7 +14,8 @@
 		comment: Comment
 		highlighted?: boolean
 		collapsed?: boolean
-		collapsedRoot?: { collapsedAmount: number }
+		/** Set when this comment is the root of a collapsed branch */
+		collapsedAmount?: number
 		expandBranch?: (comment: Comment) => void
 		onBranchClick?: (branch: CommentBranch) => void
 		highlightBranch?: (branch: CommentBranch) => void
@@ -24,7 +25,7 @@
 		comment,
 		highlighted,
 		collapsed,
-		collapsedRoot,
+		collapsedAmount,
 		expandBranch,
 		onBranchClick,
 		highlightBranch,
@@ -56,10 +57,10 @@
 	data-comment-id={comment.id}
 	class={cn('relative flex grow flex-row', containerClasses, {
 		'pl-4': !isThread,
-		'border-border border-b-1': comment.isLastInThread,
-		'animate-highlight': highlighted,
-		hidden: collapsed ?? comment.isCollapsed
+		'border-border border-b-1': comment.isLastInThread
 	})}
+	class:hidden={collapsed ?? comment.isCollapsed}
+	class:animate-highlight={highlighted}
 >
 	{#each comment.branches || [] as branch}
 		<button
@@ -122,9 +123,9 @@
 		{:else}
 			<TextFormatter html="НЛО прилетело здесь" />
 		{/if}
-		{#if collapsedRoot}
+		{#if collapsedAmount !== undefined}
 			<Button variant="ghost" size="lg" onclick={handleExpandBranch.bind(null, comment)}>
-				Раскрыть ветку ({collapsedRoot.collapsedAmount})
+				Раскрыть ветку ({collapsedAmount})
 			</Button>
 		{/if}
 	</article>
@@ -137,7 +138,7 @@
 	}
 
 	:global(.ArticleComment__branch--highlighted) {
-		border-color: white;
+		border-color: hsl(var(--foreground) / 1);
 		border-left-width: 2px;
 	}
 
