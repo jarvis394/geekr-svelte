@@ -14,6 +14,7 @@
 	import { browser } from '$app/environment'
 	import { Bookmark } from '@lucide/svelte'
 	import IntersectionObserver from 'svelte-intersection-observer'
+	import { getCachedImageColors, getImageColors } from '$lib/utils/imageColors'
 
 	const { class: containerClasses, article, ...other }: ArticleItemProps = $props()
 	const {
@@ -28,6 +29,38 @@
 	let leadImageLoaded = $state(!browser)
 	let element = $state<HTMLElement | null>(null)
 	let intersecting = $state(false)
+	/** Colors along the bottom edge of the lead image, drawn as a glow under it */
+	let glowColors = $state<string[] | null | undefined>()
+	/** Already extracted before (e.g. remounted item), skip the fade-in */
+	let glowCached = $state(false)
+
+	$effect(() => {
+		const src = leadImage
+		glowColors = undefined
+		if (!src) return
+		const cached = getCachedImageColors(src)
+		if (cached !== undefined) {
+			glowCached = true
+			glowColors = cached
+			return
+		}
+		// Wait until the item is close to the viewport and its image has loaded
+		if (!intersecting || !leadImageLoaded) return
+		let cancelled = false
+		getImageColors(src).then((colors) => {
+			if (!cancelled) glowColors = colors
+		})
+		return () => {
+			cancelled = true
+		}
+	})
+
+	const glowBackground = $derived.by(() => {
+		if (!glowColors) return undefined
+		const step = 100 / glowColors.length
+		const stops = glowColors.map((color, i) => `${color} ${step * i + step / 2}%`)
+		return `linear-gradient(to right, ${stops.join(', ')})`
+	})
 </script>
 
 <IntersectionObserver {element} bind:intersecting>
@@ -69,15 +102,16 @@
 					alt={titlePlaintext}
 					bind:loaded={leadImageLoaded}
 				/>
-				{#if leadImageLoaded}
-					<img
-						src={leadImage}
-						alt={titlePlaintext}
+				{#if glowBackground}
+					<div
 						aria-hidden="true"
-						style={`--imageHeight: ${ARTICLE_ITEM_IMAGE_HEIGHT}px;` +
-							(intersecting ? '' : 'display: none;')}
-						class="ArticleItem__imageBlur pointer-events-none absolute inset-0 -z-10 h-full w-full! scale-105 blur-2xl brightness-250 contrast-100 saturate-125 duration-500 select-none"
-					/>
+						style:--imageHeight="{ARTICLE_ITEM_IMAGE_HEIGHT}px"
+						style:background={glowBackground}
+						class={[
+							'ArticleItem__imageGlow pointer-events-none absolute inset-x-0 top-0 -z-10',
+							{ 'ArticleItem__imageGlow--animated': !glowCached }
+						]}
+					></div>
 				{/if}
 				<md-ripple></md-ripple>
 			</a>
@@ -170,13 +204,18 @@
 		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.07), transparent);
 	}
 
-	.ArticleItem__imageBlur {
+	/*
+	 * Cheap stand-in for a blurred copy of the image: a static gradient of the
+	 * colors along its bottom edge, fading out below it
+	 */
+	.ArticleItem__imageGlow {
+		height: calc(var(--imageHeight) + 96px);
 		opacity: 0.24;
-		transform: translateZ(0);
+		mask-image: linear-gradient(to bottom, black calc(100% - 160px), transparent);
+	}
+
+	.ArticleItem__imageGlow--animated {
 		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
-		height: var(--imageHeight);
-		content-visibility: auto;
-		contain-intrinsic-size: 1px var(--imageHeight);
 	}
 
 	@keyframes fadeIn {

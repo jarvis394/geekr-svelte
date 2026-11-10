@@ -119,19 +119,4 @@
 	.ArticleItem__hub:last-child:after {
 		content: '';
 	}
-
-	.ArticleItem__imageBlur {
-		opacity: 0.24;
-		transform: translateZ(0);
-		animation: 1000ms cubic-bezier(0.4, 0, 0.2, 1) 0ms fadeIn backwards;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 0.24;
-		}
-	}
 </style>
